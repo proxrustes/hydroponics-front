@@ -1,8 +1,9 @@
-"use client"
+"use client";
 
 import { Header } from "@/components/Header";
-import { ThemeProvider } from "@mui/material";
+import { Stack, ThemeProvider } from "@mui/material";
 import { lightTheme } from "@/styles/theme";
+import { Footer } from "@/components/Footer";
 
 export default function RootLayout({
   children,
@@ -11,10 +12,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body style={{margin:0}}>
         <ThemeProvider theme={lightTheme}>
-          <Header />
-          {children}
+          <Stack sx={{minHeight:"90vh"}}>
+            <Header />
+            {children}
+          </Stack>
+
+          <Footer />
         </ThemeProvider>
       </body>
     </html>

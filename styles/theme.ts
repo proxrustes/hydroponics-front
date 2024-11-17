@@ -38,8 +38,9 @@ const commonThemeOptions = {
   export const lightTheme = createTheme({
     palette: {
       primary: {
-        main: "#37423D",
-        light: "#446557"
+        main: "#446557",
+        light: "#446557",
+        dark:"#37423D"
       },
       secondary: {
         main: "#0B6776"
