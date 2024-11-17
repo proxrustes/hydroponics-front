@@ -6,14 +6,12 @@ import {
   Box,
   LinearProgress,
   Stack,
-  IconButton,
-  ToggleButton,
-  Button,
   ButtonBase,
 } from "@mui/material";
+import YardIcon from "@mui/icons-material/Yard";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
-import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import { useState } from "react";
+import { plantIcons } from "@/enums/plantIcons";
 const station = {
   name: "Station 2",
   plant: "Lettuce",
@@ -28,6 +26,7 @@ const station = {
 
 export default function Page({ params }: { params: { id: string } }) {
   const norms = normalParams[station.plant];
+  const plantIcon = plantIcons[station.plant] || <YardIcon />;
   const [isAutomated, setIsAutomated] = useState(true);
   const parameters = [
     {
@@ -68,29 +67,40 @@ export default function Page({ params }: { params: { id: string } }) {
             py: 2,
             px: 4,
             borderRadius: 8,
+            
           }}
         >
+          <Stack direction="row" alignItems="flex-end">
+          <Box sx={{ fontSize: 42 }}>{plantIcon}</Box>
+            <Typography variant="h3" sx={{ fontWeight: 900 }}>
+              {station.plant}
+            </Typography>
+          </Stack>
           <Typography>{station.name}</Typography>
-          <Typography variant="h3" sx={{ fontWeight: 900 }}>
-            {station.plant}
-          </Typography>
         </Stack>
         <ButtonBase
-        
           sx={{
-            borderColor: isAutomated ?"success.main" : "warning.main",
+            borderColor: isAutomated ? "success.main" : "warning.main",
             borderWidth: 4,
             borderStyle: "solid",
             py: 2,
             px: 4,
             borderRadius: 8,
-            flexDirection:"column",
-            width: 240
+            flexDirection: "column",
+            width: 240,
           }}
           onClick={() => setIsAutomated((isAutomated) => !isAutomated)}
         >
-        <Typography sx={{fontWeight: 400}}>Automated Mode </Typography>  
-        <Typography sx={{fontWeight: 900, fontSize:42, color: isAutomated ?"success.main" : "warning.main"}}>{isAutomated ? "ON" : "OFF"}</Typography>  
+          <Typography sx={{ fontWeight: 400 }}>Automated Mode </Typography>
+          <Typography
+            sx={{
+              fontWeight: 900,
+              fontSize: 42,
+              color: isAutomated ? "success.main" : "warning.main",
+            }}
+          >
+            {isAutomated ? "ON" : "OFF"}
+          </Typography>
         </ButtonBase>
       </Stack>
 
