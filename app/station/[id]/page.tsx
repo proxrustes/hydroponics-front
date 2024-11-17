@@ -1,23 +1,15 @@
 "use client";
-import { normalParams } from "@/enums/StationParams";
-import {
-  Container,
-  Typography,
-  Box,
-  LinearProgress,
-  Stack,
-  ButtonBase,
-} from "@mui/material";
+import { Container, Typography, Box, Stack, ButtonBase } from "@mui/material";
 import YardIcon from "@mui/icons-material/Yard";
 import { useEffect, useState } from "react";
-import { plantIcons } from "@/enums/plantIcons";
 import { mockStations } from "@/enums/mock_data";
 import { ParamsSection } from "@/components/station/ParamsSection";
 import { ManualControlSection } from "@/components/station/ManualControlSection";
+import { Station } from "@/enums/StationParams";
 
 export default function Page({ params }: { params: { id: string } }) {
   const [isAutomated, setIsAutomated] = useState(true);
-  const [station, setStation] = useState<any>(null);
+  const [station, setStation] = useState<Station>();
 
   useEffect(() => {
     async function fetchParams() {
@@ -31,8 +23,6 @@ export default function Page({ params }: { params: { id: string } }) {
   if (!station) {
     return <center>Loading...</center>;
   }
-
-  const plantIcon = plantIcons[station.plant] || <YardIcon />;
 
   return (
     <Container maxWidth="xl">
@@ -48,10 +38,10 @@ export default function Page({ params }: { params: { id: string } }) {
               borderRadius: 8,
             }}
           >
-            <Stack direction="row" alignItems="flex-end" gap={1}>
-              <Box sx={{ fontSize: 42 }}>{plantIcon}</Box>
+            <Stack direction="row" alignItems="center" gap={1}>
+              <YardIcon sx={{ fontSize: 44 }} />
               <Typography variant="h3" sx={{ fontWeight: 900 }}>
-                {station.plant}
+                {station.plant.name}
               </Typography>
             </Stack>
             <Typography>{station.name}</Typography>
@@ -84,17 +74,20 @@ export default function Page({ params }: { params: { id: string } }) {
         <ParamsSection station={station} />
         {isAutomated ? (
           <Stack
-          sx={{
-            backgroundColor: "primary.light",
-            color:"white",
-            py: 2,
-            px: 4,
-            borderRadius: 8,
-            textAlign:"center"
-          }}
-        >
-          <Typography sx={{fontSize: 24}}> Turn off <strong>Automated Mode</strong> to access Manual Control Section</Typography>
-           
+            sx={{
+              backgroundColor: "primary.light",
+              color: "white",
+              py: 2,
+              px: 4,
+              borderRadius: 8,
+              textAlign: "center",
+            }}
+          >
+            <Typography sx={{ fontSize: 24 }}>
+              {" "}
+              Turn off <strong>Automated Mode</strong> to access Manual Control
+              Section
+            </Typography>
           </Stack>
         ) : (
           <ManualControlSection />

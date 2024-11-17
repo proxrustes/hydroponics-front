@@ -1,9 +1,8 @@
-import { normalParams, Station } from "@/enums/StationParams";
+import { Station } from "@/enums/StationParams";
 import { Box, Stack, Typography, LinearProgress } from "@mui/material";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
-
 export function ParamsSection(props: { station: Station }) {
-  const norms = normalParams[props.station.plant];
+  const norms = props.station.plant.norm
   const parameters = [
     {
       name: "Humidity",

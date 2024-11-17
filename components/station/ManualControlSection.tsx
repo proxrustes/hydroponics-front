@@ -1,11 +1,7 @@
 import {
     Box,
     Button,
-    Grid,
-    Slider,
     Stack,
-    Switch,
-    TextField,
     Typography,
   } from "@mui/material";
   import LightbulbIcon from "@mui/icons-material/Lightbulb";

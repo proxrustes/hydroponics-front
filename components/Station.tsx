@@ -1,4 +1,4 @@
-import { Station, normalParams } from "@/enums/StationParams";
+import { Station } from "@/enums/StationParams";
 import {  Button, Paper, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { Parameter } from "./Parameter"; 
@@ -10,7 +10,7 @@ import ScienceIcon from '@mui/icons-material/Science';
 
 export function StationItem(props: { station: Station }) {
   const { station } = props;
-  const norms = normalParams[station.plant];
+  const norms = props.station.plant.norm;
   const parameters = [
     {
       name: "Humidity",
@@ -46,7 +46,7 @@ export function StationItem(props: { station: Station }) {
   return (
     <Paper sx={{ p: 2 }}>
       <Typography sx={{ fontWeight: 800, fontSize: 24 }}>
-        {station.name}: {station.plant}
+        {station.name}: {station.plant.name}
       </Typography>
       <Grid container spacing={2} sx={{mt:2}}>
         {parameters.map((param, index) => (
