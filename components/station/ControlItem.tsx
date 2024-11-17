@@ -15,7 +15,7 @@ export function ControlItem({
   label,
   defaultSliderValue = 50,
   min = 0,
-  max = 100
+  max = 100,
 }: ControlItemProps) {
   const [isDisabled, setIsDisabled] = useState(false);
   const [sliderValue, setSliderValue] = useState(defaultSliderValue);
@@ -25,20 +25,18 @@ export function ControlItem({
   };
 
   return (
-    <>
-      <Grid size={2} display="flex" gap={1} justifyContent="conter" alignItems="center">
+    <Grid container spacing={2} alignItems="center" size={12}>
+      <Grid size={2} display="flex" alignItems="center" gap={1}>
         {icon}
         <Typography>{label}</Typography>
       </Grid>
-     
-     
+
       <Grid size={9}>
         <Typography variant="body2" color="textSecondary">
           Min: {min} | Current: {sliderValue} | Max: {max}
         </Typography>
         <Slider
           disabled={isDisabled}
-          defaultValue={defaultSliderValue}
           value={sliderValue}
           onChange={handleSliderChange}
           aria-labelledby={`${label.toLowerCase()}-intensity`}
@@ -46,9 +44,10 @@ export function ControlItem({
           max={max}
         />
       </Grid>
-      <Grid size={1} alignItems="center">
+
+      <Grid size={1} display="flex" justifyContent="center">
         <Switch checked={!isDisabled} onChange={() => setIsDisabled(!isDisabled)} />
       </Grid>
-    </>
+    </Grid>
   );
 }
