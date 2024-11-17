@@ -133,66 +133,66 @@ export const initialPlantGroups: PlantGroup[] = [
     ],
   },
 ];
-
 export const mockStations: Station[] = [
-  {
-    id: 0,
-    name: "Station 1",
-    plant: initialPlantGroups[1].plants[1],
-    params: {
-      ph_level: 7,
-      temperature: 20,
-      humidity: 0,
-      light_intensity: 0.4,
-      nutrient_concentration: 0,
+    {
+      id: 0,
+      name: "Station 1",
+      plant: initialPlantGroups[1].plants[1], // Полуниця
+      params: {
+        ph_level: 5.8,
+        temperature: 20,
+        humidity: 75,
+        light_intensity: 550,
+        nutrient_concentration: 1.5,
+      },
     },
-  },
-  {
-    id: 1,
-    name: "Station 2",
-    plant: initialPlantGroups[1].plants[0],
-    params: {
-      ph_level: 0,
-      temperature: 0,
-      humidity: 0,
-      light_intensity: 0,
-      nutrient_concentration: 0,
+    {
+      id: 1,
+      name: "Station 2",
+      plant: initialPlantGroups[1].plants[0], // Томат
+      params: {
+        ph_level: 6.0,
+        temperature: 24,
+        humidity: 70,
+        light_intensity: 650,
+        nutrient_concentration: 2.0,
+      },
     },
-  },
-  {
-    id: 2,
-    name: "Station 3",
-    plant: initialPlantGroups[0].plants[2],
-    params: {
-      ph_level: 0,
-      temperature: 0,
-      humidity: 0,
-      light_intensity: 0,
-      nutrient_concentration: 0,
+    {
+      id: 2,
+      name: "Station 3",
+      plant: initialPlantGroups[0].plants[2], // Капуста кале
+      params: {
+        ph_level: 6.2,
+        temperature: 17,
+        humidity: 80,
+        light_intensity: 400,
+        nutrient_concentration: 1.4,
+      },
     },
-  },
-  {
-    id: 3,
-    name: "Station 4",
-    plant: initialPlantGroups[0].plants[1],
-    params: {
-      ph_level: 0,
-      temperature: 0,
-      humidity: 0,
-      light_intensity: 0,
-      nutrient_concentration: 0,
+    {
+      id: 3,
+      name: "Station 4",
+      plant: initialPlantGroups[0].plants[1], // Шпинат
+      params: {
+        ph_level: 6.5,
+        temperature: 24,
+        humidity: 125,
+        light_intensity: 350,
+        nutrient_concentration: 1.6,
+      },
     },
-  },
-  {
-    id: 4,
-    name: "Station 5",
-    plant: initialPlantGroups[0].plants[0],
-    params: {
-      ph_level: 0,
-      temperature: 0,
-      humidity: 0,
-      light_intensity: 0,
-      nutrient_concentration: 0,
+    {
+      id: 4,
+      name: "Station 5",
+      plant: initialPlantGroups[0].plants[0], // Салат
+      params: {
+        ph_level: 2.0,
+        temperature: 18,
+        humidity: 65,
+        light_intensity: 500,
+        nutrient_concentration: 1.3,
+      },
     },
-  },
-];
+  ];
+  

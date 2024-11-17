@@ -19,9 +19,9 @@ export function Parameter({ name, value, norm, icon, variant = "default" }: Para
   if (variant === "small") {
     return (
       <Tooltip title={name} placement="bottom">
-        <Box display="flex" flexDirection="column" alignItems="center" mb={1}>
+        <Box display="flex" flexDirection="column" alignItems="center" mb={1}  sx={{backgroundColor: inRange ? 'inherit' : '#750707', borderRadius:2}}>
           {icon}
-          <Typography sx={{ color: inRange ? 'inherit' : 'red', fontSize: '0.875rem' }}>
+          <Typography sx={{ fontSize: '0.875rem' }}>
             {value}
           </Typography>
         </Box>
