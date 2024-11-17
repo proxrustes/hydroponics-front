@@ -10,24 +10,30 @@ import {
 } from "@mui/material";
 import YardIcon from "@mui/icons-material/Yard";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { plantIcons } from "@/enums/plantIcons";
-const station = {
-  name: "Station 2",
-  plant: "Lettuce",
-  params: {
-    ph_level: 1.8,
-    temperature: 40.0,
-    humidity: 55,
-    light_intensity: 650,
-    nutrient_concentration: 1.2,
-  },
-};
+import { mockStations } from "@/enums/mock_data";
 
 export default function Page({ params }: { params: { id: string } }) {
+
+  const [isAutomated, setIsAutomated] = useState(true);
+  const [station, setStation] = useState<any>(null);
+
+  useEffect(() => {
+    async function fetchParams() {
+      const resolvedParams = await params;
+      const stationData = mockStations[Number(resolvedParams.id)];
+      setStation(stationData);
+    }
+    fetchParams();
+  }, [params]);
+
+  if (!station) {
+    return <center>Loading...</center>;
+  }
+
   const norms = normalParams[station.plant];
   const plantIcon = plantIcons[station.plant] || <YardIcon />;
-  const [isAutomated, setIsAutomated] = useState(true);
   const parameters = [
     {
       name: "Humidity",
@@ -70,7 +76,7 @@ export default function Page({ params }: { params: { id: string } }) {
             
           }}
         >
-          <Stack direction="row" alignItems="flex-end">
+          <Stack direction="row" alignItems="flex-end" gap={1}>
           <Box sx={{ fontSize: 42 }}>{plantIcon}</Box>
             <Typography variant="h3" sx={{ fontWeight: 900 }}>
               {station.plant}
