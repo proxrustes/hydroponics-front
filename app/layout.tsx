@@ -12,7 +12,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body style={{margin:0}}>
+      <body style={{margin:0, backgroundColor:"#354f52"}}>
         <ThemeProvider theme={lightTheme}>
           <Stack sx={{minHeight:"90vh"}}>
             <Header />

@@ -3,10 +3,11 @@ import Grid from "@mui/material/Grid2";
 import { StationItem } from "./Station";
 import { Stack, Typography } from "@mui/material";
 import { mockStations } from "@/enums/mock_data";
+import { CustomContainer } from "./CustomContainer";
 
 export function StationsSection() {
   return (
-    <Stack gap={1}>
+    <CustomContainer>
         <Typography variant="h4">Ваші станції:</Typography>
         <Grid container spacing={2}>
       {mockStations.map((station) => (
@@ -15,7 +16,7 @@ export function StationsSection() {
         </Grid>
       ))}
     </Grid>  
-    </Stack>
+    </CustomContainer>
   
   );
 }
