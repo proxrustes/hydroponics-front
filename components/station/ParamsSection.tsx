@@ -1,8 +1,9 @@
 import { Station } from "@/enums/StationParams";
 import { Box, Stack, Typography, LinearProgress } from "@mui/material";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import { CustomContainer } from "../CustomContainer";
 export function ParamsSection(props: { station: Station }) {
-  const norms = props.station.plant.norm
+  const norms = props.station.plant.norm;
   const parameters = [
     {
       name: "Humidity",
@@ -31,16 +32,7 @@ export function ParamsSection(props: { station: Station }) {
     },
   ];
   return (
-    <Stack
-      sx={{
-        borderColor: "primary.main",
-        borderWidth: 4,
-        borderStyle: "solid",
-        py: 2,
-        px: 4,
-        borderRadius: 8,
-      }}
-    >
+    <CustomContainer>
       {parameters.map((param) => {
         const min = param.norm[0];
         const max = param.norm[1];
@@ -72,7 +64,7 @@ export function ParamsSection(props: { station: Station }) {
               alignItems="center"
               justifyContent="space-between"
             >
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" color="secondary.main">
                 {min}
               </Typography>
               <Box width="100%" mx={2} position="relative">
@@ -83,12 +75,12 @@ export function ParamsSection(props: { station: Station }) {
                     height: 10,
                     borderRadius: 5,
                     "& .MuiLinearProgress-bar": {
-                      backgroundColor: isOutOfRange ? "red" : "primary.main",
+                      backgroundColor: isOutOfRange ? "red" : "primary.dark",
                     },
                   }}
                 />
               </Box>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" color="secondary.main">
                 {max}
               </Typography>
             </Box>
@@ -98,6 +90,6 @@ export function ParamsSection(props: { station: Station }) {
           </Box>
         );
       })}
-    </Stack>
+    </CustomContainer>
   );
 }

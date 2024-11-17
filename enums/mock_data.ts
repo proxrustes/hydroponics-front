@@ -140,10 +140,10 @@ export const mockStations: Station[] = [
     name: "Station 1",
     plant: initialPlantGroups[1].plants[1],
     params: {
-      ph_level: 0,
-      temperature: 0,
+      ph_level: 7,
+      temperature: 20,
       humidity: 0,
-      light_intensity: 0,
+      light_intensity: 0.4,
       nutrient_concentration: 0,
     },
   },

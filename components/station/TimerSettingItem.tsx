@@ -46,6 +46,7 @@ function TimerSetting({ label, onTimeout }: TimerSettingProps) {
     <Grid container spacing={2} alignItems="center">
       <Grid size={2}>
         <Switch
+        color="secondary"
           checked={timerActive}
           onChange={() => setTimerActive(!timerActive)}
         />
@@ -80,7 +81,7 @@ function TimerSetting({ label, onTimeout }: TimerSettingProps) {
       </Grid>
       <Grid size={2}>
         <Button
-          variant="outlined"
+          variant="contained"
           color="error"
           onClick={handleStopTimer}
           disabled={!timerActive}

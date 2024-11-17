@@ -17,10 +17,10 @@ const commonThemeOptions = {
   const BASE_PALETTE = {
     mode: "light",
     text: {
-      primary: "#434343",
-      light: "#3B537480",
-      light2: "#ffffffaa",
-      secondary: "#7b7b7b"
+      primary: "#cad2c5",
+      light: "#cad2c5",
+      light2: "#cad2c5",
+      secondary: "#cad2c5"
     },
     success: {
       main: "#66bb6a",

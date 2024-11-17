@@ -1,5 +1,5 @@
 import { Station } from "@/enums/StationParams";
-import {  Button, Paper, Typography } from "@mui/material";
+import {  Box, Button, Paper, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { Parameter } from "./Parameter"; 
 import WaterDropIcon from '@mui/icons-material/WaterDrop';
@@ -44,7 +44,7 @@ export function StationItem(props: { station: Station }) {
     }
   ];
   return (
-    <Paper sx={{ p: 2 }}>
+    <Box sx={{ p: 2, backgroundColor:"primary.dark", borderRadius:4 }}>
       <Typography sx={{ fontWeight: 800, fontSize: 24 }}>
         {station.name}: {station.plant.name}
       </Typography>
@@ -64,6 +64,6 @@ export function StationItem(props: { station: Station }) {
       <Button variant="contained" href={`station/${station.id}`} fullWidth sx={{ mt: 2}}>
         View Details
       </Button>
-    </Paper>
+    </Box>
   );
 }

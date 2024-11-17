@@ -38,6 +38,8 @@ export function ControlItem({
         <Slider
           disabled={isDisabled}
           value={sliderValue}
+
+                color="secondary"
           onChange={handleSliderChange}
           aria-labelledby={`${label.toLowerCase()}-intensity`}
           min={min}
@@ -46,7 +48,7 @@ export function ControlItem({
       </Grid>
 
       <Grid size={1} display="flex" justifyContent="center">
-        <Switch checked={!isDisabled} onChange={() => setIsDisabled(!isDisabled)} />
+        <Switch checked={!isDisabled} color="secondary" onChange={() => setIsDisabled(!isDisabled)} />
       </Grid>
     </Grid>
   );

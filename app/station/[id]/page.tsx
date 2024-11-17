@@ -6,6 +6,7 @@ import { mockStations } from "@/enums/mock_data";
 import { ParamsSection } from "@/components/station/ParamsSection";
 import { ManualControlSection } from "@/components/station/ManualControlSection";
 import { Station } from "@/enums/StationParams";
+import { CustomContainer } from "@/components/CustomContainer";
 
 export default function Page({ params }: { params: { id: string } }) {
   const [isAutomated, setIsAutomated] = useState(true);
@@ -26,26 +27,17 @@ export default function Page({ params }: { params: { id: string } }) {
 
   return (
     <Container maxWidth="xl">
-      <Stack gap={2}>
+      <Stack gap={2} >
         <Stack direction="row" gap={2} justifyContent="space-between">
-          <Stack
-            sx={{
-              width: "100%",
-              backgroundColor: "primary.main",
-              color: "white",
-              py: 1,
-              px: 4,
-              borderRadius: 8,
-            }}
-          >
-            <Stack direction="row" alignItems="center" gap={1}>
+          <CustomContainer sx={{flexDirection:"row", width:"100%", justifyContent:"space-between"}}>
+            <Stack>  <Stack direction="row" alignItems="center" gap={1}>
               <YardIcon sx={{ fontSize: 44 }} />
               <Typography variant="h3" sx={{ fontWeight: 900 }}>
                 {station.plant.name}
               </Typography>
             </Stack>
-            <Typography>{station.name}</Typography>
-          </Stack>
+            <Typography>{station.name}</Typography></Stack>
+          
           <ButtonBase
             sx={{
               borderColor: isAutomated ? "success.main" : "warning.main",
@@ -70,6 +62,7 @@ export default function Page({ params }: { params: { id: string } }) {
               {isAutomated ? "ON" : "OFF"}
             </Typography>
           </ButtonBase>
+          </CustomContainer>
         </Stack>
         <ParamsSection station={station} />
         {isAutomated ? (
