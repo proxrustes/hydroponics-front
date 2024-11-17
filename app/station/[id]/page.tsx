@@ -9,13 +9,12 @@ import {
   ButtonBase,
 } from "@mui/material";
 import YardIcon from "@mui/icons-material/Yard";
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { useEffect, useState } from "react";
 import { plantIcons } from "@/enums/plantIcons";
 import { mockStations } from "@/enums/mock_data";
+import { ParamsSection } from "@/components/station/ParamsSection";
 
 export default function Page({ params }: { params: { id: string } }) {
-
   const [isAutomated, setIsAutomated] = useState(true);
   const [station, setStation] = useState<any>(null);
 
@@ -32,141 +31,57 @@ export default function Page({ params }: { params: { id: string } }) {
     return <center>Loading...</center>;
   }
 
-  const norms = normalParams[station.plant];
   const plantIcon = plantIcons[station.plant] || <YardIcon />;
-  const parameters = [
-    {
-      name: "Humidity",
-      value: station.params.humidity,
-      norm: norms.humidity,
-    },
-    {
-      name: "Light Intensity",
-      value: station.params.light_intensity,
-      norm: norms.light_intensity,
-    },
-    {
-      name: "pH Level",
-      value: station.params.ph_level,
-      norm: norms.ph_level,
-    },
-    {
-      name: "Temperature",
-      value: station.params.temperature,
-      norm: norms.temperature,
-    },
-    {
-      name: "Nutrient Concentration",
-      value: station.params.nutrient_concentration,
-      norm: norms.nutrient_concentration,
-    },
-  ];
 
   return (
     <Container maxWidth="xl">
-      <Stack direction="row" gap={2} justifyContent="space-between">
-        <Stack
-          sx={{
-            width: "100%",
-            backgroundColor: "primary.light",
-            color: "white",
-            py: 2,
-            px: 4,
-            borderRadius: 8,
-            
-          }}
-        >
-          <Stack direction="row" alignItems="flex-end" gap={1}>
-          <Box sx={{ fontSize: 42 }}>{plantIcon}</Box>
-            <Typography variant="h3" sx={{ fontWeight: 900 }}>
-              {station.plant}
-            </Typography>
-          </Stack>
-          <Typography>{station.name}</Typography>
-        </Stack>
-        <ButtonBase
-          sx={{
-            borderColor: isAutomated ? "success.main" : "warning.main",
-            borderWidth: 4,
-            borderStyle: "solid",
-            py: 2,
-            px: 4,
-            borderRadius: 8,
-            flexDirection: "column",
-            width: 240,
-          }}
-          onClick={() => setIsAutomated((isAutomated) => !isAutomated)}
-        >
-          <Typography sx={{ fontWeight: 400 }}>Automated Mode </Typography>
-          <Typography
+      <Stack gap={2}>
+        <Stack direction="row" gap={2} justifyContent="space-between">
+          <Stack
             sx={{
-              fontWeight: 900,
-              fontSize: 42,
-              color: isAutomated ? "success.main" : "warning.main",
+              width: "100%",
+              backgroundColor: "primary.main",
+              color: "white",
+              py: 1,
+              px: 4,
+              borderRadius: 8,
             }}
           >
-            {isAutomated ? "ON" : "OFF"}
-          </Typography>
-        </ButtonBase>
-      </Stack>
-
-      {parameters.map((param) => {
-        const min = param.norm[0];
-        const max = param.norm[1];
-        const value = param.value;
-
-        let progress = ((value - min) / (max - min)) * 100;
-        let isOutOfRange = value < min || value > max;
-
-        if (value > max) {
-          progress = 100;
-        } else if (value < min) {
-          progress = 0;
-        }
-
-        return (
-          <Box key={param.name} sx={{ mt: 2 }}>
-            <Stack direction="row" gap={1}>
-              <Typography sx={{ fontWeight: 600 }}> {param.name}</Typography>
-              {isOutOfRange && (
-                <ErrorOutlineIcon
-                  sx={{
-                    color: "red",
-                  }}
-                />
-              )}
+            <Stack direction="row" alignItems="flex-end" gap={1}>
+              <Box sx={{ fontSize: 42 }}>{plantIcon}</Box>
+              <Typography variant="h3" sx={{ fontWeight: 900 }}>
+                {station.plant}
+              </Typography>
             </Stack>
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="space-between"
+            <Typography>{station.name}</Typography>
+          </Stack>
+          <ButtonBase
+            sx={{
+              borderColor: isAutomated ? "success.main" : "warning.main",
+              borderWidth: 4,
+              borderStyle: "solid",
+              py: 2,
+              px: 4,
+              borderRadius: 8,
+              flexDirection: "column",
+              width: 240,
+            }}
+            onClick={() => setIsAutomated((isAutomated) => !isAutomated)}
+          >
+            <Typography sx={{ fontWeight: 400 }}>Automated Mode </Typography>
+            <Typography
+              sx={{
+                fontWeight: 900,
+                fontSize: 24,
+                color: isAutomated ? "success.main" : "warning.main",
+              }}
             >
-              <Typography variant="body2" color="text.secondary">
-                {min}
-              </Typography>
-              <Box width="100%" mx={2} position="relative">
-                <LinearProgress
-                  variant="determinate"
-                  value={progress}
-                  sx={{
-                    height: 10,
-                    borderRadius: 5,
-                    "& .MuiLinearProgress-bar": {
-                      backgroundColor: isOutOfRange ? "red" : "primary.main",
-                    },
-                  }}
-                />
-              </Box>
-              <Typography variant="body2" color="text.secondary">
-                {max}
-              </Typography>
-            </Box>
-            <Typography variant="body2" sx={{ textAlign: "center", mt: 1 }}>
-              Current Value: {value}
+              {isAutomated ? "ON" : "OFF"}
             </Typography>
-          </Box>
-        );
-      })}
+          </ButtonBase>
+        </Stack>
+        <ParamsSection station={station} />
+      </Stack>
     </Container>
   );
 }
