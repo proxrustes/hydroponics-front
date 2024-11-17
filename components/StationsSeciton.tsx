@@ -1,5 +1,5 @@
 import { Station } from "@/enums/StationParams";
-import { Stack } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import { StationItem } from "./Station";
 
 const mockStations: Station[] = [
@@ -35,8 +35,8 @@ const mockStations: Station[] = [
       ph_level: 6.0,
       temperature: 24.0,
       humidity: 50,
-      light_intensity: 750,
-      nutrient_concentration: 1.8,
+      light_intensity: 250,
+      nutrient_concentration: 0,
     },
   },
   {
@@ -44,8 +44,8 @@ const mockStations: Station[] = [
     name: "Station 4",
     plant: "Strawberries",
     params: {
-      ph_level: 5.5,
-      temperature: 18.5,
+      ph_level: 2.5,
+      temperature: 18,
       humidity: 65,
       light_intensity: 600,
       nutrient_concentration: 1.3,
@@ -60,16 +60,18 @@ const mockStations: Station[] = [
       temperature: 23.0,
       humidity: 58,
       light_intensity: 720,
-      nutrient_concentration: 1.6,
+      nutrient_concentration: 1.1,
     },
   },
 ];
 export function StationsSection() {
   return (
-    <Stack>
+    <Grid container spacing={2}>
       {mockStations.map((station) => (
-        <StationItem station={station} />
+        <Grid key={station.id} size={3}>
+          <StationItem station={station} />
+        </Grid>
       ))}
-    </Stack>
+    </Grid>
   );
 }
