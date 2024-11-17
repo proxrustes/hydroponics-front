@@ -1,3 +1,5 @@
+"use client"
+
 import { StationsSection } from "@/components/StationsSeciton";
 import { Container } from "@mui/material";
 

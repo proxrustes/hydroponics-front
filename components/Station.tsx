@@ -50,7 +50,7 @@ export function StationItem(props: { station: Station }) {
       </Typography>
       <Grid container spacing={2} sx={{mt:2}}>
         {parameters.map((param, index) => (
-          <Grid size={4} key={index}>
+          <Grid size={2.4} key={index}>
             <Parameter
               name={param.name}
               value={param.value}
@@ -61,7 +61,7 @@ export function StationItem(props: { station: Station }) {
           </Grid>
         ))}
       </Grid>
-      <Button variant="contained" href={`station/${station.id}`} sx={{ mt: 2 }}>
+      <Button variant="contained" href={`station/${station.id}`} fullWidth sx={{ mt: 2}}>
         View Details
       </Button>
     </Paper>
