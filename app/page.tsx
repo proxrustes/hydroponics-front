@@ -1,7 +1,8 @@
+import { StationsSection } from "@/components/StationsSeciton";
 import { Container } from "@mui/material";
 
 export default function Home() {
   return (
-  <Container maxWidth="lg">123</Container>
+  <Container maxWidth="xl"><StationsSection/></Container>
   );
 }
