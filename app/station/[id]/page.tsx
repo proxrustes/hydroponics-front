@@ -85,16 +85,16 @@ export default function Page({ params }: { params: { id: string } }) {
         {isAutomated ? (
           <Stack
           sx={{
-            borderColor: "text.secondary",
-            borderWidth: 4,
-            borderStyle: "solid",
+            backgroundColor: "primary.light",
+            color:"white",
             py: 2,
             px: 4,
             borderRadius: 8,
             textAlign:"center"
           }}
         >
-            Turn off Automated Mode to access Manual Control Section
+          <Typography sx={{fontSize: 24}}> Turn off <strong>Automated Mode</strong> to access Manual Control Section</Typography>
+           
           </Stack>
         ) : (
           <ManualControlSection />
