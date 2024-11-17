@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { plantIcons } from "@/enums/plantIcons";
 import { mockStations } from "@/enums/mock_data";
 import { ParamsSection } from "@/components/station/ParamsSection";
+import { ManualControlSection } from "@/components/station/ManualControlSection";
 
 export default function Page({ params }: { params: { id: string } }) {
   const [isAutomated, setIsAutomated] = useState(true);
@@ -81,6 +82,23 @@ export default function Page({ params }: { params: { id: string } }) {
           </ButtonBase>
         </Stack>
         <ParamsSection station={station} />
+        {isAutomated ? (
+          <Stack
+          sx={{
+            borderColor: "text.secondary",
+            borderWidth: 4,
+            borderStyle: "solid",
+            py: 2,
+            px: 4,
+            borderRadius: 8,
+            textAlign:"center"
+          }}
+        >
+            Turn off Automated Mode to access Manual Control Section
+          </Stack>
+        ) : (
+          <ManualControlSection />
+        )}
       </Stack>
     </Container>
   );
