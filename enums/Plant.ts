@@ -6,19 +6,21 @@ export type Plant = {
 };
 
 export type PlantParams = {
-  ph_level: number;
   temperature: number;
-  humidity: number;
+  air_humidity: number;
   light_intensity: number;
-  nutrient_concentration: number;
+  substrate_humidity: number;
 };
 
 export type NormalParams = {
   ph_level: [number, number];
   temperature: [number, number];
-  humidity: [number, number];
+  air_humidity: [number, number];
   light_intensity: [number, number];
   nutrient_concentration: [number, number];
+  substrate_humidity: [number, number];
+  solution_temperature: [number, number];
+  solution_lvl: [number, number];
 };
 
 export type PlantGroup = {

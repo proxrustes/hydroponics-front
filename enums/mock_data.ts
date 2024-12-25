@@ -1,5 +1,5 @@
-import { Plant, PlantGroup } from "./Plant";
-import { Station } from "./StationParams";
+import { PlantGroup } from "./Plant";
+import { Station, Zone } from "./StationParams";
 
 export const initialPlantGroups: PlantGroup[] = [
   {
@@ -12,37 +12,14 @@ export const initialPlantGroups: PlantGroup[] = [
         norm: {
           ph_level: [5.5, 6.5],
           temperature: [16, 20],
-          humidity: [60, 80],
+          air_humidity: [60, 80],
           light_intensity: [400, 600],
           nutrient_concentration: [1.0, 1.5],
+          substrate_humidity: [30, 100],
+          solution_lvl: [30, 100],
+          solution_temperature: [18, 24]
         },
-      },
-      {
-        id: 1,
-        name: "Шпинат",
-        description:
-          "Листова зелень, добре росте при прохолодній температурі та високій вологості.",
-        norm: {
-          ph_level: [6.0, 7.5],
-          temperature: [10, 18],
-          humidity: [70, 90],
-          light_intensity: [250, 450],
-          nutrient_concentration: [1.4, 1.8],
-        },
-      },
-      {
-        id: 2,
-        name: "Капуста кале",
-        description:
-          "Насичена поживними речовинами листова зелень, що процвітає при прохолодній температурі.",
-        norm: {
-          ph_level: [5.5, 6.8],
-          temperature: [15, 20],
-          humidity: [65, 85],
-          light_intensity: [300, 500],
-          nutrient_concentration: [1.2, 1.8],
-        },
-      },
+      }
     ],
   },
   {
@@ -56,9 +33,12 @@ export const initialPlantGroups: PlantGroup[] = [
         norm: {
           ph_level: [5.5, 6.5],
           temperature: [20, 26],
-          humidity: [65, 85],
+          air_humidity: [65, 85],
           light_intensity: [500, 700],
           nutrient_concentration: [1.5, 2.5],
+          substrate_humidity: [30, 100],
+          solution_lvl: [30, 100],
+          solution_temperature: [18, 24]
         },
       },
       {
@@ -69,9 +49,12 @@ export const initialPlantGroups: PlantGroup[] = [
         norm: {
           ph_level: [5.5, 6.5],
           temperature: [18, 24],
-          humidity: [70, 80],
+          air_humidity: [70, 80],
           light_intensity: [400, 600],
           nutrient_concentration: [1.2, 1.8],
+          substrate_humidity: [30, 100],
+          solution_lvl: [30, 100],
+          solution_temperature: [18, 24]
         },
       },
       {
@@ -82,9 +65,12 @@ export const initialPlantGroups: PlantGroup[] = [
         norm: {
           ph_level: [5.5, 6.5],
           temperature: [22, 28],
-          humidity: [75, 95],
+          air_humidity: [75, 95],
           light_intensity: [400, 700],
           nutrient_concentration: [1.4, 2.2],
+          substrate_humidity: [30, 100],
+          solution_lvl: [30, 100],
+          solution_temperature: [18, 24]
         },
       },
       {
@@ -95,9 +81,12 @@ export const initialPlantGroups: PlantGroup[] = [
         norm: {
           ph_level: [5.8, 6.8],
           temperature: [20, 26],
-          humidity: [60, 80],
+          air_humidity: [60, 80],
           light_intensity: [500, 800],
           nutrient_concentration: [1.6, 2.4],
+          substrate_humidity: [30, 100],
+          solution_lvl: [30, 100],
+          solution_temperature: [18, 24]
         },
       },
     ],
@@ -113,9 +102,12 @@ export const initialPlantGroups: PlantGroup[] = [
         norm: {
           ph_level: [5.5, 6.5],
           temperature: [18, 24],
-          humidity: [60, 80],
+          air_humidity: [60, 80],
           light_intensity: [300, 500],
           nutrient_concentration: [1.0, 1.6],
+          substrate_humidity: [30, 100],
+          solution_lvl: [30, 100],
+          solution_temperature: [18, 24]
         },
       },
       {
@@ -125,74 +117,64 @@ export const initialPlantGroups: PlantGroup[] = [
         norm: {
           ph_level: [5.5, 7.0],
           temperature: [18, 24],
-          humidity: [60, 80],
+          air_humidity: [60, 80],
           light_intensity: [250, 500],
           nutrient_concentration: [1.0, 1.5],
+          substrate_humidity: [30, 100],
+          solution_lvl: [30, 100],
+          solution_temperature: [18, 24]
         },
       },
     ],
   },
 ];
-export const mockStations: Station[] = [
-    {
-      id: 0,
-      name: "Station 1",
-      plant: initialPlantGroups[1].plants[1], // Полуниця
-      params: {
-        ph_level: 5.8,
-        temperature: 20,
-        humidity: 75,
-        light_intensity: 550,
-        nutrient_concentration: 1.5,
-      },
+
+const mockZones: Zone[] = [
+  {
+    id: 0,
+    name: "Zone 1",
+    plant: initialPlantGroups[1].plants[1],
+    params: {
+      temperature: 20,
+      air_humidity: 75,
+      light_intensity: 550,
+      substrate_humidity: 80,
     },
-    {
-      id: 1,
-      name: "Station 2",
-      plant: initialPlantGroups[1].plants[0], // Томат
-      params: {
-        ph_level: 6.0,
-        temperature: 24,
-        humidity: 70,
-        light_intensity: 650,
-        nutrient_concentration: 2.0,
-      },
+  },
+  {
+    id: 1,
+    name: "Zone 2",
+    plant: initialPlantGroups[0].plants[0],
+    params: {
+      temperature: 24,
+      light_intensity: 650,
+      substrate_humidity: 90,
+      air_humidity: 80,
     },
-    {
-      id: 2,
-      name: "Station 3",
-      plant: initialPlantGroups[0].plants[2], // Капуста кале
-      params: {
-        ph_level: 6.2,
-        temperature: 17,
-        humidity: 80,
-        light_intensity: 400,
-        nutrient_concentration: 1.4,
-      },
+  },
+  {
+    id: 2,
+    name: "Zone 3",
+    plant: initialPlantGroups[1].plants[0],
+    params: {
+      temperature: 17,
+      air_humidity: 80,
+      light_intensity: 400,
+      substrate_humidity: 90
     },
-    {
-      id: 3,
-      name: "Station 4",
-      plant: initialPlantGroups[0].plants[1], // Шпинат
-      params: {
-        ph_level: 6.5,
-        temperature: 24,
-        humidity: 125,
-        light_intensity: 350,
-        nutrient_concentration: 1.6,
-      },
-    },
-    {
-      id: 4,
-      name: "Station 5",
-      plant: initialPlantGroups[0].plants[0], // Салат
-      params: {
-        ph_level: 2.0,
-        temperature: 18,
-        humidity: 65,
-        light_intensity: 500,
-        nutrient_concentration: 1.3,
-      },
-    },
-  ];
-  
+  },
+ 
+];
+
+export const mockStations: Station[] = [{
+  id: 0,
+  name: "то шо в підвалі",
+  zones: mockZones,
+  station_params: {
+    ph_level: 8,
+    substrate_humidity: 80,
+    solution_temperature: 22,
+    solution_lvl: 99
+  }
+}]
+

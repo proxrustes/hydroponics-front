@@ -2,21 +2,21 @@
 import { Container, Typography, Box, Stack, ButtonBase, CircularProgress } from "@mui/material";
 import YardIcon from "@mui/icons-material/Yard";
 import { useEffect, useState } from "react";
-import { mockStations } from "@/enums/mock_data";
+import { mockZones } from "@/enums/mock_data";
 import { ParamsSection } from "@/components/station/ParamsSection";
 import { ManualControlSection } from "@/components/station/ManualControlSection";
-import { Station } from "@/enums/StationParams";
+import { Station, Zone } from "@/enums/StationParams";
 import { CustomContainer } from "@/components/CustomContainer";
 import { Loader } from "@/components/Loader";
 
 export default function Page({ params }: { params: { id: string } }) {
   const [isAutomated, setIsAutomated] = useState(true);
-  const [station, setStation] = useState<Station>();
+  const [station, setStation] = useState<Zone>();
 
   useEffect(() => {
     async function fetchParams() {
       const resolvedParams = await params;
-      const stationData = mockStations[Number(resolvedParams.id)];
+      const stationData = mockZones[Number(resolvedParams.id)];
       setStation(stationData);
     }
     fetchParams();
@@ -52,7 +52,7 @@ export default function Page({ params }: { params: { id: string } }) {
             }}
             onClick={() => setIsAutomated((isAutomated) => !isAutomated)}
           >
-            <Typography sx={{ fontWeight: 400 }}>Automated Mode </Typography>
+            <Typography sx={{ fontWeight: 400 }}>Automated Mode</Typography>
             <Typography
               sx={{
                 fontWeight: 900,

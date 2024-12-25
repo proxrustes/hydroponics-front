@@ -14,8 +14,7 @@ export function CustomContainer(props: {
         borderStyle: "solid",
         borderRadius: 8,
         p: 2,
-        backgroundColor: "primary.main",
-        color:"secondary.main",
+        backgroundColor: "white",
         ...props.sx,
       }}
     >

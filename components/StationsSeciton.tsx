@@ -1,22 +1,35 @@
-import { Station } from "@/enums/StationParams";
 import Grid from "@mui/material/Grid2";
-import { StationItem } from "./Station";
-import { Stack, Typography } from "@mui/material";
+import { ZoneItem } from "./Zone";
+import { Box, Stack, Typography } from "@mui/material";
 import { mockStations } from "@/enums/mock_data";
 import { CustomContainer } from "./CustomContainer";
-
+import { Station } from "@/enums/StationParams";
 export function StationsSection() {
   return (
-    <CustomContainer>
-        <Typography variant="h4">Ваші станції:</Typography>
-        <Grid container spacing={2}>
-      {mockStations.map((station) => (
-        <Grid key={station.id} size={3}>
-          <StationItem station={station} />
-        </Grid>
-      ))}
-    </Grid>  
-    </CustomContainer>
-  
+    <Stack gap={4}>
+        {mockStations.map((station) => (
+          <StationItem key={station.id} station={station}/>
+        ))}
+    </Stack>
+
   );
+}
+
+function StationItem(props: {station: Station}) {
+  return (
+    <CustomContainer>
+      <Typography sx={{ fontWeight: 600, fontSize: 24, textAlign: "center" }}>Station {props.station.name}</Typography>
+
+      <Box sx={{ p: 2 }}>
+        <Typography sx={{ fontWeight: 600, fontSize: 24 }}>🪣 Bucket params</Typography>
+      </Box>
+      <Grid container spacing={2}>
+        {props.station.zones.map((zone) => (
+          <Grid key={zone.id} size={12}>
+            <ZoneItem zone={zone} />
+          </Grid>
+        ))}
+      </Grid>
+    </CustomContainer>
+  )
 }
