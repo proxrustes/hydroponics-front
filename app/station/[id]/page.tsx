@@ -1,5 +1,5 @@
 "use client";
-import { Container, Typography, Box, Stack, ButtonBase } from "@mui/material";
+import { Container, Typography, Box, Stack, ButtonBase, CircularProgress } from "@mui/material";
 import YardIcon from "@mui/icons-material/Yard";
 import { useEffect, useState } from "react";
 import { mockStations } from "@/enums/mock_data";
@@ -7,6 +7,7 @@ import { ParamsSection } from "@/components/station/ParamsSection";
 import { ManualControlSection } from "@/components/station/ManualControlSection";
 import { Station } from "@/enums/StationParams";
 import { CustomContainer } from "@/components/CustomContainer";
+import { Loader } from "@/components/Loader";
 
 export default function Page({ params }: { params: { id: string } }) {
   const [isAutomated, setIsAutomated] = useState(true);
@@ -22,7 +23,7 @@ export default function Page({ params }: { params: { id: string } }) {
   }, [params]);
 
   if (!station) {
-    return <center>Loading...</center>;
+    return <Loader sx={{mt:"30vh"}}/> ;
   }
 
   return (
