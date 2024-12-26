@@ -1,9 +1,10 @@
 import Grid from "@mui/material/Grid2";
 import { ZoneItem } from "./Zone";
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Divider, Stack, Typography } from "@mui/material";
 import { mockStations } from "@/enums/mock_data";
 import { CustomContainer } from "./CustomContainer";
 import { Station } from "@/enums/StationParams";
+import { BucketParams } from "./BucketPatams";
 export function StationsSection() {
   return (
     <Stack gap={4}>
@@ -22,6 +23,7 @@ function StationItem(props: {station: Station}) {
 
       <Box sx={{ p: 2 }}>
         <Typography sx={{ fontWeight: 600, fontSize: 24 }}>🪣 Bucket params</Typography>
+        <Divider/>
       </Box>
       <Grid container spacing={2}>
         {props.station.zones.map((zone) => (

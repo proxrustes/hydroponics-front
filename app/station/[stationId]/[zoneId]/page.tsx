@@ -1,28 +1,29 @@
 "use client";
-import { Container, Typography, Box, Stack, ButtonBase, CircularProgress } from "@mui/material";
+import { Container, Typography, Stack, ButtonBase } from "@mui/material";
 import YardIcon from "@mui/icons-material/Yard";
 import { useEffect, useState } from "react";
-import { mockZones } from "@/enums/mock_data";
 import { ParamsSection } from "@/components/station/ParamsSection";
 import { ManualControlSection } from "@/components/station/ManualControlSection";
-import { Station, Zone } from "@/enums/StationParams";
+import { Zone } from "@/enums/StationParams";
 import { CustomContainer } from "@/components/CustomContainer";
 import { Loader } from "@/components/Loader";
+import { mockStations } from "@/enums/mock_data";
 
-export default function Page({ params }: { params: { id: string } }) {
+export default function Page({ params }: { params: { stationId: string, zoneId: string} }) {
   const [isAutomated, setIsAutomated] = useState(true);
-  const [station, setStation] = useState<Zone>();
+  const [zone, setZone] = useState<Zone>();
 
   useEffect(() => {
-    async function fetchParams() {
-      const resolvedParams = await params;
-      const stationData = mockZones[Number(resolvedParams.id)];
-      setStation(stationData);
+    async function fetchZone() {
+      const resolvedParams = await params; // Await the params Promise
+      const stationData = mockStations[Number(resolvedParams.stationId)].zones[Number(resolvedParams.zoneId)];
+      setZone(stationData);
     }
-    fetchParams();
+    fetchZone();
   }, [params]);
+  
 
-  if (!station) {
+  if (!zone) {
     return <Loader sx={{mt:"30vh"}}/> ;
   }
 
@@ -34,10 +35,10 @@ export default function Page({ params }: { params: { id: string } }) {
             <Stack>  <Stack direction="row" alignItems="center" gap={1}>
               <YardIcon sx={{ fontSize: 44 }} />
               <Typography variant="h3" sx={{ fontWeight: 900 }}>
-                {station.plant.name}
+                {zone.plant.name}
               </Typography>
             </Stack>
-            <Typography>{station.name}</Typography></Stack>
+            <Typography>{zone.name}</Typography></Stack>
           
           <ButtonBase
             sx={{
@@ -65,7 +66,7 @@ export default function Page({ params }: { params: { id: string } }) {
           </ButtonBase>
           </CustomContainer>
         </Stack>
-        <ParamsSection station={station} />
+        <ParamsSection zone={zone} />
         {isAutomated ? (
           <Stack
             sx={{

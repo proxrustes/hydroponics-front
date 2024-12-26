@@ -1,34 +1,29 @@
-import { Station } from "@/enums/StationParams";
+import { Station, Zone } from "@/enums/StationParams";
 import { Box, Stack, Typography, LinearProgress } from "@mui/material";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { CustomContainer } from "../CustomContainer";
-export function ParamsSection(props: { station: Station }) {
-  const norms = props.station.plant.norm;
+export function ParamsSection(props: { zone: Zone }) {
+  const norms = props.zone.plant.norm;
   const parameters = [
     {
-      name: "Humidity",
-      value: props.station.params.humidity,
-      norm: norms.humidity,
+      name: "air_humidity",
+      value: props.zone.params.air_humidity,
+      norm: norms.air_humidity,
     },
     {
       name: "Light Intensity",
-      value: props.station.params.light_intensity,
+      value: props.zone.params.light_intensity,
       norm: norms.light_intensity,
     },
     {
-      name: "pH Level",
-      value: props.station.params.ph_level,
-      norm: norms.ph_level,
+      name: "substrate_humidity",
+      value: props.zone.params.substrate_humidity,
+      norm: norms.substrate_humidity,
     },
     {
       name: "Temperature",
-      value: props.station.params.temperature,
+      value: props.zone.params.temperature,
       norm: norms.temperature,
-    },
-    {
-      name: "Nutrient Concentration",
-      value: props.station.params.nutrient_concentration,
-      norm: norms.nutrient_concentration,
     },
   ];
   return (
