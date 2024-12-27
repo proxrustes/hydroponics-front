@@ -22,7 +22,7 @@ export default function PlantsPage() {
 
 function GroupSection(props: { group: PlantGroup }) {
   return (
-    <CustomContainer sx={{ mb:8 }}>
+    <CustomContainer sx={{ mb:4 }}>
       <Typography variant="h4" sx={{ fontWeight: 800, pl:1 }}>
         {props.group.title}
       </Typography>

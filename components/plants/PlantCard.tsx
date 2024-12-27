@@ -1,12 +1,7 @@
 import { Plant } from "@/enums/Plant";
 import {
-  Card,
-  CardContent,
   Typography,
-  Box,
   Grid2,
-  ButtonBase,
-  Button,
   Stack,
   IconButton,
 } from "@mui/material";
@@ -16,7 +11,7 @@ export function PlantCard(props: { plant: Plant }) {
     <Grid2
       size={3}
       sx={{
-        backgroundColor:  "primary.dark",
+        backgroundColor:  "primary.light",
         borderRadius: 8,
         px: 2,
         py: 1,

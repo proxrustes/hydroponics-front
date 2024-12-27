@@ -31,6 +31,9 @@ export function Header() {
           <Link underline="hover" color="inherit" href="/station">
             Мої Станції
           </Link>
+          <Link underline="hover" color="inherit" href="/wiki">
+           Вікі
+          </Link>
         </Breadcrumbs>
       </Stack>
     </Container>

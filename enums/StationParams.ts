@@ -16,7 +16,7 @@ export type Station = {
 
 export type StationParams = {
   ph_level: number;
-  substrate_humidity: number;
+  nutrient_concentration: number;
   solution_temperature: number;
   solution_lvl: number
 }

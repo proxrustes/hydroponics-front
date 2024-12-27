@@ -4,7 +4,7 @@ import { Box, Divider, Stack, Typography } from "@mui/material";
 import { mockStations } from "@/enums/mock_data";
 import { CustomContainer } from "./CustomContainer";
 import { Station } from "@/enums/StationParams";
-import { BucketParams } from "./BucketPatams";
+import { BucketParams } from "./BucketParams";
 export function StationsSection() {
   return (
     <Stack gap={4}>
@@ -22,13 +22,14 @@ function StationItem(props: {station: Station}) {
       <Typography sx={{ fontWeight: 600, fontSize: 24, textAlign: "center" }}>Station {props.station.name}</Typography>
 
       <Box sx={{ p: 2 }}>
-        <Typography sx={{ fontWeight: 600, fontSize: 24 }}>🪣 Bucket params</Typography>
-        <Divider/>
+        <Typography sx={{ fontWeight: 800, fontSize: 24 }}>🪣 Bucket params</Typography>
+        <BucketParams stationParams={props.station.station_params}/>
+        <Divider sx={{mt:2}}/>
       </Box>
       <Grid container spacing={2}>
         {props.station.zones.map((zone) => (
           <Grid key={zone.id} size={12}>
-            <ZoneItem zone={zone} />
+            <ZoneItem zone={zone} stationId={props.station.id}/>
           </Grid>
         ))}
       </Grid>

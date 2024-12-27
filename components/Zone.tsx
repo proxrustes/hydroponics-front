@@ -1,10 +1,10 @@
-import {  Zone } from "@/enums/StationParams";
-import { Box,  Divider, IconButton, Stack, Typography } from "@mui/material";
+import { Zone } from "@/enums/StationParams";
+import { Box, Divider, IconButton, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { Parameter } from "./Parameter";
 import SettingsIcon from '@mui/icons-material/Settings';
-export function ZoneItem(props: { zone: Zone }) {
-  const { zone } = props;
+export function ZoneItem(props: { zone: Zone, stationId: number }) {
+  const { zone, stationId } = props;
   const norms = props.zone.plant.norm;
   const parameters = [
     {
@@ -31,15 +31,17 @@ export function ZoneItem(props: { zone: Zone }) {
       value: zone.params.substrate_humidity,
       norm: norms.substrate_humidity,
       valueFormatter: "%",
-      icon:"🪴"
+      icon: "🪴"
     },
   ];
 
   return (
-    <Box sx={{ p: 2}}>
-      <Stack direction="row" justifyContent="space-between"><Typography sx={{ fontWeight: 800, fontSize: 24 }}>
-        {zone.name}: {zone.plant.name}
-      </Typography><IconButton href={`zone/${zone.id}`} color="secondary">
+    <Box sx={{ p: 2 }}>
+      <Stack direction="row" justifyContent="space-between">
+        <Typography sx={{ fontWeight: 800, fontSize: 24 }}>
+          {zone.name}: {zone.plant.name}
+        </Typography>
+        <IconButton href={`station/${stationId}/${zone.id}`} color="secondary">
           <SettingsIcon fontSize="large" />
 
         </IconButton>
@@ -60,7 +62,7 @@ export function ZoneItem(props: { zone: Zone }) {
           </Grid>
         ))}
       </Grid>
-      <Divider/>
+      <Divider sx={{ mt: 2 }} />
     </Box>
   );
 }

@@ -172,7 +172,7 @@ export const mockStations: Station[] = [{
   zones: mockZones,
   station_params: {
     ph_level: 8,
-    substrate_humidity: 80,
+    nutrient_concentration: 80,
     solution_temperature: 22,
     solution_lvl: 99
   }

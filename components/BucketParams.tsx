@@ -24,11 +24,11 @@ export function BucketParams(props: {stationParams: StationParams}){
           icon: "🌡️"
         },
         {
-          name: "substrate_humidity",
-          value: props.stationParams.substrate_humidity,
+          name: "nutrient_concentration",
+          value: props.stationParams.nutrient_concentration,
           norm: [0, 100],
           valueFormatter: "%",
-          icon:"💧"
+          icon:"〰️"
         },
       ];
 
