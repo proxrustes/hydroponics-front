@@ -17,14 +17,14 @@ export function Header() {
           alignItems="center"
         >
           <IconButton href="/" sx={{ ml: -2 }}>
-            <InvertColorsIcon sx={{ fontSize: 38, color: "primary.main" }} />
+            <InvertColorsIcon sx={{ fontSize: 38, color: "primary.dark" }} />
           </IconButton>
 
-          <Typography sx={{ fontWeight: 800, fontSize: 24, color: "secondary.main" }}>
+          <Typography sx={{ fontWeight: 800, fontSize: 24, color: "primary.dark" }}>
             HydroStations
           </Typography>
         </Stack>
-        <Breadcrumbs aria-label="breadcrumb">
+        <Breadcrumbs aria-label="breadcrumb" sx={{color: "primary.dark" }}>
           <Link underline="hover" color="inherit" href="/plants">
             Бібліотека Рослин
           </Link>
