@@ -2,7 +2,7 @@
 import { ButtonBase, Paper, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 
-export function FeatureCard(props: { title: string; contents: any; icon:any; url: string }) {
+export function FeatureCard(props: { title: string; contents: any; url: string }) {
   const router = useRouter()
     return (
       

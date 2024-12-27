@@ -12,10 +12,6 @@ import { CustomContainer } from "../CustomContainer";
 export function ManualControlSection() {
   return (
     <Stack>
-      <Typography variant="h4" sx={{ textAlign: "center", color:"secondary.main", fontWeight:900, mt:2, mb:3 }}>
-        Manual Control:
-      </Typography>
-
       <Grid2 container spacing={2}>
         <Grid2 size={12}>
           <CustomContainer>
@@ -34,20 +30,17 @@ export function ManualControlSection() {
               label="Water Pump"
               defaultSliderValue={60}
             />
-            <ControlItem icon={<FilterIcon />} label="Filter Water Pump" />
           </CustomContainer>
         </Grid2>
 
         <Grid2 size={6}>
           <CustomContainer>
-            <TimerControlSection />
           </CustomContainer>
         </Grid2>
         <Grid2
           size={6}
         >
           <CustomContainer>
-            <LevelAdjustmentsSection />
           </CustomContainer>
         </Grid2>
       </Grid2>

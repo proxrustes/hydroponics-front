@@ -11,11 +11,6 @@ export function ParamsSection(props: { zone: Zone }) {
       norm: norms.air_humidity,
     },
     {
-      name: "Light Intensity",
-      value: props.zone.params.light_intensity,
-      norm: norms.light_intensity,
-    },
-    {
       name: "substrate_humidity",
       value: props.zone.params.substrate_humidity,
       norm: norms.substrate_humidity,

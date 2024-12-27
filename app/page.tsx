@@ -16,14 +16,14 @@ export default function Home() {
         </Stack>
       <Grid container spacing={4} >
         <Grid size={4}>
-            <FeatureCard title={"Мої станції"} contents={""} icon={undefined} url={"/station"} />
+            <FeatureCard title={"Мої станції"} contents={""} url={"/station"} />
         </Grid>
         <Grid size={4}>
             <FeatureCard title={"Бібліотека рослин"} contents={""}
-          icon={<SettingsSuggestIcon sx={{ fontSize: 24 }} />} url={"/"} />
+           url={"/"} />
         </Grid>
         <Grid size={4}>
-            <FeatureCard title={"Вікі"} contents={""} icon={undefined} url={"/"} />
+            <FeatureCard title={"Вікі"} contents={""} url={"/"} />
         </Grid>
       </Grid>
 

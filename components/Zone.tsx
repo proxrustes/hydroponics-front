@@ -1,8 +1,11 @@
 import { Zone } from "@/enums/StationParams";
-import { Box, Divider, IconButton, Stack, Typography } from "@mui/material";
+import { Box, ButtonGroup, Divider, IconButton, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { Parameter } from "./Parameter";
 import SettingsIcon from '@mui/icons-material/Settings';
+import InsertChartIcon from '@mui/icons-material/InsertChart';
+
+
 export function ZoneItem(props: { zone: Zone, stationId: number }) {
   const { zone, stationId } = props;
   const norms = props.zone.plant.norm;
@@ -41,10 +44,15 @@ export function ZoneItem(props: { zone: Zone, stationId: number }) {
         <Typography sx={{ fontWeight: 800, fontSize: 24 }}>
           {zone.name}: {zone.plant.name}
         </Typography>
-        <IconButton href={`station/${stationId}/${zone.id}`} color="secondary">
-          <SettingsIcon fontSize="large" />
-
+        <ButtonGroup>
+        <IconButton href={`station/${stationId}/${zone.id}/details`} color="secondary">
+          <InsertChartIcon fontSize="large" />
         </IconButton>
+          <IconButton href={`station/${stationId}/${zone.id}/settings`} color="secondary">
+          <SettingsIcon fontSize="large" />
+        </IconButton>
+        </ButtonGroup>
+        
       </Stack>
 
 

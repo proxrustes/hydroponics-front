@@ -25,11 +25,11 @@ export function Header() {
           </Typography>
         </Stack>
         <Breadcrumbs aria-label="breadcrumb" sx={{color: "primary.dark" }}>
-          <Link underline="hover" color="inherit" href="/plants">
-            Бібліотека Рослин
-          </Link>
           <Link underline="hover" color="inherit" href="/station">
             Мої Станції
+          </Link>
+          <Link underline="hover" color="inherit" href="/plants">
+            Бібліотека Рослин
           </Link>
           <Link underline="hover" color="inherit" href="/wiki">
            Вікі
