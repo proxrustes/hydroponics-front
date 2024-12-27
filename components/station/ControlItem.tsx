@@ -35,13 +35,14 @@ export function ControlItem({
 
       <Grid size={9}>
         <Typography variant="body2" color="primary.dark">
-          Min: {min} {valueFormatter} | Current: {sliderValue} {valueFormatter} | Max: {max} {valueFormatter} 
+          Min: {min} {valueFormatter} | Current: {sliderValue} {valueFormatter} | Max: {max} {valueFormatter}
         </Typography>
         <Slider
           disabled={isDisabled}
           value={sliderValue}
-
-                color="secondary"
+          step={(max / 20)}
+          marks
+          color="secondary"
           onChange={handleSliderChange}
           aria-labelledby={`${label.toLowerCase()}-intensity`}
           min={min}
