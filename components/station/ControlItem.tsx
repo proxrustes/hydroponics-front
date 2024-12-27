@@ -6,6 +6,7 @@ type ControlItemProps = {
   icon: React.ReactNode;
   label: string;
   defaultSliderValue?: number;
+  valueFormatter?: string;
   min?: number;
   max?: number;
 };
@@ -14,6 +15,7 @@ export function ControlItem({
   icon,
   label,
   defaultSliderValue = 50,
+  valueFormatter,
   min = 0,
   max = 100,
 }: ControlItemProps) {
@@ -32,8 +34,8 @@ export function ControlItem({
       </Grid>
 
       <Grid size={9}>
-        <Typography variant="body2" color="textSecondary">
-          Min: {min} | Current: {sliderValue} | Max: {max}
+        <Typography variant="body2" color="primary.dark">
+          Min: {min} {valueFormatter} | Current: {sliderValue} {valueFormatter} | Max: {max} {valueFormatter} 
         </Typography>
         <Slider
           disabled={isDisabled}

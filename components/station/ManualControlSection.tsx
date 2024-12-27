@@ -1,12 +1,9 @@
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import LightbulbIcon from "@mui/icons-material/Lightbulb";
 import AirIcon from "@mui/icons-material/Air";
 import WaterPumpIcon from "@mui/icons-material/Opacity";
-import FilterIcon from "@mui/icons-material/FilterList";
 import Grid2 from "@mui/material/Grid2";
 import { ControlItem } from "./ControlItem";
-import { LevelAdjustmentsSection } from "./LevelAdjustmentItem";
-import { TimerControlSection } from "./TimerSettingItem";
 import { CustomContainer } from "../CustomContainer";
 
 export function ManualControlSection() {
@@ -18,12 +15,16 @@ export function ManualControlSection() {
             <ControlItem
               icon={<LightbulbIcon />}
               label="Light"
-              defaultSliderValue={70}
+              defaultSliderValue={40000}
+              min={0}
+              max={100000}
+              valueFormatter="Lux"
             />
             <ControlItem
               icon={<AirIcon />}
               label="Fan"
               defaultSliderValue={50}
+              valueFormatter="%"
             />
             <ControlItem
               icon={<WaterPumpIcon />}

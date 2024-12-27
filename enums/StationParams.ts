@@ -4,7 +4,8 @@ export type Zone = {
   id: number,
   name: string;
   plant: Plant;
-  params: PlantParams
+  params: PlantParams;
+  isLightOn: boolean;
 }
 
 export type Station = {

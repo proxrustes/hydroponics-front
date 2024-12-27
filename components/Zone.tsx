@@ -11,8 +11,8 @@ export function ZoneItem(props: { zone: Zone, stationId: number }) {
   const norms = props.zone.plant.norm;
   const parameters = [
     {
-      name: "Light Intensity",
-      value: zone.params.light_intensity,
+      name: "Lights",
+      value: zone.isLightOn,
       norm: norms.light_intensity,
       icon: "🔆"
     }, {
@@ -23,14 +23,14 @@ export function ZoneItem(props: { zone: Zone, stationId: number }) {
       icon: "🌡️"
     },
     {
-      name: "Humidity",
+      name: "Air Humidity",
       value: zone.params.air_humidity,
       norm: norms.air_humidity,
       valueFormatter: "%",
       icon: "💧"
     },
     {
-      name: "substrate_humidity",
+      name: "Substrate Humidity",
       value: zone.params.substrate_humidity,
       norm: norms.substrate_humidity,
       valueFormatter: "%",
@@ -65,7 +65,6 @@ export function ZoneItem(props: { zone: Zone, stationId: number }) {
               norm={param.norm}
               icon={param.icon}
               valueFormatter={param.valueFormatter}
-              variant="small"
             />
           </Grid>
         ))}

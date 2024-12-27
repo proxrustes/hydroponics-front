@@ -8,7 +8,6 @@ export type Plant = {
 export type PlantParams = {
   temperature: number;
   air_humidity: number;
-  light_intensity: number;
   substrate_humidity: number;
 };
 

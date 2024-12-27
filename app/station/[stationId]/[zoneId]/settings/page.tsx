@@ -31,40 +31,32 @@ export default function Page({ params }: { params: { stationId: string, zoneId: 
   return (
     <Container maxWidth="xl">
       <Stack gap={2} >
-        <Stack direction="row" gap={2} justifyContent="space-between">
-          <CustomContainer sx={{ flexDirection: "row", width: "100%", justifyContent: "space-between" }}>
-            <Stack>  <Stack direction="row" alignItems="center" gap={1}>
-              <YardIcon sx={{ fontSize: 44 }} />
-              <Typography variant="h3" sx={{ fontWeight: 900 }}>
-                {zone.plant.name}
-              </Typography>
-            </Stack>
-              <Typography>{zone.name}</Typography></Stack>
-
-
-          </CustomContainer>
-        </Stack>
-        <Grid container spacing={2} sx={{ mt: 2 }}>
+        <CustomContainer sx={{ flexDirection: "row", width: "100%", justifyContent: "space-between" }}>
+          <Typography variant="h3" sx={{ fontWeight: 900 }}>
+            🪴{zone.plant.name}
+          </Typography>
+        </CustomContainer>
+        <Grid container spacing={2}>
           <Grid size={8}>
             <ParamsSection zone={zone} />
           </Grid>
           <Grid size={4}>
             <CustomContainer>
-
-              <Typography sx={{
-                fontWeight: 800, fontSize: 24, textAlign: "center"
-              }}>Custom Norms</Typography>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={isCustom}
-                    onChange={() => setIsCustom((isCustom) => !isCustom)}
-                    inputProps={{ 'aria-label': 'controlled' }}
-                  />
-                }
-                label={isCustom ? "ON" : "OFF"}
-                labelPlacement="bottom"
-              />
+              <Stack direction="row" justifyContent="space-between">
+                <Typography sx={{
+                  fontWeight: 800, fontSize: 24, textAlign: "center"
+                }}>Custom Norms</Typography>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={isCustom}
+                      onChange={() => setIsCustom((isCustom) => !isCustom)}
+                      inputProps={{ 'aria-label': 'controlled' }}
+                    />
+                  }
+                  label={isCustom ? "ON" : "OFF"}
+                />
+              </Stack>
             </CustomContainer>
           </Grid>
         </Grid>

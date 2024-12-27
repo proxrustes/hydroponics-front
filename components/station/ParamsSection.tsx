@@ -6,12 +6,12 @@ export function ParamsSection(props: { zone: Zone }) {
   const norms = props.zone.plant.norm;
   const parameters = [
     {
-      name: "air_humidity",
+      name: "Air Humidity",
       value: props.zone.params.air_humidity,
       norm: norms.air_humidity,
     },
     {
-      name: "substrate_humidity",
+      name: "Substrate Humidity",
       value: props.zone.params.substrate_humidity,
       norm: norms.substrate_humidity,
     },
@@ -40,7 +40,7 @@ export function ParamsSection(props: { zone: Zone }) {
         return (
           <Box key={param.name} sx={{ mt: 2 }}>
             <Stack direction="row" gap={1}>
-              <Typography sx={{ fontWeight: 600 }}> {param.name}</Typography>
+              <Typography sx={{ fontWeight: 600}}> {param.name}</Typography>
               {isOutOfRange && (
                 <ErrorOutlineIcon
                   sx={{
@@ -54,7 +54,7 @@ export function ParamsSection(props: { zone: Zone }) {
               alignItems="center"
               justifyContent="space-between"
             >
-              <Typography variant="body2" color="secondary.main">
+              <Typography variant="body2" color="primary.dark" fontWeight={600}>
                 {min}
               </Typography>
               <Box width="100%" mx={2} position="relative">
@@ -62,7 +62,7 @@ export function ParamsSection(props: { zone: Zone }) {
                   variant="determinate"
                   value={progress}
                   sx={{
-                    height: 10,
+                    height: 24,
                     borderRadius: 5,
                     "& .MuiLinearProgress-bar": {
                       backgroundColor: isOutOfRange ? "red" : "primary.dark",
@@ -70,11 +70,11 @@ export function ParamsSection(props: { zone: Zone }) {
                   }}
                 />
               </Box>
-              <Typography variant="body2" color="secondary.main">
+              <Typography variant="body2" color="primary.dark" fontWeight={600}>
                 {max}
               </Typography>
             </Box>
-            <Typography variant="body2" sx={{ textAlign: "center", mt: 1 }}>
+            <Typography variant="body2" sx={{ textAlign: "center", mt: 1}}>
               Current Value: {value}
             </Typography>
           </Box>

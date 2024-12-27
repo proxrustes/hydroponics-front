@@ -137,9 +137,9 @@ const mockZones: Zone[] = [
     params: {
       temperature: 20,
       air_humidity: 75,
-      light_intensity: 550,
       substrate_humidity: 80,
     },
+    isLightOn: true
   },
   {
     id: 1,
@@ -147,10 +147,10 @@ const mockZones: Zone[] = [
     plant: initialPlantGroups[0].plants[0],
     params: {
       temperature: 24,
-      light_intensity: 650,
       substrate_humidity: 90,
       air_humidity: 80,
     },
+    isLightOn: false
   },
   {
     id: 2,
@@ -159,9 +159,9 @@ const mockZones: Zone[] = [
     params: {
       temperature: 17,
       air_humidity: 80,
-      light_intensity: 400,
       substrate_humidity: 90
     },
+    isLightOn: false
   },
  
 ];
