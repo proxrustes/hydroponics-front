@@ -1,4 +1,4 @@
-import { Box, Button, Stack } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import LightbulbIcon from "@mui/icons-material/Lightbulb";
 import AirIcon from "@mui/icons-material/Air";
 import WaterPumpIcon from "@mui/icons-material/Opacity";
@@ -10,44 +10,43 @@ export function ManualControlSection() {
   return (
     <Stack>
       <Grid2 container spacing={2}>
-        <Grid2 size={12}>
+        <Grid2 size={4}>
           <CustomContainer>
+            <Typography sx={{ textAlign: "center", fontWeight: 600 }}>Light</Typography>
             <ControlItem
-              icon={<LightbulbIcon />}
-              label="Light"
               defaultSliderValue={40000}
               min={0}
               max={100000}
               valueFormatter="Lux"
             />
-            <ControlItem
-              icon={<AirIcon />}
-              label="Fan"
-              defaultSliderValue={50}
-              valueFormatter="%"
-            />
-            <ControlItem
-              icon={<WaterPumpIcon />}
-              label="Water Pump"
-              defaultSliderValue={60}
-            />
-          </CustomContainer>
-        </Grid2>
-
-        <Grid2 size={6}>
-          <CustomContainer>
           </CustomContainer>
         </Grid2>
         <Grid2
-          size={6}
+          size={4}
         >
           <CustomContainer>
+            <Typography sx={{ textAlign: "center", fontWeight: 600 }}>Fan</Typography>
+            <ControlItem
+              defaultSliderValue={50}
+              valueFormatter="%"
+            />
+          </CustomContainer>
+        </Grid2>
+        <Grid2
+          size={4}
+        >
+          <CustomContainer>
+            <Typography sx={{ textAlign: "center", fontWeight: 600 }}>Water Pump</Typography>
+            <ControlItem
+              defaultSliderValue={50}
+              valueFormatter="%"
+            />
           </CustomContainer>
         </Grid2>
       </Grid2>
 
       <Box mt={4}>
-        <Button variant="contained" color="primary" fullWidth sx={{fontSize: 22}}>
+        <Button variant="contained" color="primary" fullWidth sx={{ fontSize: 22 }}>
           Apply Settings
         </Button>
       </Box>
