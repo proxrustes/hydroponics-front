@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Stack, Typography, Switch, FormControlLabel, TextField, Button } from "@mui/material";
-import { CustomContainer } from "@/components/CustomContainer";
+import { CustomContainer } from "@/components/common/CustomContainer";
 import { ZoneParamNorms } from "@/enums/Params";
 
 interface CustomNormsProps {

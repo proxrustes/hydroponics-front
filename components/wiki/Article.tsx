@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import { CustomContainer } from "../CustomContainer";
+import { CustomContainer } from "../common/CustomContainer";
 
 export function Article(props: {title: string, children: any}){
 

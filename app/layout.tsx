@@ -1,9 +1,9 @@
 "use client";
 
-import { Header } from "@/components/Header";
+import { Header } from "@/components/common/Header";
 import { Stack, ThemeProvider } from "@mui/material";
 import { lightTheme } from "@/styles/theme";
-import { Footer } from "@/components/Footer";
+import { Footer } from "@/components/common/Footer";
 
 export default function RootLayout({
   children,

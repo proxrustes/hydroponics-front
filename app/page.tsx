@@ -1,9 +1,8 @@
 "use client"
 
-import { FeatureCard } from "@/components/FeatureCard";
+import { FeatureCard } from "@/components/common/FeatureCard";
 import { Stack, Container, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest"
 
 export default function Home() {
   return (

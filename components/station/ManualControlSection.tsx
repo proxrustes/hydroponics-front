@@ -16,7 +16,7 @@ export function ManualControlSection() {
         ]}
         onApplySchedule={(schedule) => handleApplySchedule("Light", schedule)}
       />
-<Divider sx={{my:2}}/>
+      <Divider sx={{ my: 2 }} />
       <DeviceControl
         title="Fan"
         scheduleFields={[
@@ -26,7 +26,7 @@ export function ManualControlSection() {
         onApplySchedule={(schedule) => handleApplySchedule("Fan", schedule)}
       />
 
-<Divider sx={{my:2}}/>
+      <Divider sx={{ my: 2 }} />
       <DeviceControl
         title="Water Pump"
         scheduleFields={[

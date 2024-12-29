@@ -1,41 +1,49 @@
+import { ParameterProps } from "@/enums/Params";
 import { Box, CircularProgress, Typography } from "@mui/material";
 
-interface SemiCircleProgressProps {
-  value: string;
-  label: string;
-  warning?: boolean;
-  progress: number
-}
 
-export function SemiCircleProgress({ value, label, warning,progress }: SemiCircleProgressProps) {
+export function SemiCircleProgress(props: { param: ParameterProps}) {
+  const min = props.param.norm[0];
+  const max = props.param.norm[1];
+  const value = props.param.value;
+
+  let progress = ((value - min) / (max - min)) * 100;
+  let isOutOfRange = value < min || value > max;
+
+  if (value > max) {
+    progress = 100;
+  } else if (value < min) {
+    progress = 0;
+  }
+
   return (
     <Box display="flex" flexDirection="column" alignItems="center">
       <Box position="relative">
         <CircularProgress
           variant="determinate"
-          value={70} 
+          value={70}
           size={180}
           thickness={6}
           sx={{
             transform: `rotate(-215deg) !important`,
-            color: warning ? "#f98383" : "secondary.main", 
+            color: isOutOfRange ? "#f98383" : "secondary.main",
           }}
         />
-         <CircularProgress
+        <CircularProgress
           variant="determinate"
-          value={progress * 0.7} 
+          value={progress * 0.7}
           size={180}
           thickness={6}
           sx={{
-            position: "absolute", // Накладываем поверх базового круга
-      top: 0,
-      left: 0,
+            position: "absolute",
+            top: 0,
+            left: 0,
             transform: `rotate(-215deg) !important`,
-            color: warning ? "error.main" : "primary.main", 
+            color: isOutOfRange ? "error.main" : "primary.main",
           }}
         />
         <Typography
-          
+
           sx={{
             position: "absolute",
             top: "50%",
@@ -43,14 +51,17 @@ export function SemiCircleProgress({ value, label, warning,progress }: SemiCircl
             transform: "translate(-50%, -50%)",
             fontWeight: 800,
             fontSize: 24,
-            color: warning ? "error.main" : "primary.dark"
+            color: isOutOfRange ? "error.main" : "primary.dark"
           }}
         >
-          {value}
+          {value}{props.param.valueFormatter}
         </Typography>
       </Box>
-      <Typography variant="body2" fontWeight="bold" sx={{ mt: -6, maxWidth: 100, textAlign: "center", color: "primary.dark" }}>
-        {label}
+      <Typography fontWeight="bold" sx={{ mt: -8, textAlign: "center", fontSize: 32 }}>
+        {props.param.icon}
+      </Typography>
+      <Typography variant="body2" fontWeight="bold" sx={{ textAlign: "center", color: "primary.dark" }}>
+        {props.param.name}
       </Typography>
     </Box>
   );

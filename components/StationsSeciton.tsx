@@ -2,7 +2,7 @@ import Grid from "@mui/material/Grid2";
 import { ZoneItem } from "./Zone";
 import { Box, Divider, Stack, Typography } from "@mui/material";
 import { mockStations } from "@/enums/mock_data";
-import { CustomContainer } from "./CustomContainer";
+import { CustomContainer } from "./common/CustomContainer";
 import { Station } from "@/enums/StationParams";
 import { BucketParams } from "./BucketParams";
 export function StationsSection() {

@@ -25,3 +25,11 @@ export type StationParams = {
     solution_lvl: [number, number]
     light_intensity: [number, number]
   }
+
+export type ParameterProps = {
+    name: string;
+    value: number;
+    valueFormatter?: string;
+    norm: [number, number];
+    icon: string;
+  };

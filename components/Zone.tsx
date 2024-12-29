@@ -4,39 +4,20 @@ import Grid from "@mui/material/Grid2";
 import { Parameter } from "./Parameter";
 import SettingsIcon from '@mui/icons-material/Settings';
 import InsertChartIcon from '@mui/icons-material/InsertChart';
-
+import { parameterConfig } from "@/enums/parameterConfig";
 
 export function ZoneItem(props: { zone: Zone, stationId: number }) {
   const { zone, stationId } = props;
   const norms = props.zone.plant.norm;
-  const parameters = [
-    {
-      name: "Lights",
-      value: zone.isLightOn,
-      norm: norms.light_intensity,
-      icon: "🔆"
-    }, {
-      name: "Temperature",
-      value: zone.params.temperature,
-      norm: norms.temperature,
-      valueFormatter: "°C",
-      icon: "🌡️"
-    },
-    {
-      name: "Air Humidity",
-      value: zone.params.air_humidity,
-      norm: norms.air_humidity,
-      valueFormatter: "%",
-      icon: "💧"
-    },
-    {
-      name: "Substrate Humidity",
-      value: zone.params.substrate_humidity,
-      norm: norms.substrate_humidity,
-      valueFormatter: "%",
-      icon: "🪴"
-    },
-  ];
+  const parameters = ([
+    "temperature",
+    "air_humidity",
+    "substrate_humidity",
+  ] as const).map((key) => ({
+    ...parameterConfig[key],
+    value: zone.params[key],
+    norm: norms[key],
+  }));
 
   return (
     <Box sx={{ p: 2 }}>
@@ -58,7 +39,7 @@ export function ZoneItem(props: { zone: Zone, stationId: number }) {
 
       <Grid container spacing={2} sx={{ mt: 2 }}>
         {parameters.map((param, index) => (
-          <Grid size={6} key={index}>
+          <Grid size={4} key={index}>
             <Parameter
               name={param.name}
               value={param.value}

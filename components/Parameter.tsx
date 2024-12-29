@@ -1,13 +1,5 @@
+import { ParameterProps } from "@/enums/Params";
 import { Typography, Box, Tooltip, Stack } from "@mui/material";
-import { ReactNode } from "react";
-
-type ParameterProps = {
-  name: string;
-  value: number | boolean;
-  valueFormatter?: string;
-  norm: [number, number];
-  icon: ReactNode;
-};
 
 function isParamInRange(value: number, range: [number, number]): boolean {
   return value >= range[0] && value <= range[1];

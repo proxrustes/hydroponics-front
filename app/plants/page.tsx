@@ -6,7 +6,7 @@ import { PlantCard } from "@/components/plants/PlantCard";
 import { Plant, PlantGroup } from "@/enums/Plant";
 import Grid from "@mui/material/Grid2";
 import { initialPlantGroups } from "@/enums/mock_data";
-import { CustomContainer } from "@/components/CustomContainer";
+import { CustomContainer } from "@/components/common/CustomContainer";
 
 export default function PlantsPage() {
   return (

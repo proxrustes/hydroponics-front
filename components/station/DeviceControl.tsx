@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button, Stack, Typography, TextField, IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { CustomContainer } from "../CustomContainer";
+import { CustomContainer } from "../common/CustomContainer";
 
 interface DeviceControlProps {
   title: string;
