@@ -1,29 +1,43 @@
 import { useState } from "react";
-import { Button, Stack, Typography, TextField, ToggleButtonGroup, ToggleButton } from "@mui/material";
+import { Button, Stack, Typography, TextField, IconButton } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { CustomContainer } from "../CustomContainer";
 
 interface DeviceControlProps {
   title: string;
   scheduleFields: { label: string; type: string }[];
-  onApplySchedule: (schedule: Record<string, string>) => void;
+  onApplySchedule: (schedule: Record<string, string>[]) => void;
 }
 
-export function DeviceControl({
-  title,
-  scheduleFields,
-  onApplySchedule,
-}: DeviceControlProps) {
-  const [mode, setMode] = useState<"manual" | "automatic" | null>("automatic"); // Выбранный режим
-  const [isOn, setIsOn] = useState(false); // Устройство работает или нет
-  const [schedule, setSchedule] = useState<Record<string, string>>({}); // Текущее расписание
+export function DeviceControl({ title, scheduleFields, onApplySchedule }: DeviceControlProps) {
+  const [isOn, setIsOn] = useState(false);
+  const [schedule, setSchedule] = useState<Record<string, string>[]>([
+    Object.fromEntries(scheduleFields.map((field) => [field.label, ""])),
+  ]);
 
-  const handleScheduleChange = (field: string, value: string) => {
-    setSchedule((prev) => ({ ...prev, [field]: value }));
+  const handleScheduleChange = (index: number, field: string, value: string) => {
+    const updatedSchedule = [...schedule];
+    updatedSchedule[index][field] = value;
+    setSchedule(updatedSchedule);
+  };
+
+  const handleAddRow = () => {
+    setSchedule([
+      ...schedule,
+      Object.fromEntries(scheduleFields.map((field) => [field.label, ""])),
+    ]);
+  };
+
+  const handleRemoveRow = (index: number) => {
+    const updatedSchedule = [...schedule];
+    updatedSchedule.splice(index, 1);
+    setSchedule(updatedSchedule);
   };
 
   const handleApplySchedule = () => {
-    if (Object.values(schedule).some((value) => !value)) {
-      alert(`Please fill in all fields for ${title} schedule.`);
+    if (schedule.some((row) => Object.values(row).some((value) => !value))) {
+      alert("Please fill in all fields in the schedule.");
     } else {
       setIsOn(true);
       onApplySchedule(schedule);
@@ -34,83 +48,56 @@ export function DeviceControl({
     setIsOn(false);
   };
 
-  const handleModeChange = (event: React.MouseEvent<HTMLElement>, newMode: "manual" | "automatic" | null) => {
-    if (newMode !== null) {
-      setMode(newMode);
-      setIsOn(false); 
-    }
-  };
-
   return (
     <CustomContainer>
-      <Typography sx={{ textAlign: "center", fontWeight: 600 }}>
-        {title}
+      <Typography sx={{ fontWeight: 600, textAlign: "center" }}>
+        {title}: {isOn ? "On" : "Off"}
       </Typography>
-      <Typography>
-        Status:
-        <strong>
-          {isOn
-            ? mode === "manual"
-              ? " Manual (On)"
-              : " Automatic (On)"
-            : " Off"}
-        </strong>
-      </Typography>
-      <ToggleButtonGroup
-        value={mode}
-        exclusive
-        onChange={handleModeChange}
-        sx={{mb: 2 }}
-        fullWidth
-        size="small"
-      >
-        <ToggleButton value="automatic">Automatic</ToggleButton>
-        <ToggleButton value="manual">Manual</ToggleButton>
-      </ToggleButtonGroup>
-      {mode === "automatic" && (
-        <>
-          <Stack mt={2} spacing={1}>
+
+      <Stack spacing={2}>
+        <Typography sx={{ fontWeight: 600 }}>Schedule:</Typography>
+        {schedule.map((row, rowIndex) => (
+          <Stack key={rowIndex} direction="row" spacing={2} alignItems="center">
             {scheduleFields.map((field) => (
               <TextField
-                key={field.label}
+                key={`${rowIndex}-${field.label}`}
                 label={field.label}
                 type={field.type}
                 InputLabelProps={{ shrink: true }}
+                value={row[field.label] || ""}
+                onChange={(e) =>
+                  handleScheduleChange(rowIndex, field.label, e.target.value)
+                }
                 fullWidth
-                value={schedule[field.label] || ""}
-                onChange={(e) => handleScheduleChange(field.label, e.target.value)}
               />
             ))}
-          </Stack>
-          <Stack mt={2} direction="row" justifyContent="flex-end" gap={2}>
-            <Button variant="outlined" color="error" onClick={handleStop}>
-              Stop
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleApplySchedule}
+            <IconButton
+              color="error"
+              onClick={() => handleRemoveRow(rowIndex)}
+              disabled={schedule.length === 1}
             >
-              Apply Schedule
-            </Button>
+              <DeleteIcon />
+            </IconButton>
           </Stack>
-        </>
-      )}
-      {mode === "manual" && (
-        <Stack gap={1}>
-          <Button
-            variant="contained"
-            color="success"
-            fullWidth
-            onClick={() => setIsOn(true)}
-          >
-            Start
-          </Button>
-          <Button variant="outlined" fullWidth color="error" onClick={handleStop}>
-            Stop
-          </Button>
-        </Stack>
-      )}
+        ))}
+        <Button
+          startIcon={<AddIcon />}
+          variant="outlined"
+          onClick={handleAddRow}
+          fullWidth
+        >
+          Add Row
+        </Button>
+      </Stack>
+
+      <Stack mt={2} direction="row" justifyContent="flex-end" gap={2}>
+        <Button variant="outlined" color="error" onClick={handleStop}>
+          Stop
+        </Button>
+        <Button variant="contained" color="primary" onClick={handleApplySchedule}>
+          Save
+        </Button>
+      </Stack>
     </CustomContainer>
   );
 }

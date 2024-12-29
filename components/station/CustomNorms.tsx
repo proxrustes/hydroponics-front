@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { Stack, Typography, Switch, FormControlLabel, TextField, Button } from "@mui/material";
 import { CustomContainer } from "@/components/CustomContainer";
-import { PlantParamNorms } from "@/enums/Plant";
+import { ZoneParamNorms } from "@/enums/Params";
 
 interface CustomNormsProps {
-  initialParams: PlantParamNorms;
-  onSave?: (params: PlantParamNorms) => void;
+  initialParams: ZoneParamNorms;
+  onSave?: (params: ZoneParamNorms) => void;
   onReset?: () => void;
 }
 

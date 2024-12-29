@@ -1,50 +1,40 @@
-import { Stack, } from "@mui/material";
+import { Divider, Stack, } from "@mui/material";
 import { DeviceControl } from "./DeviceControl";
-import Grid from '@mui/material/Grid2';
+
 export function ManualControlSection() {
-  const handleApplySchedule = (device: string, schedule: Record<string, string>) => {
-    alert(`${device} schedule applied: ${JSON.stringify(schedule)}`);
+  const handleApplySchedule = (title: string, schedule: Record<string, string>[]) => {
+    console.log(`Schedule for ${title}:`, schedule);
   };
 
   return (
     <Stack>
-      <Grid container spacing={2}>
-        {/* Light Section */}
-        <Grid size={4}>
-          <DeviceControl
-            title="Light"
-            scheduleFields={[
-              { label: "Start Time", type: "time" },
-              { label: "End Time", type: "time" },
-            ]}
-            onApplySchedule={(schedule) => handleApplySchedule("Light", schedule)}
-          />
-        </Grid>
+      <DeviceControl
+        title="Light"
+        scheduleFields={[
+          { label: "Start Time", type: "time" },
+          { label: "End Time", type: "time" },
+        ]}
+        onApplySchedule={(schedule) => handleApplySchedule("Light", schedule)}
+      />
+<Divider sx={{my:2}}/>
+      <DeviceControl
+        title="Fan"
+        scheduleFields={[
+          { label: "Start Time", type: "time" },
+          { label: "End Time", type: "time" },
+        ]}
+        onApplySchedule={(schedule) => handleApplySchedule("Fan", schedule)}
+      />
 
-        {/* Fan Section */}
-        <Grid size={4}>
-          <DeviceControl
-            title="Fan"
-            scheduleFields={[
-              { label: "Start Time", type: "time" },
-              { label: "End Time", type: "time" },
-            ]}
-            onApplySchedule={(schedule) => handleApplySchedule("Fan", schedule)}
-          />
-        </Grid>
-
-        {/* Water Pump Section */}
-        <Grid size={4}>
-          <DeviceControl
-            title="Water Pump"
-            scheduleFields={[
-              { label: "Start Time", type: "time" },
-              { label: "Liters to Pump", type: "number" },
-            ]}
-            onApplySchedule={(schedule) => handleApplySchedule("Water Pump", schedule)}
-          />
-        </Grid>
-      </Grid>
+<Divider sx={{my:2}}/>
+      <DeviceControl
+        title="Water Pump"
+        scheduleFields={[
+          { label: "Start Time", type: "time" },
+          { label: "Liters to Pump", type: "number" },
+        ]}
+        onApplySchedule={(schedule) => handleApplySchedule("Water Pump", schedule)}
+      />
     </Stack>
   );
 }

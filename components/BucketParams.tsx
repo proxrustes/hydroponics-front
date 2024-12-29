@@ -1,15 +1,25 @@
-import { StationParams } from "@/enums/StationParams";
 import Grid from "@mui/material/Grid2";
 import { Parameter } from "./Parameter";
+import { StationParams } from "@/enums/Params";
+
+type Parameter = {
+  name: string; 
+  value: number;
+  norm: [number, number]; 
+  valueFormatter?: string; 
+  icon: string; 
+};
+
 
 export function BucketParams(props: {stationParams: StationParams}){
-    const parameters  = [
+    const parameters: Parameter[]  = [
         {
           name: "ph_level",
           value: props.stationParams.ph_level,
           norm: [0, 100],
           icon: "🧪"
-        }, {
+        },
+        {
           name: "solution_lvl",
           value: props.stationParams.solution_lvl,
           norm: [0, 100],
@@ -41,7 +51,6 @@ export function BucketParams(props: {stationParams: StationParams}){
               norm={param.norm}
               icon={param.icon}
               valueFormatter={param.valueFormatter}
-              variant="small"
             />
           </Grid>
         ))}

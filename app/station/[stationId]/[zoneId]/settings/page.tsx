@@ -10,7 +10,7 @@ import { initialPlantGroups, mockStations } from "@/enums/mock_data";
 import Grid from "@mui/material/Grid2";
 import { CustomNorms } from "@/components/station/CustomNorms";
 
-export default function Page({ params }: { params: { stationId: string; zoneId: string } }) {
+export default function Page({ params }: { params: Promise<{ stationId: string; zoneId: string }> }) {
   const [zone, setZone] = useState<Zone>();
 
   useEffect(() => {
