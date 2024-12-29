@@ -1,4 +1,4 @@
-import { StationParams, ZoneParams } from "./Params";
+import { ParameterProps, StationParams, ZoneParams } from "./Params";
 
 type ParameterConfig = {
     [key in "temperature" | "air_humidity" | "substrate_humidity" | "ph_level" | "solution_lvl" | "nutrient_concentration" | "solution_temperature"]: {
@@ -45,3 +45,17 @@ export const parameterConfig: ParameterConfig = {
         icon: "〰️",
     },
 };
+
+export function createParameters<T>(
+    keys: readonly string[],
+    parameterConfig: Record<string, Omit<ParameterProps, "value" | "norm">>,
+    params: Record<string, number>,
+    norm: Record<string, [number, number]> | [number, number]
+  ): ParameterProps[] {
+    return keys.map((key) => ({
+      ...parameterConfig[key],
+      value: params[key],
+      norm: Array.isArray(norm) ? norm : norm[key],
+    }));
+  }
+  

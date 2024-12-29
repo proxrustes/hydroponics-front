@@ -1,5 +1,5 @@
 import { Divider, Stack, } from "@mui/material";
-import { DeviceControl } from "./DeviceControl";
+import { DeviceController } from "./DeviceController";
 
 export function ManualControlSection() {
   const handleApplySchedule = (title: string, schedule: Record<string, string>[]) => {
@@ -8,7 +8,7 @@ export function ManualControlSection() {
 
   return (
     <Stack>
-      <DeviceControl
+      <DeviceController
         title="Light"
         scheduleFields={[
           { label: "Start Time", type: "time" },
@@ -17,7 +17,7 @@ export function ManualControlSection() {
         onApplySchedule={(schedule) => handleApplySchedule("Light", schedule)}
       />
       <Divider sx={{ my: 2 }} />
-      <DeviceControl
+      <DeviceController
         title="Fan"
         scheduleFields={[
           { label: "Start Time", type: "time" },
@@ -27,7 +27,7 @@ export function ManualControlSection() {
       />
 
       <Divider sx={{ my: 2 }} />
-      <DeviceControl
+      <DeviceController
         title="Water Pump"
         scheduleFields={[
           { label: "Start Time", type: "time" },

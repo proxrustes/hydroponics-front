@@ -9,7 +9,7 @@ interface CustomNormsProps {
   onReset?: () => void;
 }
 
-export function CustomNorms({ initialParams, onSave, onReset }: CustomNormsProps) {
+export function CustomNormsSection({ initialParams, onSave, onReset }: CustomNormsProps) {
   const [isCustom, setIsCustom] = useState(true);
   const [customParams, setCustomParams] = useState(initialParams);
 

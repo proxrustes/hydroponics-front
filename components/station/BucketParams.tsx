@@ -1,7 +1,7 @@
 import Grid from "@mui/material/Grid2";
-import { Parameter } from "./Parameter";
+import { Parameter } from "../zone/Parameter";
 import { ParameterProps, StationParams } from "@/enums/Params";
-import { parameterConfig } from "@/enums/parameterConfig";
+import { createParameters, parameterConfig } from "@/enums/parameterConfig";
 
 type Parameter = {
   name: string; 
@@ -13,16 +13,12 @@ type Parameter = {
 
 
 export function BucketParams(props: {stationParams: StationParams}){
-  const parameters: ParameterProps[] = ([
-    "ph_level",
-    "solution_lvl",
-    "solution_temperature",
-    "nutrient_concentration"
-  ] as const).map((key) => ({
-    ...parameterConfig[key],
-    value: props.stationParams[key],
-    norm: [0, 100],
-  }));
+  const parameters = createParameters(
+    ["ph_level", "solution_lvl", "solution_temperature", "nutrient_concentration"],
+    parameterConfig,
+    props.stationParams,
+    [0, 100]
+  );
 
       return( <Grid container spacing={2} sx={{ mt: 2 }}>
         {parameters.map((param, index) => (

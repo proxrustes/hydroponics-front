@@ -4,20 +4,17 @@ import Grid from "@mui/material/Grid2";
 import { Parameter } from "./Parameter";
 import SettingsIcon from '@mui/icons-material/Settings';
 import InsertChartIcon from '@mui/icons-material/InsertChart';
-import { parameterConfig } from "@/enums/parameterConfig";
+import { createParameters, parameterConfig } from "@/enums/parameterConfig";
 
 export function ZoneItem(props: { zone: Zone, stationId: number }) {
   const { zone, stationId } = props;
   const norms = props.zone.plant.norm;
-  const parameters = ([
-    "temperature",
-    "air_humidity",
-    "substrate_humidity",
-  ] as const).map((key) => ({
-    ...parameterConfig[key],
-    value: zone.params[key],
-    norm: norms[key],
-  }));
+  const parameters = createParameters(
+    ["air_humidity", "temperature", "substrate_humidity"],
+    parameterConfig,
+    props.zone.params,
+    norms
+  );
 
   return (
     <Box sx={{ p: 2 }}>

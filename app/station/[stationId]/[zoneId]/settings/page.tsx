@@ -1,14 +1,14 @@
 "use client";
 import { Container, Typography, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
-import { ParamsSection } from "@/components/station/ParamsSection";
-import { ManualControlSection } from "@/components/station/ManualControlSection";
+import { ParamsSection } from "@/components/zone/ParamsSection";
+import { ManualControlSection } from "@/components/zone/ManualControlSection";
 import { Zone } from "@/enums/StationParams";
 import { CustomContainer } from "@/components/common/CustomContainer";
 import { Loader } from "@/components/common/Loader";
 import { initialPlantGroups, mockStations } from "@/enums/mock_data";
 import Grid from "@mui/material/Grid2";
-import { CustomNorms } from "@/components/station/CustomNorms";
+import { CustomNormsSection } from "@/components/zone/CustomNormsSection";
 
 export default function Page({ params }: { params: Promise<{ stationId: string; zoneId: string }> }) {
   const [zone, setZone] = useState<Zone>();
@@ -77,7 +77,7 @@ export default function Page({ params }: { params: Promise<{ stationId: string; 
             <ParamsSection zone={zone} />
           </Grid>
           <Grid size={4}>
-          <CustomNorms
+          <CustomNormsSection
           initialParams={{
             temperature: zone.plant.norm.temperature,
             substrate_humidity: zone.plant.norm.substrate_humidity,

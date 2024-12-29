@@ -10,7 +10,7 @@ interface DeviceControlProps {
   onApplySchedule: (schedule: Record<string, string>[]) => void;
 }
 
-export function DeviceControl({ title, scheduleFields, onApplySchedule }: DeviceControlProps) {
+export function DeviceController({ title, scheduleFields, onApplySchedule }: DeviceControlProps) {
   const [isOn, setIsOn] = useState(false);
   const [schedule, setSchedule] = useState<Record<string, string>[]>([
     Object.fromEntries(scheduleFields.map((field) => [field.label, ""])),

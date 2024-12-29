@@ -1,6 +1,6 @@
 "use client"
 
-import { StationsSection } from "@/components/StationsSeciton";
+import { StationsSection } from "@/components/station/StationsSeciton";
 import { Container } from "@mui/material";
 
 export default function Page() {
