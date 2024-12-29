@@ -17,10 +17,8 @@ const commonThemeOptions = {
   const BASE_PALETTE = {
     mode: "light",
     text: {
-      primary: "#cad2c5",
-      light: "#cad2c5",
-      light2: "#cad2c5",
-      secondary: "#cad2c5"
+      primary: "#354f52",
+      secondary: "#50786e"
     },
     success: {
       main: "#66bb6a",

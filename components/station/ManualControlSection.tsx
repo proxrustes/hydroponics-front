@@ -1,55 +1,50 @@
-import { Box, Button, Stack, Typography } from "@mui/material";
-import LightbulbIcon from "@mui/icons-material/Lightbulb";
-import AirIcon from "@mui/icons-material/Air";
-import WaterPumpIcon from "@mui/icons-material/Opacity";
-import Grid2 from "@mui/material/Grid2";
-import { ControlItem } from "./ControlItem";
-import { CustomContainer } from "../CustomContainer";
+import { Stack, Box, Grid, Button } from "@mui/material";
+import { DeviceControl } from "./DeviceControl";
 
 export function ManualControlSection() {
+  const handleApplySchedule = (device: string, schedule: Record<string, string>) => {
+    alert(`${device} schedule applied: ${JSON.stringify(schedule)}`);
+  };
+
   return (
     <Stack>
-      <Grid2 container spacing={2}>
-        <Grid2 size={4}>
-          <CustomContainer>
-            <Typography sx={{ textAlign: "center", fontWeight: 600 }}>Light</Typography>
-            <ControlItem
-              defaultSliderValue={40000}
-              min={0}
-              max={100000}
-              valueFormatter="Lux"
-            />
-          </CustomContainer>
-        </Grid2>
-        <Grid2
-          size={4}
-        >
-          <CustomContainer>
-            <Typography sx={{ textAlign: "center", fontWeight: 600 }}>Fan</Typography>
-            <ControlItem
-              defaultSliderValue={50}
-              valueFormatter="%"
-            />
-          </CustomContainer>
-        </Grid2>
-        <Grid2
-          size={4}
-        >
-          <CustomContainer>
-            <Typography sx={{ textAlign: "center", fontWeight: 600 }}>Water Pump</Typography>
-            <ControlItem
-              defaultSliderValue={50}
-              valueFormatter="%"
-            />
-          </CustomContainer>
-        </Grid2>
-      </Grid2>
+      <Grid container spacing={2}>
+        {/* Light Section */}
+        <Grid item xs={4}>
+          <DeviceControl
+            title="Light"
+            scheduleFields={[
+              { label: "Start Time", type: "time" },
+              { label: "End Time", type: "time" },
+            ]}
+            onApplySchedule={(schedule) => handleApplySchedule("Light", schedule)}
+          />
+        </Grid>
 
-      <Box mt={4}>
-        <Button variant="contained" color="primary" fullWidth sx={{ fontSize: 22 }}>
-          Apply Settings
-        </Button>
-      </Box>
+        {/* Fan Section */}
+        <Grid item xs={4}>
+          <DeviceControl
+            title="Fan"
+            scheduleFields={[
+              { label: "Start Time", type: "time" },
+              { label: "End Time", type: "time" },
+            ]}
+            onApplySchedule={(schedule) => handleApplySchedule("Fan", schedule)}
+          />
+        </Grid>
+
+        {/* Water Pump Section */}
+        <Grid item xs={4}>
+          <DeviceControl
+            title="Water Pump"
+            scheduleFields={[
+              { label: "Start Time", type: "time" },
+              { label: "Liters to Pump", type: "number" },
+            ]}
+            onApplySchedule={(schedule) => handleApplySchedule("Water Pump", schedule)}
+          />
+        </Grid>
+      </Grid>
     </Stack>
   );
 }
