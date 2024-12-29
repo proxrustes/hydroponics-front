@@ -31,13 +31,13 @@ export function DeviceControl({
   };
 
   const handleStop = () => {
-    setIsOn(false); // Остановить устройство
+    setIsOn(false);
   };
 
   const handleModeChange = (event: React.MouseEvent<HTMLElement>, newMode: "manual" | "automatic" | null) => {
     if (newMode !== null) {
       setMode(newMode);
-      setIsOn(false); // Остановить устройство при смене режима
+      setIsOn(false); 
     }
   };
 
@@ -46,7 +46,7 @@ export function DeviceControl({
       <Typography sx={{ textAlign: "center", fontWeight: 600 }}>
         {title}
       </Typography>
-      <Typography  sx={{ textAlign: "center"}}>
+      <Typography>
         Status:
         <strong>
           {isOn
@@ -60,7 +60,7 @@ export function DeviceControl({
         value={mode}
         exclusive
         onChange={handleModeChange}
-        sx={{ mt: 2, mb: 2 }}
+        sx={{mb: 2 }}
         fullWidth
         size="small"
       >
@@ -82,7 +82,10 @@ export function DeviceControl({
               />
             ))}
           </Stack>
-          <Stack mt={2} direction="row" gap={2}>
+          <Stack mt={2} direction="row" justifyContent="flex-end" gap={2}>
+            <Button variant="outlined" color="error" onClick={handleStop}>
+              Stop
+            </Button>
             <Button
               variant="contained"
               color="primary"
@@ -90,22 +93,20 @@ export function DeviceControl({
             >
               Apply Schedule
             </Button>
-            <Button variant="contained" color="error" onClick={handleStop}>
-              Stop
-            </Button>
           </Stack>
         </>
       )}
       {mode === "manual" && (
-        <Stack mt={2} direction="row" gap={2}>
+        <Stack gap={1}>
           <Button
             variant="contained"
             color="success"
+            fullWidth
             onClick={() => setIsOn(true)}
           >
             Start
           </Button>
-          <Button variant="contained" color="error" onClick={handleStop}>
+          <Button variant="outlined" fullWidth color="error" onClick={handleStop}>
             Stop
           </Button>
         </Stack>

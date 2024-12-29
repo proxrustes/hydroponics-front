@@ -1,36 +1,72 @@
 "use client";
-import { Container, Typography, Stack, ButtonBase, Switch, FormControlLabel } from "@mui/material";
-import YardIcon from "@mui/icons-material/Yard";
+import { Container, Typography, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import { ParamsSection } from "@/components/station/ParamsSection";
 import { ManualControlSection } from "@/components/station/ManualControlSection";
 import { Zone } from "@/enums/StationParams";
 import { CustomContainer } from "@/components/CustomContainer";
 import { Loader } from "@/components/Loader";
-import { mockStations } from "@/enums/mock_data";
+import { initialPlantGroups, mockStations } from "@/enums/mock_data";
 import Grid from "@mui/material/Grid2";
+import { CustomNorms } from "@/components/station/CustomNorms";
 
-export default function Page({ params }: { params: { stationId: string, zoneId: string } }) {
-  const [isCustom, setIsCustom] = useState(true);
+export default function Page({ params }: { params: { stationId: string; zoneId: string } }) {
   const [zone, setZone] = useState<Zone>();
 
   useEffect(() => {
     async function fetchZone() {
-      const resolvedParams = await params; // Await the params Promise
+      const resolvedParams = await params;
       const stationData = mockStations[Number(resolvedParams.stationId)].zones[Number(resolvedParams.zoneId)];
       setZone(stationData);
     }
     fetchZone();
   }, [params]);
 
+  const handleSaveCustomNorms = (customParams: {
+    temperature: [number, number];
+    substrate_humidity: [number, number];
+    air_humidity: [number, number];
+  }) => {
+    if (zone) {
+      setZone({
+        ...zone,
+        plant: {
+          ...zone.plant,
+          norm: { ...zone.plant.norm, ...customParams },
+        },
+      });
+    }
+  };
 
+  const resetToStandard = () => {
+    if (zone) {
+      const standardPlant = initialPlantGroups
+        .flatMap((group) => group.plants)
+        .find((plant) => plant.name === zone.plant.name);
+
+      if (standardPlant) {
+        setZone({
+          ...zone,
+          plant: {
+            ...zone.plant,
+            norm: {
+              ...zone.plant.norm,
+              temperature: standardPlant.norm.temperature,
+              substrate_humidity: standardPlant.norm.substrate_humidity,
+              air_humidity: standardPlant.norm.air_humidity,
+            },
+          },
+        });
+      }
+    }
+  };
   if (!zone) {
     return <Loader sx={{ mt: "30vh" }} />;
   }
 
   return (
     <Container maxWidth="xl">
-      <Stack gap={2} >
+      <Stack gap={2}>
         <CustomContainer sx={{ flexDirection: "row", width: "100%", justifyContent: "space-between" }}>
           <Typography variant="h3" sx={{ fontWeight: 900 }}>
             🪴{zone.plant.name}
@@ -41,23 +77,15 @@ export default function Page({ params }: { params: { stationId: string, zoneId: 
             <ParamsSection zone={zone} />
           </Grid>
           <Grid size={4}>
-            <CustomContainer>
-              <Stack direction="row" justifyContent="space-between">
-                <Typography sx={{
-                  fontWeight: 800, fontSize: 24, textAlign: "center"
-                }}>Custom Norms</Typography>
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={isCustom}
-                      onChange={() => setIsCustom((isCustom) => !isCustom)}
-                      inputProps={{ 'aria-label': 'controlled' }}
-                    />
-                  }
-                  label={isCustom ? "ON" : "OFF"}
-                />
-              </Stack>
-            </CustomContainer>
+          <CustomNorms
+          initialParams={{
+            temperature: zone.plant.norm.temperature,
+            substrate_humidity: zone.plant.norm.substrate_humidity,
+            air_humidity: zone.plant.norm.air_humidity,
+          }}
+          onSave={handleSaveCustomNorms}
+          onReset={resetToStandard}
+        />
           </Grid>
         </Grid>
         <ManualControlSection />

@@ -1,6 +1,6 @@
-import { Stack, Box, Grid, Button } from "@mui/material";
+import { Stack, } from "@mui/material";
 import { DeviceControl } from "./DeviceControl";
-
+import Grid from '@mui/material/Grid2';
 export function ManualControlSection() {
   const handleApplySchedule = (device: string, schedule: Record<string, string>) => {
     alert(`${device} schedule applied: ${JSON.stringify(schedule)}`);
@@ -10,7 +10,7 @@ export function ManualControlSection() {
     <Stack>
       <Grid container spacing={2}>
         {/* Light Section */}
-        <Grid item xs={4}>
+        <Grid size={4}>
           <DeviceControl
             title="Light"
             scheduleFields={[
@@ -22,7 +22,7 @@ export function ManualControlSection() {
         </Grid>
 
         {/* Fan Section */}
-        <Grid item xs={4}>
+        <Grid size={4}>
           <DeviceControl
             title="Fan"
             scheduleFields={[
@@ -34,7 +34,7 @@ export function ManualControlSection() {
         </Grid>
 
         {/* Water Pump Section */}
-        <Grid item xs={4}>
+        <Grid size={4}>
           <DeviceControl
             title="Water Pump"
             scheduleFields={[

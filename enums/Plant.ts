@@ -11,6 +11,12 @@ export type PlantParams = {
   substrate_humidity: number;
 };
 
+export type PlantParamNorms = {
+  temperature: [number, number];
+  air_humidity: [number, number];
+  substrate_humidity: [number, number];
+};
+
 export type NormalParams = {
   ph_level: [number, number];
   temperature: [number, number];
