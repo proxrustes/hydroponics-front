@@ -33,6 +33,7 @@ const commonThemeOptions = {
       contrastText: "#fff"
     }
   } as PaletteOptions
+  
   export const lightTheme = createTheme({
     palette: {
       primary: {

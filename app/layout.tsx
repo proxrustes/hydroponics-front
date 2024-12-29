@@ -1,26 +1,15 @@
-"use client";
+import { ThemeWrapper } from "@/components/ThemeWrapper";
 
-import { Header } from "@/components/common/Header";
-import { Stack, ThemeProvider } from "@mui/material";
-import { lightTheme } from "@/styles/theme";
-import { Footer } from "@/components/common/Footer";
+export const metadata = {
+  title: "HydroStations",
+  description: "Catenion tool for data browsing",
+};
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body style={{margin:0, backgroundColor:"#cad2c5"}}>
-        <ThemeProvider theme={lightTheme}>
-          <Stack sx={{minHeight:"90vh"}}>
-            <Header />
-            {children}
-          </Stack>
-
-          <Footer />
-        </ThemeProvider>
+      <body style={{ margin: 0, backgroundColor: "#cad2c5" }}>
+        <ThemeWrapper>{children}</ThemeWrapper>
       </body>
     </html>
   );

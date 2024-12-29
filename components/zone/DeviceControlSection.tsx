@@ -1,7 +1,7 @@
 import { Divider, Stack, } from "@mui/material";
 import { DeviceController } from "./DeviceController";
 
-export function ManualControlSection() {
+export function DeviceControlSection() {
   const handleApplySchedule = (title: string, schedule: Record<string, string>[]) => {
     console.log(`Schedule for ${title}:`, schedule);
   };

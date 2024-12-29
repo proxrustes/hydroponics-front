@@ -15,11 +15,19 @@ export function DeviceController({ title, scheduleFields, onApplySchedule }: Dev
   const [schedule, setSchedule] = useState<Record<string, string>[]>([
     Object.fromEntries(scheduleFields.map((field) => [field.label, ""])),
   ]);
+  const [errors, setErrors] = useState<boolean[][]>(
+    schedule.map(() => scheduleFields.map(() => false))
+  );
 
   const handleScheduleChange = (index: number, field: string, value: string) => {
     const updatedSchedule = [...schedule];
     updatedSchedule[index][field] = value;
     setSchedule(updatedSchedule);
+
+    // Clear errors when the field is filled
+    const updatedErrors = [...errors];
+    updatedErrors[index][scheduleFields.findIndex((f) => f.label === field)] = !value;
+    setErrors(updatedErrors);
   };
 
   const handleAddRow = () => {
@@ -27,16 +35,26 @@ export function DeviceController({ title, scheduleFields, onApplySchedule }: Dev
       ...schedule,
       Object.fromEntries(scheduleFields.map((field) => [field.label, ""])),
     ]);
+    setErrors([...errors, scheduleFields.map(() => false)]);
   };
 
   const handleRemoveRow = (index: number) => {
     const updatedSchedule = [...schedule];
     updatedSchedule.splice(index, 1);
     setSchedule(updatedSchedule);
+
+    const updatedErrors = [...errors];
+    updatedErrors.splice(index, 1);
+    setErrors(updatedErrors);
   };
 
   const handleApplySchedule = () => {
-    if (schedule.some((row) => Object.values(row).some((value) => !value))) {
+    const newErrors = schedule.map((row) =>
+      scheduleFields.map((field) => !row[field.label])
+    );
+
+    if (newErrors.some((rowErrors) => rowErrors.some((error) => error))) {
+      setErrors(newErrors);
       alert("Please fill in all fields in the schedule.");
     } else {
       setIsOn(true);
@@ -58,7 +76,7 @@ export function DeviceController({ title, scheduleFields, onApplySchedule }: Dev
         <Typography sx={{ fontWeight: 600 }}>Schedule:</Typography>
         {schedule.map((row, rowIndex) => (
           <Stack key={rowIndex} direction="row" spacing={2} alignItems="center">
-            {scheduleFields.map((field) => (
+            {scheduleFields.map((field, fieldIndex) => (
               <TextField
                 key={`${rowIndex}-${field.label}`}
                 label={field.label}
@@ -69,6 +87,8 @@ export function DeviceController({ title, scheduleFields, onApplySchedule }: Dev
                   handleScheduleChange(rowIndex, field.label, e.target.value)
                 }
                 fullWidth
+                error={errors[rowIndex]?.[fieldIndex] || false}
+                helperText={errors[rowIndex]?.[fieldIndex] ? "This field is required" : ""}
               />
             ))}
             <IconButton

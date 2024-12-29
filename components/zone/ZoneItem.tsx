@@ -1,10 +1,10 @@
-import { Zone } from "@/enums/StationParams";
+import { Zone } from "@/enums/types/Zone";
 import { Box, ButtonGroup, Divider, IconButton, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { Parameter } from "./Parameter";
 import SettingsIcon from '@mui/icons-material/Settings';
 import InsertChartIcon from '@mui/icons-material/InsertChart';
-import { createParameters, parameterConfig } from "@/enums/parameterConfig";
+import { createParameters, parameterConfig } from "@/lib/parameterConfig";
 
 export function ZoneItem(props: { zone: Zone, stationId: number }) {
   const { zone, stationId } = props;

@@ -1,4 +1,4 @@
-import { Plant } from "@/enums/Plant";
+import { Plant } from "@/enums/types/Plant";
 import {
   Typography,
   Grid2,

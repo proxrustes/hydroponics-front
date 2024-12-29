@@ -1,7 +1,7 @@
 import Grid from "@mui/material/Grid2";
 import { Parameter } from "../zone/Parameter";
-import { ParameterProps, StationParams } from "@/enums/Params";
-import { createParameters, parameterConfig } from "@/enums/parameterConfig";
+import { ParameterProps, StationParams } from "@/enums/types/Params";
+import { createParameters, parameterConfig } from "@/lib/parameterConfig";
 
 type Parameter = {
   name: string; 

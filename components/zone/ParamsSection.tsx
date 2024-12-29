@@ -1,8 +1,8 @@
-import { Zone } from "@/enums/StationParams";
+import { Zone } from "@/enums/types/Zone";
 import { Stack } from "@mui/material";
 import { CustomContainer } from "../common/CustomContainer";
 import { SemiCircleProgress } from "../common/SemiCircleProgress";
-import { createParameters, parameterConfig } from "@/enums/parameterConfig";
+import { createParameters, parameterConfig } from "@/lib/parameterConfig";
 
 export function ParamsSection(props: { zone: Zone }) {
   const norms = props.zone.plant.norm;

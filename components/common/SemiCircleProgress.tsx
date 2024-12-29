@@ -1,4 +1,4 @@
-import { ParameterProps } from "@/enums/Params";
+import { ParameterProps } from "@/enums/types/Params";
 import { Box, CircularProgress, Typography } from "@mui/material";
 
 

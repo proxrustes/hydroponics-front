@@ -1,5 +1,5 @@
-import { PlantGroup } from "./Plant";
-import { Station, Zone } from "./StationParams";
+import { PlantGroup } from "./types/Plant";
+import { Station, Zone } from "./types/Station";
 
 export const initialPlantGroups: PlantGroup[] = [
   {

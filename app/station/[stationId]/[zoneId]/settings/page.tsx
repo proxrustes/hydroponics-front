@@ -1,14 +1,15 @@
 "use client";
-import { Container, Typography, Stack } from "@mui/material";
+import { Container, Typography, Stack, IconButton } from "@mui/material";
 import { useEffect, useState } from "react";
 import { ParamsSection } from "@/components/zone/ParamsSection";
-import { ManualControlSection } from "@/components/zone/ManualControlSection";
-import { Zone } from "@/enums/StationParams";
+import { DeviceControlSection } from "@/components/zone/DeviceControlSection";
+import { Zone } from "@/enums/types/Zone";
 import { CustomContainer } from "@/components/common/CustomContainer";
 import { Loader } from "@/components/common/Loader";
-import { initialPlantGroups, mockStations } from "@/enums/mock_data";
 import Grid from "@mui/material/Grid2";
 import { CustomNormsSection } from "@/components/zone/CustomNormsSection";
+import { mockStations } from "@/lib/mock_data";
+import InfoIcon from '@mui/icons-material/Info';
 
 export default function Page({ params }: { params: Promise<{ stationId: string; zoneId: string }> }) {
   const [zone, setZone] = useState<Zone>();
@@ -38,28 +39,6 @@ export default function Page({ params }: { params: Promise<{ stationId: string; 
     }
   };
 
-  const resetToStandard = () => {
-    if (zone) {
-      const standardPlant = initialPlantGroups
-        .flatMap((group) => group.plants)
-        .find((plant) => plant.name === zone.plant.name);
-
-      if (standardPlant) {
-        setZone({
-          ...zone,
-          plant: {
-            ...zone.plant,
-            norm: {
-              ...zone.plant.norm,
-              temperature: standardPlant.norm.temperature,
-              substrate_humidity: standardPlant.norm.substrate_humidity,
-              air_humidity: standardPlant.norm.air_humidity,
-            },
-          },
-        });
-      }
-    }
-  };
   if (!zone) {
     return <Loader sx={{ mt: "30vh" }} />;
   }
@@ -67,10 +46,11 @@ export default function Page({ params }: { params: Promise<{ stationId: string; 
   return (
     <Container maxWidth="xl">
       <Stack gap={2}>
-        <CustomContainer sx={{ flexDirection: "row", width: "100%", justifyContent: "space-between" }}>
+        <CustomContainer sx={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Typography variant="h3" sx={{ fontWeight: 900 }}>
             🪴{zone.plant.name}
           </Typography>
+         <IconButton href={`/plants/${zone.plant.id}`}><InfoIcon sx={{fontSize: 36}}/></IconButton>
         </CustomContainer>
         <Grid container spacing={2}>
           <Grid size={8}>
@@ -84,11 +64,11 @@ export default function Page({ params }: { params: Promise<{ stationId: string; 
             air_humidity: zone.plant.norm.air_humidity,
           }}
           onSave={handleSaveCustomNorms}
-          onReset={resetToStandard}
         />
           </Grid>
         </Grid>
-        <ManualControlSection />
+        <Typography sx={{color:"white"}}>Device Control</Typography>
+        <DeviceControlSection />
       </Stack>
     </Container>
   );

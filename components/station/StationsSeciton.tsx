@@ -1,6 +1,6 @@
 import { Stack } from "@mui/material";
-import { mockStations } from "@/enums/mock_data";
 import { StationItem } from "./StationItem";
+import { mockStations } from "@/lib/mock_data";
 
 export function StationsSection() {
   return (

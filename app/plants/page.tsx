@@ -3,10 +3,10 @@
 import { useState } from "react";
 import { Box, Button, Container, Stack, TextField, Typography } from "@mui/material";
 import { PlantCard } from "@/components/plants/PlantCard";
-import { Plant, PlantGroup } from "@/enums/Plant";
+import { Plant, PlantGroup } from "@/enums/types/Plant";
 import Grid from "@mui/material/Grid2";
-import { initialPlantGroups } from "@/enums/mock_data";
 import { CustomContainer } from "@/components/common/CustomContainer";
+import { initialPlantGroups } from "@/lib/mock_data";
 
 export default function PlantsPage() {
   return (

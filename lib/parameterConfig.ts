@@ -1,7 +1,9 @@
-import { ParameterProps, StationParams, ZoneParams } from "./Params";
+import { ParameterProps } from "../enums/types/Params";
 
 type ParameterConfig = {
-    [key in "temperature" | "air_humidity" | "substrate_humidity" | "ph_level" | "solution_lvl" | "nutrient_concentration" | "solution_temperature"]: {
+    [key in "temperature" | "air_humidity" |
+    "substrate_humidity" | "ph_level" | "solution_lvl" 
+    | "nutrient_concentration"| "solution_temperature"]: {
         name: string;
         valueFormatter?: string;
         icon: string;
@@ -51,11 +53,10 @@ export function createParameters<T>(
     parameterConfig: Record<string, Omit<ParameterProps, "value" | "norm">>,
     params: Record<string, number>,
     norm: Record<string, [number, number]> | [number, number]
-  ): ParameterProps[] {
+): ParameterProps[] {
     return keys.map((key) => ({
-      ...parameterConfig[key],
-      value: params[key],
-      norm: Array.isArray(norm) ? norm : norm[key],
+        ...parameterConfig[key],
+        value: params[key],
+        norm: Array.isArray(norm) ? norm : norm[key],
     }));
-  }
-  
+}

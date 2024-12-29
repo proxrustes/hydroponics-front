@@ -1,6 +1,6 @@
 import Grid from "@mui/material/Grid2";
 import { Box, Divider, Stack, Typography } from "@mui/material";
-import { Station } from "@/enums/StationParams";
+import { Station } from "@/enums/types/Station";
 import { BucketParams } from "./BucketParams";
 import { CustomContainer } from "../common/CustomContainer";
 import { ZoneItem } from "../zone/ZoneItem";
