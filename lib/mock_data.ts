@@ -1,5 +1,7 @@
-import { PlantGroup } from "./types/Plant";
-import { Station, Zone } from "./types/Station";
+import { PlantGroup } from "@/enums/types/Plant";
+import { Station } from "@/enums/types/Station";
+import { Zone } from "@/enums/types/Zone";
+
 
 export const initialPlantGroups: PlantGroup[] = [
   {
@@ -168,7 +170,7 @@ const mockZones: Zone[] = [
 
 export const mockStations: Station[] = [{
   id: 0,
-  name: "то шо в підвалі",
+  name: "тa шо в підвалі",
   zones: mockZones,
   station_params: {
     ph_level: 8,
