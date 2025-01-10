@@ -18,7 +18,7 @@ export function StationItem(props: {station: Station}) {
         <Grid container spacing={2}>
           {props.station.zones.map((zone) => (
             <Grid key={zone.id} size={12}>
-              <ZoneItem zone={zone} stationId={props.station.id}/>
+              <ZoneItem zoneId={zone.id}/>
             </Grid>
           ))}
         </Grid>

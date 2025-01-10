@@ -131,7 +131,7 @@ export const initialPlantGroups: PlantGroup[] = [
   },
 ];
 
-const mockZones: Zone[] = [
+export const mockZones: Zone[] = [
   {
     id: 0,
     name: "Zone 1",
