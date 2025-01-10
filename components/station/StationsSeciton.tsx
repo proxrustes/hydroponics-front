@@ -3,6 +3,7 @@ import { Stack } from "@mui/material";
 import { StationItem } from "./StationItem";
 import { useEffect, useState } from "react";
 import { Station } from "@/enums/types/Station";
+import { customFetch } from "@/lib/apiUtils";
 
 export function StationsSection() {
   const [stations, setStations] = useState<Station[]>([])
@@ -10,14 +11,10 @@ export function StationsSection() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await (await fetch(`/api/stations`, {
-          cache: "no-store",
-          next: { revalidate: 0 },
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json"
-          },
-        })).json()
+        const response = await customFetch(
+          `stations`,
+          "GET"
+        )
         if (response.status === 200) {
           setStations(response.message)
         }
@@ -31,7 +28,7 @@ export function StationsSection() {
 
   return (
     <Stack gap={4}>
-      {stations.map((station) => (
+      {stations && stations.map((station) => (
         <StationItem key={station.id} station={station} />
       ))}
     </Stack>
