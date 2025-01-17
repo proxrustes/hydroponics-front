@@ -1,6 +1,5 @@
 import { HTTP_RESPONSES } from "@/definitions/HttpDefinitions";
-import { PlantGroup } from "@/enums/types/Plant";
-import { initialPlantGroups, mockZones } from "@/lib/mock_data";
+import { initialPlantGroups } from "@/lib/mock_data";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
