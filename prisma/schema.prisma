@@ -13,80 +13,74 @@ datasource db {
   url      = "file:./dev.db"
 }
 
-// Модель группы растений
 model PlantGroup {
   id     Int     @id @default(autoincrement())
-  name   String // Название группы растений
-  plants Plant[] // Связь "один ко многим" с растениями
+  name   String
+  plants Plant[] 
 
   @@map("plant_group")
 }
 
-// Модель растения\
 model Plant {
   id           Int        @id @default(autoincrement())
   name         String
   description  String
-  plantGroupId Int        @map("plant_group_id")
-  plantGroup   PlantGroup @relation(fields: [plantGroupId], references: [id]) // Связь с группой растений
-  norms        Norms?     @relation("PlantNorms") // Опциональная связь с Norms
-  zones        Zone[] // Связь "один ко многим" с зонами
-
-  @@map("plant")
+  plantGroupId Int        
+  plantGroup   PlantGroup @relation(fields: [plantGroupId], references: [id]) 
+  norms        Norms?     @relation("PlantNorms") 
+  zones        Zone[] 
 }
 
-// Модель норм параметров для растения (зона + станция)
 model Norms {
   id                    Int   @id @default(autoincrement())
   temperature           Float
-  airHumidity           Float @map("air_humidity")
-  substrateHumidity     Float @map("substrate_humidity")
-  phLevel               Float @map("ph_level")
-  nutrientConcentration Float @map("nutrient_concentration") // Концентрация питательных веществ (EC)
-  solutionTemperature   Float @map("solution_temperature") // Температура раствора (°C)
-  solutionLvl           Float @map("solution_lvl")
-  lightIntensity        Float @map("light_intensity")
-  plantId               Int   @unique @map("plant_id") // Уникальная связь с растением
-  plant                 Plant @relation("PlantNorms", fields: [plantId], references: [id]) // Связь с растением
+  airHumidity           Float 
+  substrateHumidity     Float 
+  phLevel               Float 
+  nutrientConcentration Float 
+  solutionTemperature   Float
+  solutionLvl           Float 
+  lightIntensity        Float 
+  plantId               Int   @unique
+  plant                 Plant @relation("PlantNorms", fields: [plantId], references: [id]) 
+}
 
-  @@map("norms")
+model Station {
+  id              Int            @id @default(autoincrement())
+  name            String 
+  zones           Zone[]
+  stationParamsId Int           @unique 
+  stationParams   StationParams @relation(fields: [stationParamsId], references: [id])
 }
 
 model Zone {
   id        Int     @id @default(autoincrement())
-  name      String // Название зоны
-  plantId   Int     @map("plant_id") // Внешний ключ на растение
-  plant     Plant   @relation(fields: [plantId], references: [id]) // Связь с растением
-  isLightOn Boolean @default(false) @map("is_light_on") // Включён ли свет
+  name      String
+  plantId   Int     
+  plant     Plant   @relation(fields: [plantId], references: [id]) 
+  isLightOn Boolean @default(false) 
 
-  zoneParamsId Int        @unique @map("zone_params_id")
-  zoneParams   ZoneParams @relation(fields: [zoneParamsId], references: [id]) // Связь с параметрами зоны
+  zoneParamsId Int        @unique 
+  zoneParams   ZoneParams @relation(fields: [zoneParamsId], references: [id])
 
-  stationParamsId Int           @unique @map("station_params_id")
-  stationParams   StationParams @relation(fields: [stationParamsId], references: [id]) // Связь с параметрами станции
-
-  @@map("zone")
+  stationId Int     
+  station   Station @relation(fields: [stationId], references: [id]) 
 }
 
-// Параметры зоны выращивания
 model ZoneParams {
   id                Int   @id @default(autoincrement())
-  temperature       Float // Температура (°C)
-  airHumidity       Float @map("air_humidity") // Влажность воздуха (%)
-  substrateHumidity Float @map("substrate_humidity") // Влажность субстрата (%)
-  zone              Zone? @relation() // Убраны fields и references
-
-  @@map("zone_params")
+  temperature       Float 
+  airHumidity       Float 
+  substrateHumidity Float 
+  zone              Zone? @relation() 
 }
 
-// Параметры станции (гидропоники)
 model StationParams {
-  id                    Int   @id @default(autoincrement())
-  phLevel               Float @map("ph_level") // Уровень pH
-  nutrientConcentration Float @map("nutrient_concentration") // Концентрация питательных веществ (EC)
-  solutionTemperature   Float @map("solution_temperature") // Температура раствора (°C)
-  solutionLvl           Float @map("solution_lvl") // Уровень раствора (%)
-  station               Zone? @relation() // Убраны fields и references
+  id                    Int     @id @default(autoincrement())
+  phLevel               Float   
+  nutrientConcentration Float  
+  solutionTemperature   Float  
+  solutionLvl           Float   
 
-  @@map("station_params")
+  station               Station? @relation()
 }
