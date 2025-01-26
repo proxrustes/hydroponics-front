@@ -5,7 +5,7 @@ export async function customFetch(endpoint: string, method: "PUT" | "POST" | "GE
       const headers = {
         "Content-Type": "application/json"
       }
-      const response = await fetch(`api/${endpoint}`, {
+      const response = await fetch(`../../api/${endpoint}`, {
         cache: "no-store",
         next: { revalidate: 0 },
         method,

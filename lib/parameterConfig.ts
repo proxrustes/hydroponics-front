@@ -54,6 +54,7 @@ export function createParameters<T>(
     params: Record<string, number>,
     norm: Record<string, [number, number]> | [number, number]
 ): ParameterProps[] {
+    console.log("createParameters", params)
     return keys
         .filter((key) => parameterConfig[key] && (params[key] !== undefined))
         .map((key) => ({

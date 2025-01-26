@@ -38,23 +38,7 @@ export default function Page({ params }: { params: Promise<{ stationId: string; 
     fetchZone();
   }, [params]);
 
-  const handleSaveCustomNorms = (customParams: {
-    temperature: [number, number];
-    substrateHumidity: [number, number];
-    airHumidity: [number, number];
-  }) => {
-    if (zone) {
-      setZone({
-        ...zone,
-        plant: {
-          ...zone.plant,
-          norm: { ...zone.plant.norm, ...customParams },
-        },
-      });
-    }
-  };
-
-  if (!zone) {
+  if (!zone || loading) {
     return <Loader sx={{ mt: "30vh" }} />;
   }
 
@@ -65,25 +49,20 @@ export default function Page({ params }: { params: Promise<{ stationId: string; 
           <Typography variant="h3" sx={{ fontWeight: 900 }}>
             🪴{zone.plant.name}
           </Typography>
-         <IconButton href={`/plants/${zone.plant.id}`}><InfoIcon sx={{fontSize: 36}}/></IconButton>
+          <IconButton href={`/plants/${zone.plant.id}`}><InfoIcon sx={{ fontSize: 36 }} /></IconButton>
         </CustomContainer>
         <Grid container spacing={2}>
           <Grid size={8}>
-            <ParamsSection zone={zone} />
+            <ParamsSection zoneId={zone.id} />
           </Grid>
           <Grid size={4}>
-          <CustomNormsSection
-          initialParams={{
-            temperature: zone.plant.norm.temperature,
-            substrateHumidity: zone.plant.norm.substrateHumidity,
-            airHumidity: zone.plant.norm.airHumidity,
-          }}
-          onSave={handleSaveCustomNorms}
-        />
+            <CustomNormsSection
+              zoneId={zone.id}
+              onUpdate={() => { }}
+            />
           </Grid>
         </Grid>
-        <Typography sx={{color:"white"}}>Device Control</Typography>
-        <DeviceControlSection />
+        <Typography sx={{ color: "white" }}>Device Control</Typography>
       </Stack>
     </Container>
   );
