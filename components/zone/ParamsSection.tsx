@@ -7,7 +7,7 @@ import { createParameters, parameterConfig } from "@/lib/parameterConfig";
 export function ParamsSection(props: { zone: Zone }) {
   const norms = props.zone.plant.norm;
   const parameters = createParameters(
-    ["air_humidity", "temperature", "substrate_humidity"],
+    ["airHumidity", "temperature", "substrateHumidity"],
     parameterConfig,
     props.zone.params,
     norms
@@ -17,13 +17,11 @@ export function ParamsSection(props: { zone: Zone }) {
     <CustomContainer>
       <Stack direction="row" justifyContent="space-around">
         {parameters.map((param) => {
-
           return (
             <SemiCircleProgress param={param} key={param.name} />
           );
         })}
       </Stack>
-
     </CustomContainer>
   );
 }

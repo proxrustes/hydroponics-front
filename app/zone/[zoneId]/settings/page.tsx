@@ -8,25 +8,40 @@ import { CustomContainer } from "@/components/common/CustomContainer";
 import { Loader } from "@/components/common/Loader";
 import Grid from "@mui/material/Grid2";
 import { CustomNormsSection } from "@/components/zone/CustomNormsSection";
-import { mockStations } from "@/lib/mock_data";
 import InfoIcon from '@mui/icons-material/Info';
 
 export default function Page({ params }: { params: Promise<{ stationId: string; zoneId: string }> }) {
   const [zone, setZone] = useState<Zone>();
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    async function fetchZone() {
-      const resolvedParams = await params;
-      const stationData = mockStations[Number(resolvedParams.stationId)].zones[Number(resolvedParams.zoneId)];
-      setZone(stationData);
-    }
+    const fetchZone = async () => {
+      try {
+        const resolvedParams = await params;
+        const response = await fetch(`/api/zone/${resolvedParams.zoneId}`, {
+          method: "GET",
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setZone(data.message); // предполагается, что API возвращает объект с `message`
+        } else {
+          console.error("Failed to fetch zone:", response.status);
+        }
+      } catch (error) {
+        console.error("Fetch error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchZone();
   }, [params]);
 
   const handleSaveCustomNorms = (customParams: {
     temperature: [number, number];
-    substrate_humidity: [number, number];
-    air_humidity: [number, number];
+    substrateHumidity: [number, number];
+    airHumidity: [number, number];
   }) => {
     if (zone) {
       setZone({
@@ -60,8 +75,8 @@ export default function Page({ params }: { params: Promise<{ stationId: string; 
           <CustomNormsSection
           initialParams={{
             temperature: zone.plant.norm.temperature,
-            substrate_humidity: zone.plant.norm.substrate_humidity,
-            air_humidity: zone.plant.norm.air_humidity,
+            substrateHumidity: zone.plant.norm.substrateHumidity,
+            airHumidity: zone.plant.norm.airHumidity,
           }}
           onSave={handleSaveCustomNorms}
         />

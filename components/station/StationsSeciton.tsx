@@ -7,7 +7,6 @@ import { customFetch } from "@/lib/apiUtils";
 
 export function StationsSection() {
   const [stations, setStations] = useState<Station[]>([])
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -25,11 +24,10 @@ export function StationsSection() {
 
     fetchData()
   }, [])
-
   return (
     <Stack gap={4}>
       {stations && stations.map((station) => (
-        <StationItem key={station.id} station={station} />
+        <StationItem key={station.id} stationId={station.id} />
       ))}
     </Stack>
 

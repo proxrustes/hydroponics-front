@@ -1,62 +1,91 @@
-import { Zone } from "@/enums/types/Zone";
-import { Box, ButtonGroup, Divider, IconButton, Stack, Typography } from "@mui/material";
-import Grid from "@mui/material/Grid2";
-import { Parameter } from "./Parameter";
-import SettingsIcon from '@mui/icons-material/Settings';
-import InsertChartIcon from '@mui/icons-material/InsertChart';
-import { createParameters, parameterConfig } from "@/lib/parameterConfig";
-import { Station } from "@/enums/types/Station";
-import { customFetch } from "@/lib/apiUtils";
-import { useState, useEffect } from "react";
+import { Box, ButtonGroup, Divider, IconButton, Stack, Typography } from "@mui/material"
+import Grid from "@mui/material/Grid2"
+import { useState, useEffect } from "react"
+import { Parameter } from "./Parameter"
+import SettingsIcon from "@mui/icons-material/Settings"
+import InsertChartIcon from "@mui/icons-material/InsertChart"
+import { createParameters, parameterConfig } from "@/lib/parameterConfig"
+import { customFetch } from "@/lib/apiUtils"
+// Тип Zone — ваш
+import { Zone } from "@/enums/types/Zone"
+import { ZoneNorms } from "@prisma/client"
 
 export function ZoneItem(props: { zoneId: number }) {
-  const [zone, setZone] = useState<Zone>()
+  const [zone, setZone] = useState<Zone | null>()
+  const [currentParams, setCurrentParams] = useState<any>()
+  const [zoneNorms, setZoneNorms] = useState<Record<string, [number, number]>>()
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchZoneInfo = async () => {
       try {
-        const response = await customFetch(
-          `zone/${props.zoneId}`,
-          "GET"
-        )
+        const response = await customFetch(`zone/${props.zoneId}`, "GET")
         if (response.status === 200) {
           setZone(response.message)
         }
       } catch (error) {
-        console.error("Fetch error:", error)
+        console.error("Fetch zone info error:", error)
       }
     }
 
-    fetchData()
-  }, [])
-  
-if(!zone) return <Typography>...</Typography>
+    const fetchZoneParams = async () => {
+      try {
+        const response = await customFetch(`zone/${props.zoneId}/currentParams`, "GET")
+        if (response.status === 200) {
+          setCurrentParams(response.message)
+        }
+      } catch (error) {
+        console.error("Fetch zone params error:", error)
+      }
+    }
 
-  const norms = zone.plant.norm;
+    const fetchZoneNorms = async () => {
+      try {
+        const response = await customFetch(`zone/${props.zoneId}/norms`, "GET")
+        if (response.status === 200) {
+          setZoneNorms(response.message.effectiveNorms)
+        }
+      } catch (error) {
+        console.error("Fetch zone norms error:", error)
+      }
+    }
+
+    fetchZoneInfo()
+    fetchZoneParams()
+    fetchZoneNorms()
+  }, [props.zoneId])
+
+  if (!zone) {
+    return <Typography>Загрузка зоны...</Typography>
+  }
+  if (!currentParams) {
+    return <div>Loading params...</div>
+  }
+  if (!zoneNorms) {
+    return <div>Loading zoneNorms...</div>
+  }
+  
   const parameters = createParameters(
-    ["air_humidity", "temperature", "substrate_humidity"],
+    ["airHumidity", "temperature", "substrateHumidity"],
     parameterConfig,
-    zone.params,
-    norms
-  );
+    currentParams, // фактические значения (текущие)
+    zoneNorms          // нормы
+  )
 
   return (
     <Box sx={{ p: 2 }}>
       <Stack direction="row" justifyContent="space-between">
         <Typography sx={{ fontWeight: 800, fontSize: 24 }}>
-          {zone.name}: {zone.plant.name}
+          {zone.name}: {zone.plant?.name}
         </Typography>
         <ButtonGroup>
-        <IconButton href={`station//${zone.id}/details`} color="secondary">
-          <InsertChartIcon fontSize="large" />
-        </IconButton>
-          <IconButton href={`station/${zone.id}/settings`} color="secondary">
-          <SettingsIcon fontSize="large" />
-        </IconButton>
+          <IconButton href={`zone/${zone.id}/details`} color="secondary">
+            <InsertChartIcon fontSize="large" />
+          </IconButton>
+          <IconButton href={`zone/${zone.id}/settings`} color="secondary">
+            <SettingsIcon fontSize="large" />
+          </IconButton>
         </ButtonGroup>
-        
       </Stack>
-
 
       <Grid container spacing={2} sx={{ mt: 2 }}>
         {parameters.map((param, index) => (
@@ -71,7 +100,8 @@ if(!zone) return <Typography>...</Typography>
           </Grid>
         ))}
       </Grid>
+
       <Divider sx={{ mt: 2 }} />
     </Box>
-  );
+  )
 }

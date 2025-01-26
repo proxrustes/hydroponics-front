@@ -1,19 +1,33 @@
-import { HTTP_RESPONSES } from "@/definitions/HttpDefinitions";
-import { mockZones } from "@/lib/mock_data";
-import { NextResponse } from "next/server";
+import { PrismaClient } from "@prisma/client"
+import { NextResponse } from "next/server"
+import { HTTP_RESPONSES } from "@/definitions/HttpDefinitions"
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
-    try {
-      const zoneId = parseInt(params.id);
+const prisma = new PrismaClient()
 
-      const zone = mockZones.find(z => z.id === zoneId);
-  
-      if (!zone) {
-        return NextResponse.json(HTTP_RESPONSES[404]("Zone"));
-      }
-      
-      return NextResponse.json(HTTP_RESPONSES[200](zone));
-    } catch (error: any) {
-      return NextResponse.json(HTTP_RESPONSES[500](error.message));
+export async function GET(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const zoneId = parseInt(params.id, 10)
+    if (isNaN(zoneId)) {
+      return NextResponse.json(HTTP_RESPONSES[400]("Zone ID must be a number"))
     }
+
+    // Ищем "последнюю" запись в логе параметров
+    const currentZoneParams = await prisma.zoneParamsLog.findFirst({
+      where: { zoneId },
+      orderBy: { recordedAt: "desc" },
+    })
+
+    if (!currentZoneParams) {
+      // Если лога нет, вернём 404 или пустое сообщение — на ваше усмотрение
+      return NextResponse.json(HTTP_RESPONSES[404]("No current params for this zone"))
+    }
+
+    return NextResponse.json(HTTP_RESPONSES[200](currentZoneParams))
+  } catch (error: any) {
+    console.error("GET /api/zone/[id]/params error:", error)
+    return NextResponse.json(HTTP_RESPONSES[500](error.message))
   }
+}

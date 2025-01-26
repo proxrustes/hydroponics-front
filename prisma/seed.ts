@@ -1,102 +1,235 @@
-import { initialPlantGroups } from '../lib/mock_data';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client"
 
-const prisma = new PrismaClient();
+// Пример: набор данных для сидирования
+// В норме min/max для каждого параметра.
+const initialPlantGroups = [
+  {
+    title: "Плодоносні рослини",
+    plants: [
+      {
+        name: "Томат",
+        description: "Требует интенсивного освещения и тепла.",
+        norm: {
+          temperatureMin: 20,
+          temperatureMax: 28,
+          airHumidityMin: 60,
+          airHumidityMax: 80,
+          substrateHumidityMin: 55,
+          substrateHumidityMax: 75,
+          phLevelMin: 5.8,
+          phLevelMax: 6.5,
+          nutrientConcentrationMin: 1.5,
+          nutrientConcentrationMax: 2.5,
+          solutionTemperatureMin: 18,
+          solutionTemperatureMax: 22,
+          solutionLvlMin: 50,
+          solutionLvlMax: 90,
+          lightIntensityMin: 500,
+          lightIntensityMax: 700,
+        },
+      },
+      {
+        name: "Огурец",
+        description: "Любит повышенную влажность и тёплый климат.",
+        norm: {
+          temperatureMin: 18,
+          temperatureMax: 26,
+          airHumidityMin: 65,
+          airHumidityMax: 85,
+          substrateHumidityMin: 60,
+          substrateHumidityMax: 80,
+          phLevelMin: 5.5,
+          phLevelMax: 6.2,
+          nutrientConcentrationMin: 1.2,
+          nutrientConcentrationMax: 2.0,
+          solutionTemperatureMin: 18,
+          solutionTemperatureMax: 24,
+          solutionLvlMin: 40,
+          solutionLvlMax: 90,
+          lightIntensityMin: 400,
+          lightIntensityMax: 600,
+        },
+      },
+    ],
+  },
+  {
+    title: "Зелені культури",
+    plants: [
+      {
+        name: "Салат",
+        description: "Предпочитает умеренную температуру и обильный полив.",
+        norm: {
+          temperatureMin: 16,
+          temperatureMax: 24,
+          airHumidityMin: 55,
+          airHumidityMax: 75,
+          substrateHumidityMin: 50,
+          substrateHumidityMax: 70,
+          phLevelMin: 5.5,
+          phLevelMax: 6.5,
+          nutrientConcentrationMin: 1.0,
+          nutrientConcentrationMax: 1.8,
+          solutionTemperatureMin: 16,
+          solutionTemperatureMax: 20,
+          solutionLvlMin: 40,
+          solutionLvlMax: 80,
+          lightIntensityMin: 300,
+          lightIntensityMax: 500,
+        },
+      },
+    ],
+  },
+]
+
+const prisma = new PrismaClient()
 
 async function seed() {
-  console.log('🌱 Начало сидирования...');
+  console.log("🌱 Начинаем сидирование...")
+// 1. Удаляем зависимые логи
+await prisma.zoneParamsLog.deleteMany({})
+await prisma.stationParamsLog.deleteMany({})
 
+// 2. Удаляем ZoneNorms перед Zone!
+await prisma.zoneNorms.deleteMany({})
+
+// 3. Удаляем Zone, Station, ...
+await prisma.zone.deleteMany({})
+await prisma.station.deleteMany({})
+await prisma.norms.deleteMany({})
+await prisma.plant.deleteMany({})
+await prisma.plantGroup.deleteMany({})
+
+
+  console.log("🗑️ Все таблицы очищены.")
+
+  // 3. Создаём plant groups + plants + norms
   for (const group of initialPlantGroups) {
     const plantGroup = await prisma.plantGroup.create({
       data: {
         name: group.title,
         plants: {
-          create: group.plants.map(plant => ({
+          create: group.plants.map((plant) => ({
             name: plant.name,
             description: plant.description,
             norms: {
               create: {
-                temperature: (plant.norm.temperature[0] + plant.norm.temperature[1]) / 2,
-                airHumidity: (plant.norm.air_humidity[0] + plant.norm.air_humidity[1]) / 2,
-                substrateHumidity: (plant.norm.substrate_humidity[0] + plant.norm.substrate_humidity[1]) / 2,
-                phLevel: (plant.norm.ph_level[0] + plant.norm.ph_level[1]) / 2,
-                nutrientConcentration: (plant.norm.nutrient_concentration[0] + plant.norm.nutrient_concentration[1]) / 2,
-                solutionTemperature: (plant.norm.solution_temperature[0] + plant.norm.solution_temperature[1]) / 2,
-                solutionLvl: (plant.norm.solution_lvl[0] + plant.norm.solution_lvl[1]) / 2,
-                lightIntensity: (plant.norm.light_intensity[0] + plant.norm.light_intensity[1]) / 2,
+                temperatureMin: plant.norm.temperatureMin,
+                temperatureMax: plant.norm.temperatureMax,
+                airHumidityMin: plant.norm.airHumidityMin,
+                airHumidityMax: plant.norm.airHumidityMax,
+                substrateHumidityMin: plant.norm.substrateHumidityMin,
+                substrateHumidityMax: plant.norm.substrateHumidityMax,
+                phLevelMin: plant.norm.phLevelMin,
+                phLevelMax: plant.norm.phLevelMax,
+                nutrientConcentrationMin: plant.norm.nutrientConcentrationMin,
+                nutrientConcentrationMax: plant.norm.nutrientConcentrationMax,
+                solutionTemperatureMin: plant.norm.solutionTemperatureMin,
+                solutionTemperatureMax: plant.norm.solutionTemperatureMax,
+                solutionLvlMin: plant.norm.solutionLvlMin,
+                solutionLvlMax: plant.norm.solutionLvlMax,
+                lightIntensityMin: plant.norm.lightIntensityMin,
+                lightIntensityMax: plant.norm.lightIntensityMax,
               },
             },
           })),
         },
       },
-    });
+    })
 
-    console.log(`✅ Добавлена группа: ${plantGroup.name}`);
+    console.log(`✅ Добавлена группа: ${plantGroup.name}`)
   }
 
-const station = await prisma.station.create({
+  // 4. Создаём одну тестовую станцию
+  const station = await prisma.station.create({
     data: {
-      name: 'Гідропонна станція №1',
-      stationParams: {
-        create: {
-          phLevel: 6.2,
-          nutrientConcentration: 2.0,
-          solutionTemperature: 22,
-          solutionLvl: 85,
-        },
+      name: "Гідропонна станція №1",
+    },
+  })
+  console.log(`✅ Добавлена станция: ${station.name}`)
+
+  // 4.1 Создаём логи для станции (stationParamsLog)
+  await prisma.stationParamsLog.createMany({
+    data: [
+      {
+        stationId: station.id,
+        recordedAt: new Date(),
+        phLevel: 6.2,
+        nutrientConcentration: 2.0,
+        solutionTemperature: 22,
+        solutionLvl: 85,
       },
-    },
-  });
-  
+      {
+        stationId: station.id,
+        recordedAt: new Date(Date.now() - 2 * 3600_000), // 2 часа назад
+        phLevel: 6.1,
+        nutrientConcentration: 2.4,
+        solutionTemperature: 21,
+        solutionLvl: 80,
+      },
+    ],
+  })
+  console.log("✅ Добавлены StationParamsLog для станции №1")
 
-  console.log(`✅ Добавлена станция: ${station.name}`);
-
-  const tomatoPlant = await prisma.plant.findFirst({ where: { name: 'Томат' } });
-
+  // 5. Найдём "Томат", чтобы создать ему зону
+  const tomatoPlant = await prisma.plant.findFirst({
+    where: { name: "Томат" },
+  })
   if (!tomatoPlant) {
-    throw new Error('❌ Растение "Томат" не найдено!');
+    throw new Error('❌ Не найдено растение "Томат"!')
   }
 
-  const tomatoZoneParams = await prisma.zoneParams.create({
+  // 6. Создаём зону с этим растением
+  const tomatoZone = await prisma.zone.create({
     data: {
-      temperature: 24,
-      airHumidity: 85,
-      substrateHumidity: 75,
-    },
-  });
-
-  const tomatoStationParams = await prisma.stationParams.create({
-    data: {
-      phLevel: 6.2,
-      nutrientConcentration: 2.0,
-      solutionTemperature: 22,
-      solutionLvl: 85,
-    },
-  });
-
-  await prisma.zone.create({
-    data: {
-      name: 'Гідропонна зона для Томатів',
+      name: "Зона для Томатів",
       plantId: tomatoPlant.id,
+      stationId: station.id,
       isLightOn: true,
-      zoneParamsId: tomatoZoneParams.id,
-      stationId: station.id, 
     },
-  });
-  
-  
-  
+  })
+  console.log(`✅ Создана зона для томатов: ${tomatoZone.name}`)
 
-  console.log('✅ Добавлена зона для Томатів');
-  console.log('🌱!');
+  // 7. (Необязательно) создаём логи для зоны
+  await prisma.zoneParamsLog.createMany({
+    data: [
+      {
+        zoneId: tomatoZone.id,
+        recordedAt: new Date(),
+        temperature: 24,
+        airHumidity: 78,
+        substrateHumidity: 70,
+        isLightOn: true,
+      },
+      {
+        zoneId: tomatoZone.id,
+        recordedAt: new Date(Date.now() - 3600_000), // час назад
+        temperature: 23,
+        airHumidity: 80,
+        substrateHumidity: 68,
+      },
+    ],
+  })
+  console.log("✅ Добавлены ZoneParamsLog (параметры для томатов).")
+
+  // 8. (Необязательно) переопределим нормы в ZoneNorms (допустим, хотим поднять макс температуру)
+  await prisma.zoneNorms.create({
+    data: {
+      zoneId: tomatoZone.id,
+      temperatureMax: 29, // переопределяем верхнюю границу
+      airHumidityMin: 65,
+    },
+  })
+  console.log("✅ Создан override ZoneNorms для томатов")
+
+  console.log("🌱 Сидирование успешно завершено!")
 }
 
 seed()
   .then(async () => {
-    await prisma.$disconnect();
+    await prisma.$disconnect()
   })
-  .catch(async (error) => {
-    console.error('❌', error);
-    await prisma.$disconnect();
-    process.exit(1);
-  });
+  .catch(async (err) => {
+    console.error("❌ Ошибка при сидировании:", err)
+    await prisma.$disconnect()
+    process.exit(1)
+  })
