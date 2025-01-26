@@ -1,6 +1,6 @@
 "use client"
 import { useState, useEffect } from "react"
-import { Stack } from "@mui/material"
+import { LinearProgress, Stack } from "@mui/material"
 import { CustomContainer } from "../common/CustomContainer"
 import { SemiCircleProgress } from "../common/SemiCircleProgress"
 import { createParameters, parameterConfig } from "@/lib/parameterConfig"
@@ -64,7 +64,7 @@ export function ParamsSection({ zoneId }: { zoneId: number }) {
   }, [zoneId])
 
   if (!zone || !currentParams || !zoneNorms) {
-    return <div>Loading...</div>
+    return <LinearProgress />
   }
 
   const parameters = createParameters(

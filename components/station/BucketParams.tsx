@@ -4,6 +4,7 @@ import { ParameterProps, StationParams, ZoneParams } from "@/enums/types/Params"
 import { createParameters, parameterConfig } from "@/lib/parameterConfig";
 import { customFetch } from "@/lib/apiUtils";
 import { useState, useEffect } from "react";
+import { LinearProgress } from "@mui/material";
 
 type Parameter = {
   name: string; 
@@ -35,7 +36,7 @@ export function BucketParams(props: {stationId: number}){
       fetchData()
     }, [])
     if(!bucketParams){
-      return("No params found")
+      return <LinearProgress />
     }
     const parameters = createParameters(
       ["phLevel", "solutionLvl", "solutionTemperature", "nutrientConcentration"],

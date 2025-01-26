@@ -1,4 +1,4 @@
-import { Box, ButtonGroup, Divider, IconButton, Stack, Typography } from "@mui/material"
+import { Box, ButtonGroup, Divider, IconButton, LinearProgress, Stack, Typography } from "@mui/material"
 import Grid from "@mui/material/Grid2"
 import { useState, useEffect } from "react"
 import { Parameter } from "./Parameter"
@@ -54,14 +54,8 @@ export function ZoneItem(props: { zoneId: number }) {
     fetchZoneNorms()
   }, [props.zoneId])
 
-  if (!zone) {
-    return <Typography>Загрузка зоны...</Typography>
-  }
-  if (!currentParams) {
-    return <div>Loading params...</div>
-  }
-  if (!zoneNorms) {
-    return <div>Loading zoneNorms...</div>
+  if (!zone || !currentParams || !zoneNorms) {
+    return <LinearProgress />
   }
   
   const parameters = createParameters(

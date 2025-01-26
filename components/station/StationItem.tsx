@@ -1,5 +1,5 @@
 import Grid from "@mui/material/Grid2";
-import { Box, Divider, Stack, Typography } from "@mui/material";
+import { Box, Divider, LinearProgress, Stack, Typography } from "@mui/material";
 import { Station } from "@/enums/types/Station";
 import { BucketParams } from "./BucketParams";
 import { CustomContainer } from "../common/CustomContainer";
@@ -28,7 +28,7 @@ export function StationItem(props: {stationId: number}) {
     fetchData()
   }, [])
   if(!station){
-    return("hui")
+    return <LinearProgress />
   }
     return (
       <CustomContainer>

@@ -7,13 +7,14 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-   "prisma-setup": "scripts\\prisma-setup.cmd"
+    "prisma-setup": "scripts\\prisma-setup.cmd"
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@mui/icons-material": "^6.1.7",
     "@mui/material": "^6.1.7",
+    "@mui/x-charts": "^7.24.1",
     "@prisma/client": "^6.2.1",
     "next": "15.0.3",
     "prisma": "^6.2.1",
