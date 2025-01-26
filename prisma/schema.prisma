@@ -16,7 +16,7 @@ datasource db {
 model PlantGroup {
   id     Int     @id @default(autoincrement())
   name   String
-  plants Plant[] 
+  plants Plant[]
 
   @@map("plant_group")
 }
@@ -25,62 +25,89 @@ model Plant {
   id           Int        @id @default(autoincrement())
   name         String
   description  String
-  plantGroupId Int        
-  plantGroup   PlantGroup @relation(fields: [plantGroupId], references: [id]) 
-  norms        Norms?     @relation("PlantNorms") 
-  zones        Zone[] 
+  plantGroupId Int
+  plantGroup   PlantGroup @relation(fields: [plantGroupId], references: [id])
+  norms        Norms?     @relation("PlantNorms")
+  zones        Zone[]
 }
 
 model Norms {
   id                    Int   @id @default(autoincrement())
   temperature           Float
-  airHumidity           Float 
-  substrateHumidity     Float 
-  phLevel               Float 
-  nutrientConcentration Float 
+  airHumidity           Float
+  substrateHumidity     Float
+  phLevel               Float
+  nutrientConcentration Float
   solutionTemperature   Float
-  solutionLvl           Float 
-  lightIntensity        Float 
+  solutionLvl           Float
+  lightIntensity        Float
   plantId               Int   @unique
-  plant                 Plant @relation("PlantNorms", fields: [plantId], references: [id]) 
+  plant                 Plant @relation("PlantNorms", fields: [plantId], references: [id])
 }
 
 model Station {
-  id              Int            @id @default(autoincrement())
-  name            String 
-  zones           Zone[]
-  stationParamsId Int           @unique 
-  stationParams   StationParams @relation(fields: [stationParamsId], references: [id])
+  id               Int                @id @default(autoincrement())
+  name             String
+  zones            Zone[]
+  StationParamsLog StationParamsLog[]
 }
 
 model Zone {
   id        Int     @id @default(autoincrement())
   name      String
-  plantId   Int     
-  plant     Plant   @relation(fields: [plantId], references: [id]) 
-  isLightOn Boolean @default(false) 
+  plantId   Int
+  plant     Plant   @relation(fields: [plantId], references: [id])
+  isLightOn Boolean @default(false)
 
-  zoneParamsId Int        @unique 
-  zoneParams   ZoneParams @relation(fields: [zoneParamsId], references: [id])
-
-  stationId Int     
-  station   Station @relation(fields: [stationId], references: [id]) 
+  stationId     Int
+  station       Station         @relation(fields: [stationId], references: [id])
+  ZoneParamsLog ZoneParamsLog[]
+  zoneNorms ZoneNorms?
 }
 
-model ZoneParams {
-  id                Int   @id @default(autoincrement())
-  temperature       Float 
-  airHumidity       Float 
-  substrateHumidity Float 
-  zone              Zone? @relation() 
-}
-
-model StationParams {
+model ZoneNorms {
   id                    Int     @id @default(autoincrement())
-  phLevel               Float   
-  nutrientConcentration Float  
-  solutionTemperature   Float  
-  solutionLvl           Float   
+  temperature           Float? 
+  airHumidity           Float?
+  substrateHumidity     Float?
+  phLevel               Float?
+  nutrientConcentration Float?
+  solutionTemperature   Float?
+  solutionLvl           Float?
+  lightIntensity        Float?
 
-  station               Station? @relation()
+  zoneId Int    @unique
+  zone   Zone   @relation(fields: [zoneId], references: [id])
+}
+
+model StationParamsLog {
+  id        Int     @id @default(autoincrement())
+  stationId Int
+  station   Station @relation(fields: [stationId], references: [id])
+
+  recordedAt DateTime @default(now())
+
+  phLevel               Float
+  nutrientConcentration Float
+  solutionTemperature   Float
+  solutionLvl           Float
+
+  @@index([stationId, recordedAt])
+  @@map("station_params_log")
+}
+
+model ZoneParamsLog {
+  id     Int  @id @default(autoincrement())
+  zoneId Int
+  zone   Zone @relation(fields: [zoneId], references: [id])
+
+  recordedAt DateTime @default(now())
+
+  temperature       Float
+  airHumidity       Float
+  substrateHumidity Float
+  isLightOn         Boolean?
+
+  @@index([zoneId, recordedAt])
+  @@map("zone_params_log")
 }
