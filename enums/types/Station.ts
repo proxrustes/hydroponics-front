@@ -5,5 +5,5 @@ export type Station = {
   id: number,
   name: string,
   zones: Zone[],
-  station_params: StationParams
+  stationParams: StationParams
 }

@@ -12,14 +12,14 @@ export const initialPlantGroups: PlantGroup[] = [
         name: "Салат",
         description: "Листова зелень, підходить для вирощування в гідропоніці.",
         norm: {
-          ph_level: [5.5, 6.5],
+          phLevel: [5.5, 6.5],
           temperature: [16, 20],
-          air_humidity: [60, 80],
-          light_intensity: [400, 600],
-          nutrient_concentration: [1.0, 1.5],
-          substrate_humidity: [30, 100],
-          solution_lvl: [30, 100],
-          solution_temperature: [18, 24]
+          airHumidity: [60, 80],
+          lightIntensity: [400, 600],
+          nutrientConcentration: [1.0, 1.5],
+          substrateHumidity: [30, 100],
+          solutionLvl: [30, 100],
+          solutionTemperature: [18, 24]
         },
       }
     ],
@@ -33,14 +33,14 @@ export const initialPlantGroups: PlantGroup[] = [
         description:
           "Рослина з плодами, потребує інтенсивного освітлення і тепла.",
         norm: {
-          ph_level: [5.5, 6.5],
+          phLevel: [5.5, 6.5],
           temperature: [20, 26],
-          air_humidity: [65, 85],
-          light_intensity: [500, 700],
-          nutrient_concentration: [1.5, 2.5],
-          substrate_humidity: [30, 100],
-          solution_lvl: [30, 100],
-          solution_temperature: [18, 24]
+          airHumidity: [65, 85],
+          lightIntensity: [500, 700],
+          nutrientConcentration: [1.5, 2.5],
+          substrateHumidity: [30, 100],
+          solutionLvl: [30, 100],
+          solutionTemperature: [18, 24]
         },
       },
       {
@@ -49,14 +49,14 @@ export const initialPlantGroups: PlantGroup[] = [
         description:
           "Плодоносна рослина, що віддає перевагу прохолодній температурі та помірному освітленню.",
         norm: {
-          ph_level: [5.5, 6.5],
+          phLevel: [5.5, 6.5],
           temperature: [18, 24],
-          air_humidity: [70, 80],
-          light_intensity: [400, 600],
-          nutrient_concentration: [1.2, 1.8],
-          substrate_humidity: [30, 100],
-          solution_lvl: [30, 100],
-          solution_temperature: [18, 24]
+          airHumidity: [70, 80],
+          lightIntensity: [400, 600],
+          nutrientConcentration: [1.2, 1.8],
+          substrateHumidity: [30, 100],
+          solutionLvl: [30, 100],
+          solutionTemperature: [18, 24]
         },
       },
       {
@@ -65,14 +65,14 @@ export const initialPlantGroups: PlantGroup[] = [
         description:
           "Плетиста рослина, що потребує теплої температури та високої вологості.",
         norm: {
-          ph_level: [5.5, 6.5],
+          phLevel: [5.5, 6.5],
           temperature: [22, 28],
-          air_humidity: [75, 95],
-          light_intensity: [400, 700],
-          nutrient_concentration: [1.4, 2.2],
-          substrate_humidity: [30, 100],
-          solution_lvl: [30, 100],
-          solution_temperature: [18, 24]
+          airHumidity: [75, 95],
+          lightIntensity: [400, 700],
+          nutrientConcentration: [1.4, 2.2],
+          substrateHumidity: [30, 100],
+          solutionLvl: [30, 100],
+          solutionTemperature: [18, 24]
         },
       },
       {
@@ -81,14 +81,14 @@ export const initialPlantGroups: PlantGroup[] = [
         description:
           "Плодоносна рослина, що потребує інтенсивного освітлення і тепла.",
         norm: {
-          ph_level: [5.8, 6.8],
+          phLevel: [5.8, 6.8],
           temperature: [20, 26],
-          air_humidity: [60, 80],
-          light_intensity: [500, 800],
-          nutrient_concentration: [1.6, 2.4],
-          substrate_humidity: [30, 100],
-          solution_lvl: [30, 100],
-          solution_temperature: [18, 24]
+          airHumidity: [60, 80],
+          lightIntensity: [500, 800],
+          nutrientConcentration: [1.6, 2.4],
+          substrateHumidity: [30, 100],
+          solutionLvl: [30, 100],
+          solutionTemperature: [18, 24]
         },
       },
     ],
@@ -102,14 +102,14 @@ export const initialPlantGroups: PlantGroup[] = [
         description:
           "Ароматична трава, що добре росте в теплих умовах з помірною вологістю.",
         norm: {
-          ph_level: [5.5, 6.5],
+          phLevel: [5.5, 6.5],
           temperature: [18, 24],
-          air_humidity: [60, 80],
-          light_intensity: [300, 500],
-          nutrient_concentration: [1.0, 1.6],
-          substrate_humidity: [30, 100],
-          solution_lvl: [30, 100],
-          solution_temperature: [18, 24]
+          airHumidity: [60, 80],
+          lightIntensity: [300, 500],
+          nutrientConcentration: [1.0, 1.6],
+          substrateHumidity: [30, 100],
+          solutionLvl: [30, 100],
+          solutionTemperature: [18, 24]
         },
       },
       {
@@ -117,14 +117,14 @@ export const initialPlantGroups: PlantGroup[] = [
         name: "М’ята",
         description: "Витривала трава, що росте в широкому діапазоні умов.",
         norm: {
-          ph_level: [5.5, 7.0],
+          phLevel: [5.5, 7.0],
           temperature: [18, 24],
-          air_humidity: [60, 80],
-          light_intensity: [250, 500],
-          nutrient_concentration: [1.0, 1.5],
-          substrate_humidity: [30, 100],
-          solution_lvl: [30, 100],
-          solution_temperature: [18, 24]
+          airHumidity: [60, 80],
+          lightIntensity: [250, 500],
+          nutrientConcentration: [1.0, 1.5],
+          substrateHumidity: [30, 100],
+          solutionLvl: [30, 100],
+          solutionTemperature: [18, 24]
         },
       },
     ],
@@ -138,8 +138,8 @@ export const mockZones: Zone[] = [
     plant: initialPlantGroups[1].plants[1],
     params: {
       temperature: 20,
-      air_humidity: 75,
-      substrate_humidity: 80,
+      airHumidity: 75,
+      substrateHumidity: 80,
     },
     isLightOn: true
   },
@@ -149,8 +149,8 @@ export const mockZones: Zone[] = [
     plant: initialPlantGroups[0].plants[0],
     params: {
       temperature: 24,
-      substrate_humidity: 90,
-      air_humidity: 80,
+      substrateHumidity: 90,
+      airHumidity: 80,
     },
     isLightOn: false
   },
@@ -160,8 +160,8 @@ export const mockZones: Zone[] = [
     plant: initialPlantGroups[1].plants[0],
     params: {
       temperature: 17,
-      air_humidity: 80,
-      substrate_humidity: 90
+      airHumidity: 80,
+      substrateHumidity: 90
     },
     isLightOn: false
   },
@@ -172,11 +172,11 @@ export const mockStations: Station[] = [{
   id: 0,
   name: "тa шо в підвалі",
   zones: mockZones,
-  station_params: {
-    ph_level: 8,
-    nutrient_concentration: 80,
-    solution_temperature: 22,
-    solution_lvl: 99
+  stationParams: {
+    phLevel: 8,
+    nutrientConcentration: 80,
+    solutionTemperature: 22,
+    solutionLvl: 99
   }
 }]
 
