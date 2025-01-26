@@ -6,43 +6,16 @@ import { SemiCircleProgress } from "../common/SemiCircleProgress"
 import { createParameters, parameterConfig } from "@/lib/parameterConfig"
 import { customFetch } from "@/lib/apiUtils"
 
-type RangeTuple = [number, number]
-
-interface ZoneNorms {
-  // min/max для каждого параметра
-  temperature: RangeTuple
-  airHumidity: RangeTuple
-  substrateHumidity: RangeTuple
-  // при необходимости добавьте остальные: phLevel, ...
-}
-
-interface CurrentParams {
-  // то, что приходит с /zone/[id]/currentParams
-  temperature: number
-  airHumidity: number
-  substrateHumidity: number
-  // ...
-}
-
 interface Plant {
   name: string
-  // ... при необходимости
 }
 
 interface ZoneFullInfo {
   id: number
   name: string
   plant?: Plant
-  // ...
 }
 
-/**
- * Компонент, который по zoneId подгружает:
- * - информацию о зоне (Zone)
- * - текущие параметры (currentParams)
- * - нормы (effectiveNorms)
- * и рисует SemiCircleProgress по "temperature", "airHumidity", "substrateHumidity".
- */
 export function ParamsSection({ zoneId }: { zoneId: number }) {
   const [zone, setZone] = useState<ZoneFullInfo | null>(null)
   const [currentParams, setCurrentParams] = useState<Record<string, number> | null>(null)
@@ -76,19 +49,6 @@ export function ParamsSection({ zoneId }: { zoneId: number }) {
     // 3. Грузим "эффективные" нормы
     const fetchNorms = async () => {
       try {
-        // Предполагаем, что /zone/[id]/norms возвращает:
-        // {
-        //   "status": 200,
-        //   "message": {
-        //     "zoneId": 4,
-        //     "zoneName": "Зона для Томатів",
-        //     "effectiveNorms": {
-        //       "temperature": [20, 28],
-        //       "airHumidity": [65, 80],
-        //       ...
-        //     }
-        //   }
-        // }
         const res = await customFetch(`zone/${zoneId}/norms`, "GET")
         if (res.status === 200 && res.message?.effectiveNorms) {
           setZoneNorms(res.message.effectiveNorms)
@@ -103,19 +63,15 @@ export function ParamsSection({ zoneId }: { zoneId: number }) {
     fetchNorms()
   }, [zoneId])
 
-  // Пока что-то не загрузилось — показываем лоадер
   if (!zone || !currentParams || !zoneNorms) {
     return <div>Loading...</div>
   }
 
-  // Подготовка данных для отрисовки
-  // "params" = фактические показатели
-  // "norms" = [min, max] диапазоны
   const parameters = createParameters(
     ["airHumidity", "temperature", "substrateHumidity"],
     parameterConfig,
-    currentParams,   // фактические значения
-    zoneNorms        // нормы (type ZoneNorms)
+    currentParams,   
+    zoneNorms        
   )
 
   return (
