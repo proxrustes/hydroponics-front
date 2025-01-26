@@ -190,26 +190,23 @@ await prisma.plantGroup.deleteMany({})
   console.log(`✅ Создана зона для томатов: ${tomatoZone.name}`)
 
   // 7. (Необязательно) создаём логи для зоны
-  await prisma.zoneParamsLog.createMany({
-    data: [
-      {
-        zoneId: tomatoZone.id,
-        recordedAt: new Date(),
-        temperature: 24,
-        airHumidity: 78,
-        substrateHumidity: 70,
-        isLightOn: true,
-      },
-      {
-        zoneId: tomatoZone.id,
-        recordedAt: new Date(Date.now() - 3600_000), // час назад
-        temperature: 23,
-        airHumidity: 80,
-        substrateHumidity: 68,
-      },
-    ],
+  const now = Date.now()
+  const logsData = Array.from({ length: 10 }).map((_, idx) => {
+    const minutesAgo = (10 - idx) * 15 // убывающая шкала
+    return {
+      zoneId: tomatoZone.id,
+      recordedAt: new Date(now - minutesAgo * 60_000),
+      temperature: 23 + Math.random(),       // 23.x
+      airHumidity: 70 + Math.floor(Math.random() * 10),  // от 70 до 79
+      substrateHumidity: 65 + Math.floor(Math.random() * 10),
+      isLightOn: idx % 2 === 0, // для разнообразия
+    }
   })
-  console.log("✅ Добавлены ZoneParamsLog (параметры для томатов).")
+
+  await prisma.zoneParamsLog.createMany({
+    data: logsData,
+  })
+  console.log(`✅ Добавлено ${logsData.length} записей ZoneParamsLog для томатов.`)
 
   // 8. (Необязательно) переопределим нормы в ZoneNorms (допустим, хотим поднять макс температуру)
   await prisma.zoneNorms.create({

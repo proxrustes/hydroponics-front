@@ -1,115 +1,43 @@
 "use client"
-import React, { useEffect, useState } from "react"
-import { LineChart } from "@mui/x-charts"
-import { customFetch } from "@/lib/apiUtils"
-import { CustomContainer } from "@/components/common/CustomContainer"
-import { Container, Typography } from "@mui/material"
+import React from "react"
+import { Container } from "@mui/material"
+import ParameterChart from "@/components/graphs/ParameterChart"
+import { useParams } from "next/navigation"
 
-export interface ZoneLogDto {
-  id: number
-  zoneId: number
-  recordedAt: string
-  temperature: number
-  airHumidity: number
-  substrateHumidity: number
-  isLightOn?: boolean
-}
+export default function ZoneParamsDashboardPage() {
+  const { zoneId } = useParams()
+  let safeZoneId: string | undefined
+  if (Array.isArray(zoneId)) {
+    safeZoneId = zoneId[0]
+  } else {
+    safeZoneId = zoneId
+  }
 
-export interface ZoneLogLocal {
-  id: number
-  zoneId: number
-  recordedAt: Date
-  temperature: number
-  airHumidity: number
-  substrateHumidity: number
-  isLightOn?: boolean
-}
-
-
-export default function Page({ params }: { params: Promise<{ zoneId: string }> }) {
-  const [logs, setLogs] = useState<ZoneLogLocal[]>([])
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  useEffect(() => {
-    async function fetchLogs() {
-      setIsLoading(true)
-      setError(null)
-      try {
-        const resolvedParams = await params;
-        const res = await customFetch(`zone/${resolvedParams.zoneId}/logs`, "GET")
-        if (res.status === 200) {
-          const rawLogs: ZoneLogDto[] = res.message
-          const mappedLogs: ZoneLogLocal[] = rawLogs.map(item => ({
-            ...item,
-            recordedAt: new Date(item.recordedAt)
-          }))
-          setLogs(mappedLogs)
-        } else {
-          setError(`Failed to load logs: ${res.message}`)
-        }
-      } catch (err: any) {
-        console.error("Error fetching logs:", err)
-        setError(err.message || "Unknown error")
-      } finally {
-        setIsLoading(false)
-      }
-    }
-    fetchLogs()
-  }, [])
-
-  if (isLoading) return <div>Loading logs...</div>
-  if (error) return <div style={{ color: "red" }}>{error}</div>
-
-  if (logs.length === 0) {
-    return (
-      <div>
-        <div>No logs found for this period.</div>
-      </div>
-    )
+  if (!safeZoneId || typeof safeZoneId !== "string") {
+    return <div>Invalid Zone ID</div>
   }
 
   return (
     <Container maxWidth="xl">
-      <CustomContainer>
-      <Typography>Zone Dashboard </Typography>
-      <LineChart
-        dataset={logs as any[]}
-        xAxis={[
-          {
-            dataKey: "recordedAt",
-            scaleType: "time",
-            label: "Recorded Time",
-          },
-        ]}
-        yAxis={[
-          {
-            id: "tempAxis",
-            label: "Temperature (°C)",
-          },
-          {
-            id: "humidAxis",
-            label: "Humidity (%)",
-          },
-        ]}
-        series={[
-          {
-            id: "tempSeries",
-            dataKey: "temperature",
-            label: "Temperature",
-            yAxisKey: "tempAxis",
-          },
-          {
-            id: "humidSeries",
-            dataKey: "airHumidity",
-            label: "Humidity",
-            yAxisKey: "humidAxis",
-          },
-        ]}
-        height={400}
-        margin={{ top: 50, right: 80, bottom: 50, left: 50 }}
+      <h2>Zone Dashboard - Separate Charts</h2>
+      <ParameterChart
+        zoneId={safeZoneId}
+        paramKey="temperature"
+        yAxisLabel="Temperature (°C)"
+        chartTitle="Temperature Over Time"
       />
-    </CustomContainer>
+      <ParameterChart
+        zoneId={safeZoneId}
+        paramKey="airHumidity"
+        yAxisLabel="Humidity (%)"
+        chartTitle="Humidity Over Time"
+      />
+      <ParameterChart
+        zoneId={safeZoneId}
+        paramKey="substrateHumidity"
+        yAxisLabel="Substrate (%)"
+        chartTitle="Substrate Humidity Over Time"
+      />
     </Container>
-    
   )
 }
