@@ -91,9 +91,10 @@ export default function ParameterChart(props: {
                           dataKey: props.paramKey,
                           label: props.yAxisLabel,
                           yAxisKey: "mainAxis",
+                          area: true
                         },
                       ]}
-                    height={400}
+                    height={300}
                     margin={{ top: 50, right: 80, bottom: 50, left: 50 }}
                 />
 

@@ -4,6 +4,7 @@ import { Container, Typography } from "@mui/material"
 import ParameterChart from "@/components/graphs/ParameterChart"
 import { useParams } from "next/navigation"
 import { CustomContainer } from "@/components/common/CustomContainer"
+import Grid from '@mui/material/Grid2';
 
 export default function ZoneParamsDashboardPage() {
   const { zoneId } = useParams()
@@ -20,7 +21,10 @@ export default function ZoneParamsDashboardPage() {
 
   return (
     <Container maxWidth="xl">
-      <CustomContainer>
+      <Grid container spacing={2}>
+        
+      <Grid size={6}>
+         <CustomContainer>
         <Typography sx={{textAlign: 'center', fontWeight: 600, fontSize: 20}}>Temperature Over Time</Typography>
         <ParameterChart
           zoneId={safeZoneId}
@@ -28,7 +32,9 @@ export default function ZoneParamsDashboardPage() {
           yAxisLabel="Temperature (°C)"
         />
       </CustomContainer>
-      <CustomContainer>
+        </Grid>
+        <Grid size={6}>
+        <CustomContainer>
       <Typography sx={{textAlign: 'center', fontWeight: 600, fontSize: 20}}>Humidity Over Time</Typography>
         <ParameterChart
           zoneId={safeZoneId}
@@ -36,7 +42,12 @@ export default function ZoneParamsDashboardPage() {
           yAxisLabel="Humidity (%)"
         />
       </CustomContainer>
-      <CustomContainer>
+        </Grid>
+      </Grid>
+      <Grid container spacing={2}>
+        
+        <Grid size={6}>
+        <CustomContainer>
       <Typography sx={{textAlign: 'center', fontWeight: 600, fontSize: 20}}>Substrate Humidity Over Time</Typography>
         <ParameterChart
           zoneId={safeZoneId}
@@ -44,6 +55,11 @@ export default function ZoneParamsDashboardPage() {
           yAxisLabel="Substrate (%)"
         />
       </CustomContainer>
+          </Grid>
+          
+        </Grid>
+     
+     
 
 
     </Container>
