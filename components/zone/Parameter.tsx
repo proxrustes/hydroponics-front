@@ -7,7 +7,7 @@ function isParamInRange(value: number, range: [number, number]): boolean {
 
 export function Parameter({ name, value, norm, valueFormatter, icon }: ParameterProps) {
   const inRange = typeof value === 'number' ? isParamInRange(value, norm) : true
-  const formattedValue = typeof value === "boolean" ? (value ? "ON" : "OFF") : `${value}${valueFormatter || ""}`;
+  const formattedValue = typeof value === "boolean" ? (value ? "ON" : "OFF") : `${value.toPrecision(3)}${valueFormatter || ""}`;
   return (
     <Tooltip title={name} placement="bottom">
       <Stack direction="row" gap={2} alignItems="center" mb={1} p={1}
