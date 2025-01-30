@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react"
 import { LineChart } from "@mui/x-charts"
 import { customFetch } from "@/lib/apiUtils"
 import { CustomContainer } from "@/components/common/CustomContainer"
-import { Container, Typography } from "@mui/material"
+import { Alert, Container, Typography } from "@mui/material"
 
 export interface ZoneLogDto {
     id: number
@@ -29,7 +29,6 @@ export interface ZoneLogLocal {
 export default function ParameterChart(props: {
     zoneId: string, paramKey: keyof ZoneLogLocal 
     yAxisLabel: string
-    chartTitle?: string
 }) {
     const [logs, setLogs] = useState<ZoneLogLocal[]>([])
     const [isLoading, setIsLoading] = useState(false)
@@ -66,16 +65,11 @@ export default function ParameterChart(props: {
 
     if (logs.length === 0) {
         return (
-            <div>
-                <div>No logs found for this period.</div>
-            </div>
+                <Alert severity="warning">No logs found for this period.</Alert>
         )
     }
 
     return (
-        <Container maxWidth="xl">
-            <CustomContainer>
-                <Typography>Zone Dashboard </Typography>
                 <LineChart
                     dataset={logs as any[]}
                     xAxis={[
@@ -102,8 +96,6 @@ export default function ParameterChart(props: {
                     height={400}
                     margin={{ top: 50, right: 80, bottom: 50, left: 50 }}
                 />
-            </CustomContainer>
-        </Container>
 
     )
 }

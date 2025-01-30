@@ -1,8 +1,9 @@
 "use client"
 import React from "react"
-import { Container } from "@mui/material"
+import { Container, Typography } from "@mui/material"
 import ParameterChart from "@/components/graphs/ParameterChart"
 import { useParams } from "next/navigation"
+import { CustomContainer } from "@/components/common/CustomContainer"
 
 export default function ZoneParamsDashboardPage() {
   const { zoneId } = useParams()
@@ -19,25 +20,32 @@ export default function ZoneParamsDashboardPage() {
 
   return (
     <Container maxWidth="xl">
-      <h2>Zone Dashboard - Separate Charts</h2>
-      <ParameterChart
-        zoneId={safeZoneId}
-        paramKey="temperature"
-        yAxisLabel="Temperature (°C)"
-        chartTitle="Temperature Over Time"
-      />
-      <ParameterChart
-        zoneId={safeZoneId}
-        paramKey="airHumidity"
-        yAxisLabel="Humidity (%)"
-        chartTitle="Humidity Over Time"
-      />
-      <ParameterChart
-        zoneId={safeZoneId}
-        paramKey="substrateHumidity"
-        yAxisLabel="Substrate (%)"
-        chartTitle="Substrate Humidity Over Time"
-      />
+      <CustomContainer>
+        <Typography sx={{textAlign: 'center', fontWeight: 600, fontSize: 20}}>Temperature Over Time</Typography>
+        <ParameterChart
+          zoneId={safeZoneId}
+          paramKey="temperature"
+          yAxisLabel="Temperature (°C)"
+        />
+      </CustomContainer>
+      <CustomContainer>
+      <Typography sx={{textAlign: 'center', fontWeight: 600, fontSize: 20}}>Humidity Over Time</Typography>
+        <ParameterChart
+          zoneId={safeZoneId}
+          paramKey="airHumidity"
+          yAxisLabel="Humidity (%)"
+        />
+      </CustomContainer>
+      <CustomContainer>
+      <Typography sx={{textAlign: 'center', fontWeight: 600, fontSize: 20}}>Substrate Humidity Over Time</Typography>
+        <ParameterChart
+          zoneId={safeZoneId}
+          paramKey="substrateHumidity"
+          yAxisLabel="Substrate (%)"
+        />
+      </CustomContainer>
+
+
     </Container>
   )
 }
