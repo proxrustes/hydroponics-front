@@ -21,9 +21,6 @@ export default function ZoneParamsDashboardPage() {
 
   return (
     <Container maxWidth="xl">
-      <Grid container spacing={2}>
-        
-      <Grid size={6}>
          <CustomContainer>
         <Typography sx={{textAlign: 'center', fontWeight: 600, fontSize: 20}}>Temperature Over Time</Typography>
         <ParameterChart
@@ -32,8 +29,6 @@ export default function ZoneParamsDashboardPage() {
           yAxisLabel="Temperature (°C)"
         />
       </CustomContainer>
-        </Grid>
-        <Grid size={6}>
         <CustomContainer>
       <Typography sx={{textAlign: 'center', fontWeight: 600, fontSize: 20}}>Humidity Over Time</Typography>
         <ParameterChart
@@ -42,11 +37,7 @@ export default function ZoneParamsDashboardPage() {
           yAxisLabel="Humidity (%)"
         />
       </CustomContainer>
-        </Grid>
-      </Grid>
-      <Grid container spacing={2}>
-        
-        <Grid size={6}>
+
         <CustomContainer>
       <Typography sx={{textAlign: 'center', fontWeight: 600, fontSize: 20}}>Substrate Humidity Over Time</Typography>
         <ParameterChart
@@ -55,9 +46,6 @@ export default function ZoneParamsDashboardPage() {
           yAxisLabel="Substrate (%)"
         />
       </CustomContainer>
-          </Grid>
-          
-        </Grid>
      
      
 
