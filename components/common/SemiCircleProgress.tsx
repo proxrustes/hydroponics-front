@@ -54,7 +54,7 @@ export function SemiCircleProgress(props: { param: ParameterProps}) {
             color: isOutOfRange ? "error.main" : "primary.dark"
           }}
         >
-          {value}{props.param.valueFormatter}
+          {value.toPrecision(2)}{props.param.valueFormatter}
         </Typography>
       </Box>
       <Typography fontWeight="bold" sx={{ mt: -8, textAlign: "center", fontSize: 32 }}>
