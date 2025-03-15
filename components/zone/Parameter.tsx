@@ -1,5 +1,5 @@
 import { ParameterProps } from "@/enums/types/Params";
-import { Typography, Box, Tooltip, Stack } from "@mui/material";
+import { Typography, Tooltip, Stack } from "@mui/material";
 
 function isParamInRange(value: number, range: [number, number]): boolean {
   return value >= range[0] && value <= range[1];

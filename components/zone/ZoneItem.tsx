@@ -8,7 +8,6 @@ import { createParameters, parameterConfig } from "@/lib/parameterConfig"
 import { customFetch } from "@/lib/apiUtils"
 // Тип Zone — ваш
 import { Zone } from "@/enums/types/Zone"
-import { ZoneNorms } from "@prisma/client"
 
 export function ZoneItem(props: { zoneId: number }) {
   const [zone, setZone] = useState<Zone | null>()
