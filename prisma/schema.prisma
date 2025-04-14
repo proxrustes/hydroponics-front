@@ -30,9 +30,10 @@ model Plant {
   norms        Norms?     @relation("PlantNorms")
   zones        Zone[]
 }
+
 model Norms {
   id Int @id @default(autoincrement())
-  
+
   temperatureMin           Float
   temperatureMax           Float
   airHumidityMin           Float
@@ -71,8 +72,9 @@ model Zone {
   stationId     Int
   station       Station         @relation(fields: [stationId], references: [id])
   ZoneParamsLog ZoneParamsLog[]
-  zoneNorms ZoneNorms?
+  zoneNorms     ZoneNorms?
 }
+
 model ZoneNorms {
   id Int @id @default(autoincrement())
 
@@ -93,9 +95,10 @@ model ZoneNorms {
   lightIntensityMin        Float?
   lightIntensityMax        Float?
 
-  zoneId Int   @unique
-  zone   Zone  @relation(fields: [zoneId], references: [id])
+  zoneId Int  @unique
+  zone   Zone @relation(fields: [zoneId], references: [id])
 }
+
 model StationParamsLog {
   id        Int     @id @default(autoincrement())
   stationId Int
@@ -129,10 +132,11 @@ model ZoneParamsLog {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
-  email    String  @unique
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  name     String
   password String
-  role     Role    @default(USER)
+  role     Role   @default(USER)
 }
 
 enum Role {
