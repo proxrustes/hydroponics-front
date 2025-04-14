@@ -4,9 +4,12 @@ import { HTTP_RESPONSES } from "@/definitions/HttpDefinitions";
 
 const prisma = new PrismaClient();
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export async function GET(req: Request) {
   try {
-    const plantId = parseInt(params.id);
+     const url = new URL(req.url)
+  const id = url.pathname.split("/").pop()
+
+  const plantId = parseInt(id || "")
 
     const plant = await prisma.plant.findUnique({
       where: { id: plantId },

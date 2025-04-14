@@ -4,9 +4,12 @@ import { HTTP_RESPONSES } from "@/definitions/HttpDefinitions"
 
 const prisma = new PrismaClient()
 
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
+export async function PUT(req: Request) {
   try {
-    const zoneId = parseInt(params.id, 10)
+         const url = new URL(req.url)
+  const id = url.pathname.split("/").pop()
+
+  const zoneId = parseInt(id || "")
     if (isNaN(zoneId)) {
       return NextResponse.json(HTTP_RESPONSES[400]("Invalid Zone ID"))
     }

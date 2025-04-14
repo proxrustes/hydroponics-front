@@ -1,6 +1,5 @@
 import { TokenUser } from "@/definitions/TokenUser"
 import { SignJWT, decodeJwt, jwtVerify } from "jose"
-import { cookies } from "next/headers"
 
 export async function sign(payload: TokenUser, secret: string): Promise<string> {
     const iat = Math.floor(Date.now() / 1000)

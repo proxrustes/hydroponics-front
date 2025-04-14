@@ -5,11 +5,13 @@ import { HTTP_RESPONSES } from "@/definitions/HttpDefinitions"
 const prisma = new PrismaClient()
 
 export async function GET(
-  req: Request,
-  { params }: { params: { id: string } }
+  req: Request
 ) {
   try {
-    const zoneId = parseInt(params.id, 10)
+         const url = new URL(req.url)
+  const id = url.pathname.split("/").pop()
+
+  const zoneId = parseInt(id || "")
     if (isNaN(zoneId)) {
       return NextResponse.json(HTTP_RESPONSES[400]("Zone ID must be a number"))
     }

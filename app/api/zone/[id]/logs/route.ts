@@ -13,11 +13,13 @@ const prisma = new PrismaClient()
  * - limit (число):      ограничение кол-ва записей, по умолчанию 100
  */
 export async function GET(
-  req: Request,
-  { params }: { params: { id: string } }
+  req: Request
 ) {
   try {
-    const zoneId = parseInt(params.id, 10)
+         const url = new URL(req.url)
+  const id = url.pathname.split("/").pop()
+
+  const zoneId = parseInt(id || "")
     if (isNaN(zoneId)) {
       return NextResponse.json(HTTP_RESPONSES[400]("Zone ID must be a number"))
     }

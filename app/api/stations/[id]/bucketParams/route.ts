@@ -7,11 +7,13 @@ const prisma = new PrismaClient()
 
 // Route: GET /api/station/[id]/bucket
 export async function GET(
-  req: Request,
-  { params }: { params: { id: string } }
+  req: Request
 ) {
   try {
-    const stationId = parseInt(params.id)
+     const url = new URL(req.url)
+  const id = url.pathname.split("/").pop()
+
+  const stationId = parseInt(id || "")
     
     if (isNaN(stationId)) {
       return NextResponse.json(HTTP_RESPONSES[400]("id"))
