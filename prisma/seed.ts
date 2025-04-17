@@ -98,7 +98,7 @@ await prisma.station.deleteMany({})
 await prisma.norms.deleteMany({})
 await prisma.plant.deleteMany({})
 await prisma.plantGroup.deleteMany({})
-
+await prisma.user.deleteMany({})
 
   console.log("🗑️ Все таблицы очищены.")
 
@@ -138,7 +138,30 @@ await prisma.plantGroup.deleteMany({})
 
     console.log(`✅ Добавлена группа: ${plantGroup.name}`)
   }
+  await prisma.user.createMany({
+    data: [
+      {
+        email: "admin@hydro.local",
+        name: "Nastya Ku",
+        password: "admin", 
+        role: "ADMIN",
+      },
+      {
+        email: "user1@hydro.local",
+        name: "Romka Khu",
+        password: "userpass1",
+        role: "USER",
+      },
+      {
+        email: "user2@hydro.local",
+        name: "Mary Jane",
+        password: "userpass2",
+        role: "USER",
+      },
+    ],
+  })
 
+  console.log("✅ Добавлены пользователи (1 админ, 2 юзера)")
   // 4. Создаём одну тестовую станцию
   const station = await prisma.station.create({
     data: {

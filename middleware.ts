@@ -3,45 +3,42 @@ import { decodeJwt } from "jose"
 import { verify } from "./lib/jwtUtils"
 
 export async function middleware(req: NextRequest) {
-  if (req.nextUrl.pathname === "/") {
-    req.nextUrl.pathname = "/login"
-    return NextResponse.redirect(req.nextUrl)
-  }
-  const token = req.cookies.get("currentUser")?.value
+  const authHeader = req.headers.get("authorization")
+  const token = authHeader?.startsWith("Bearer ") ? authHeader.slice(7) : null
 
-  if (!token && req.nextUrl.pathname === "/login") {
-    return NextResponse.next()
-  }
-  if (!token) {
-    req.nextUrl.pathname = "/login"
-    return NextResponse.redirect(req.nextUrl)
-  }
-  const decodedJWT = decodeJwt(token)
-  const currentTimestamp = Math.floor(Date.now() / 1000)
-  if (
-    decodedJWT.exp &&
-    decodedJWT.exp < currentTimestamp &&
-    req.nextUrl.pathname !== "/login" 
-  ) {
-    return redirectWithDelete(req, "/login")
+  if (!token && req.nextUrl.pathname !== "/login") {
+    return NextResponse.redirect(new URL("/login", req.url))
   }
 
-  const isValidToken = await verify(token)
-  if (!isValidToken) {
-    return redirectWithDelete(req, "/login")
-  }
+  if (token) {
+    try {
+      const decodedJWT = decodeJwt(token)
+      const currentTimestamp = Math.floor(Date.now() / 1000)
+      if (decodedJWT.exp && decodedJWT.exp < currentTimestamp) {
+        return NextResponse.redirect(new URL("/login", req.url))
+      }
 
-  if (req.nextUrl.pathname === "/dashboard") {
-    req.nextUrl.pathname = "/dashboard/current-shift"
-    return NextResponse.redirect(req.nextUrl)
+      const isValid = await verify(token)
+      if (!isValid) {
+        return NextResponse.redirect(new URL("/login", req.url))
+      }
+
+      if (req.nextUrl.pathname === "/dashboard") {
+        req.nextUrl.pathname = "/dashboard/current-shift"
+        return NextResponse.redirect(req.nextUrl)
+      }
+
+      return NextResponse.next()
+    } catch (err) {
+      return NextResponse.redirect(new URL("/login", req.url))
+    }
   }
 
   return NextResponse.next()
 }
 
-function redirectWithDelete(req: NextRequest, url: string) {
-  req.cookies.delete("currentUser")
-  const response = NextResponse.redirect(new URL(url, req.url))
-  response.cookies.delete("currentUser")
-  return response
+export const config = {
+  matcher: [
+    "/((?!api|_next/static|_next/image|favicon.ico|manifest.json|robots.txt).*)",
+  ],
 }
