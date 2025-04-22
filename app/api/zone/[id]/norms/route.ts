@@ -9,7 +9,7 @@ export async function GET(
 ) {
   try {
          const url = new URL(req.url)
-  const id = url.pathname.split("/").pop()
+  const id = url.pathname.split("/")[3]
 
   const zoneId = parseInt(id || "")
     if (isNaN(zoneId)) {
@@ -101,7 +101,7 @@ export async function PUT(
   ) {
     try {
          const url = new URL(req.url)
-  const id = url.pathname.split("/").pop()
+  const id = url.pathname.split("/")[3]
 
   const zoneId = parseInt(id || "")
       if (isNaN(zoneId)) {

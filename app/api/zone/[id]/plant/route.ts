@@ -7,7 +7,7 @@ const prisma = new PrismaClient()
 export async function PUT(req: Request) {
   try {
          const url = new URL(req.url)
-  const id = url.pathname.split("/").pop()
+  const id = url.pathname.split("/")[3]
 
   const zoneId = parseInt(id || "")
     if (isNaN(zoneId)) {

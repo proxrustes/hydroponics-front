@@ -17,8 +17,7 @@ export async function GET(
 ) {
   try {
          const url = new URL(req.url)
-  const id = url.pathname.split("/").pop()
-
+  const id = url.pathname.split("/")[3]
   const zoneId = parseInt(id || "")
     if (isNaN(zoneId)) {
       return NextResponse.json(HTTP_RESPONSES[400]("Zone ID must be a number"))

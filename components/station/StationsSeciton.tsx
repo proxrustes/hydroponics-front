@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Stack } from "@mui/material";
 import { StationItem } from "./StationItem";
 import { useEffect, useState } from "react";
@@ -6,30 +6,28 @@ import { Station } from "@/enums/types/Station";
 import { customFetch } from "@/lib/apiUtils";
 
 export function StationsSection() {
-  const [stations, setStations] = useState<Station[]>([])
+  const [stations, setStations] = useState<Station[]>([]);
+  console.log(stations);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await customFetch(
-          `stations`,
-          "GET"
-        )
+        const response = await customFetch(`stations`, "GET");
         if (response.status === 200) {
-          setStations(response.message)
+          setStations(response.message);
         }
       } catch (error) {
-        console.error("Fetch error:", error)
+        console.error("Fetch error:", error);
       }
-    }
+    };
 
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
   return (
     <Stack gap={4}>
-      {stations && stations.map((station) => (
-        <StationItem key={station.id} stationId={station.id} />
-      ))}
+      {stations &&
+        stations.map((station) => (
+          <StationItem key={station.id} stationId={station.id} />
+        ))}
     </Stack>
-
   );
 }

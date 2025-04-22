@@ -11,7 +11,8 @@ export async function GET(
 ) {
   try {
      const url = new URL(req.url)
-  const id = url.pathname.split("/").pop()
+     console.log(url.pathname.split("/"))
+  const id = url.pathname.split("/")[3]
 
   const stationId = parseInt(id || "")
     

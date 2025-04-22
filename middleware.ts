@@ -3,8 +3,7 @@ import { decodeJwt } from "jose"
 import { verify } from "./lib/jwtUtils"
 
 export async function middleware(req: NextRequest) {
-  const authHeader = req.headers.get("authorization")
-  const token = authHeader?.startsWith("Bearer ") ? authHeader.slice(7) : null
+  const token = req.cookies.get("currentUser")?.value
 
   if (!token && req.nextUrl.pathname !== "/login") {
     return NextResponse.redirect(new URL("/login", req.url))
@@ -29,7 +28,7 @@ export async function middleware(req: NextRequest) {
       }
 
       return NextResponse.next()
-    } catch (err) {
+    } catch {
       return NextResponse.redirect(new URL("/login", req.url))
     }
   }
@@ -37,8 +36,9 @@ export async function middleware(req: NextRequest) {
   return NextResponse.next()
 }
 
+
 export const config = {
   matcher: [
-    "/((?!api|_next/static|_next/image|favicon.ico|manifest.json|robots.txt).*)",
+    "/((?!api/|_next/static|_next/image|favicon.ico|manifest.json|robots.txt).*)",
   ],
 }
