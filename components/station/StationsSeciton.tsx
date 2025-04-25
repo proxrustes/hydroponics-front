@@ -7,7 +7,6 @@ import { customFetch } from "@/lib/apiUtils";
 
 export function StationsSection() {
   const [stations, setStations] = useState<Station[]>([]);
-  console.log(stations);
   useEffect(() => {
     const fetchData = async () => {
       try {

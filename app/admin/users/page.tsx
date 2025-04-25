@@ -18,6 +18,7 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useEffect, useState } from "react";
 import { customFetch } from "@/lib/apiUtils";
+import { CustomContainer } from "@/components/common/CustomContainer";
 
 type User = {
   id: number;
@@ -52,11 +53,11 @@ export default function AdminUsersPage() {
   }, []);
 
   return (
-    <Container>
-      <Typography variant="h4" sx={{ my: 3 }}>
+    <Container maxWidth="xl">
+      <Typography variant="h4" alignContent="center" sx={{ my: 3 }}>
         Управління користувачами
       </Typography>
-      <Paper>
+      <CustomContainer>
         <Table>
           <TableHead>
             <TableRow>
@@ -92,7 +93,7 @@ export default function AdminUsersPage() {
             ))}
           </TableBody>
         </Table>
-      </Paper>
+      </CustomContainer>
     </Container>
   );
 }

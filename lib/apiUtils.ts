@@ -17,7 +17,7 @@ export async function customFetch(
       body: body ? JSON.stringify(body) : undefined,
     });
 
-    return await HTTP_RESPONSES[200](await response.json());
+    return await response.json();
   } catch (error) {
     return HTTP_RESPONSES[500](error);
   }
