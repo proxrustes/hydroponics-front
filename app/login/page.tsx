@@ -20,7 +20,6 @@ export default function LoginPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("USER");
   const router = useRouter();
 
   const handleChange = (_: any, newValue: number) => {
@@ -33,14 +32,14 @@ export default function LoginPage() {
     if (tab === 0) {
       res = await authService.login(email, password);
     } else {
-      res = await authService.register(email, password, role);
+      res = await authService.register(email, password, "USER");
     }
 
     if (res.token) {
       router.push("/");
     } else {
       alert("❌ Ошибка: " + (res.error ?? "неизвестная"));
-      router.push("/login"); // даже если ошибка — явно редиректим
+      router.push("/login");
     }
   };
 
@@ -77,17 +76,6 @@ export default function LoginPage() {
                 required
                 fullWidth
               />
-
-              <TextField
-                select
-                label="Role"
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-                fullWidth
-              >
-                <MenuItem value="USER">User</MenuItem>
-                <MenuItem value="ADMIN">Admin</MenuItem>
-              </TextField>
             </>
           )}
 
