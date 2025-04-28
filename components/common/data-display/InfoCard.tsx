@@ -5,16 +5,30 @@ export function InfoCard(props: {
   title: string;
   description: string;
   quote: string;
+  icon: React.ElementType;
 }) {
+  const Icon = props.icon;
   return (
     <Stack direction="row" justifyContent="space-between" gap={12}>
       {props.orientation === "left" && (
         <Stack flex={1}>
-          <Typography
-            sx={{ fontWeight: 800, color: "primary.main", fontSize: 42 }}
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="flex-start"
           >
-            {props.title}
-          </Typography>
+            <Icon sx={{ color: "primary.light", fontSize: 42 }} />
+            <Typography
+              sx={{
+                fontWeight: 800,
+                color: "primary.main",
+                fontSize: 42,
+                textAlign: "right",
+              }}
+            >
+              {props.title}
+            </Typography>
+          </Stack>
           <Typography sx={{ color: "primary.main", fontSize: 24 }}>
             {props.description}
           </Typography>
@@ -43,16 +57,20 @@ export function InfoCard(props: {
       </Stack>
       {props.orientation === "right" && (
         <Stack flex={1}>
-          <Typography
-            sx={{
-              fontWeight: 800,
-              color: "primary.main",
-              fontSize: 42,
-              textAlign: "right",
-            }}
-          >
-            {props.title}
-          </Typography>
+          <Stack direction="row" alignItems="center" justifyContent="flex-end">
+            <Icon sx={{ color: "primary.light", fontSize: 42 }} />
+            <Typography
+              sx={{
+                fontWeight: 800,
+                color: "primary.main",
+                fontSize: 42,
+                textAlign: "right",
+              }}
+            >
+              {props.title}
+            </Typography>
+          </Stack>
+
           <Typography
             sx={{ textAlign: "right", color: "primary.main", fontSize: 24 }}
           >

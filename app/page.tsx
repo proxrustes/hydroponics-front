@@ -1,11 +1,11 @@
 "use client";
 
-import { InfoCard } from "@/components/common/data-display/InfoCard";
-import { Stack, Container, Typography, Box } from "@mui/material";
+import { FeaturesList } from "@/components/landing-page/FeaturesList";
+import { Stack, Container, Typography } from "@mui/material";
 export default function Home() {
   return (
     <Container maxWidth="xl">
-      <Stack gap={12}>
+      <Stack gap={24}>
         <Stack direction="row" gap={4}>
           <Stack
             alignItems="left"
@@ -36,31 +36,7 @@ export default function Home() {
             </Typography>
           </Stack>
         </Stack>
-        <InfoCard
-          orientation={"left"}
-          title={"Nurtients"}
-          description={
-            "Optimal plant health starts with perfect nutrition. Deliver the right balance of minerals and elements to maximize growth and yields."
-          }
-          quote={"Feed the roots, and the leaves will follow."}
-        />
-
-        <InfoCard
-          orientation={"right"}
-          title={"Controls"}
-          description={
-            "Automation and precision are key. Monitor and adjust environmental conditions to create the perfect habitat for plants to thrive"
-          }
-          quote={"Master the environment, master the harvest."}
-        />
-        <InfoCard
-          orientation={"left"}
-          title={"Monitoring"}
-          description={
-            "Continuous monitoring ensures early detection of problems and maintains optimal conditions. Stay a step ahead at all times."
-          }
-          quote={"What gets measured, gets improved."}
-        />
+        <FeaturesList />
       </Stack>
     </Container>
   );
