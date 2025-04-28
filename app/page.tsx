@@ -37,36 +37,29 @@ export default function Home() {
           </Stack>
         </Stack>
         <InfoCard
-          orientation={"right"}
-          title={"Supplements"}
+          orientation={"left"}
+          title={"Nurtients"}
           description={
-            "Prevention is better than cure. Bugs never had it so bad."
+            "Optimal plant health starts with perfect nutrition. Deliver the right balance of minerals and elements to maximize growth and yields."
           }
-          quote={"Prepare. Prevent. Protect."}
+          quote={"Feed the roots, and the leaves will follow."}
+        />
+
+        <InfoCard
+          orientation={"right"}
+          title={"Controls"}
+          description={
+            "Automation and precision are key. Monitor and adjust environmental conditions to create the perfect habitat for plants to thrive"
+          }
+          quote={"Master the environment, master the harvest."}
         />
         <InfoCard
           orientation={"left"}
-          title={"Supplements"}
+          title={"Monitoring"}
           description={
-            "Prevention is better than cure. Bugs never had it so bad."
+            "Continuous monitoring ensures early detection of problems and maintains optimal conditions. Stay a step ahead at all times."
           }
-          quote={"Prepare. Prevent. Protect."}
-        />
-        <InfoCard
-          orientation={"right"}
-          title={"Supplements"}
-          description={
-            "Prevention is better than cure. Bugs never had it so bad."
-          }
-          quote={"Prepare. Prevent. Protect."}
-        />
-        <InfoCard
-          orientation={"left"}
-          title={"Supplements"}
-          description={
-            "Prevention is better than cure. Bugs never had it so bad."
-          }
-          quote={"Prepare. Prevent. Protect."}
+          quote={"What gets measured, gets improved."}
         />
       </Stack>
     </Container>

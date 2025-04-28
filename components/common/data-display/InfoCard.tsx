@@ -1,5 +1,4 @@
-import { Box, Stack, Typography } from "@mui/material";
-import AppleIcon from "@mui/icons-material/Apple";
+import { Stack, Typography } from "@mui/material";
 
 export function InfoCard(props: {
   orientation: "left" | "right";
@@ -8,33 +7,59 @@ export function InfoCard(props: {
   quote: string;
 }) {
   return (
-    <Stack direction="row" justifyContent="space-between">
-      <AppleIcon
-        sx={{
-          position: "absolute",
-          color: "secondary.main",
-          zIndex: 0,
-          fontSize: 124,
-        }}
-      />
-      <Stack sx={{ zIndex: 10, justifyContent: "center" }}>
-        <Typography variant="h3">{props.title}</Typography>
-        <Typography>{props.description}</Typography>
-      </Stack>
+    <Stack direction="row" justifyContent="space-between" gap={12}>
+      {props.orientation === "left" && (
+        <Stack flex={1}>
+          <Typography
+            sx={{ fontWeight: 800, color: "primary.main", fontSize: 42 }}
+          >
+            {props.title}
+          </Typography>
+          <Typography sx={{ color: "primary.main", fontSize: 24 }}>
+            {props.description}
+          </Typography>
+        </Stack>
+      )}
+
       <Stack
         sx={{
-          borderWidth: 4,
-          borderStyle: "solid",
-          borderColor: "primary.light",
+          backgroundColor: "secondary.light",
           borderRadius: 8,
-          width: 700,
           height: 200,
+          flex: 1,
+          width: 700,
+          textOverflow: "unset",
           justifyContent: "center",
           alignItems: "center",
+          p: 4,
         }}
       >
-        <Typography textAlign="center">{props.quote}</Typography>
+        <Typography
+          textAlign="center"
+          sx={{ fontWeight: 800, color: "primary.main", fontSize: 24 }}
+        >
+          {props.quote}
+        </Typography>
       </Stack>
+      {props.orientation === "right" && (
+        <Stack flex={1}>
+          <Typography
+            sx={{
+              fontWeight: 800,
+              color: "primary.main",
+              fontSize: 42,
+              textAlign: "right",
+            }}
+          >
+            {props.title}
+          </Typography>
+          <Typography
+            sx={{ textAlign: "right", color: "primary.main", fontSize: 24 }}
+          >
+            {props.description}
+          </Typography>
+        </Stack>
+      )}
     </Stack>
   );
 }
