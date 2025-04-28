@@ -1,34 +1,74 @@
 "use client";
 
-import { StationsSection } from "@/components/station/StationsSeciton";
-import { Stack, Container, Typography } from "@mui/material";
-
+import { InfoCard } from "@/components/common/data-display/InfoCard";
+import { Stack, Container, Typography, Box } from "@mui/material";
 export default function Home() {
   return (
     <Container maxWidth="xl">
-      <Stack
-        alignItems="center"
-        sx={{
-          backgroundColor: "primary.main",
-          width: "100%",
-          height: 210,
-          mb: -5,
-          borderRadius: 46,
-        }}
-      >
-        <Typography
-          sx={{ color: "secondary.main", fontWeight: 800, mt: 6, fontSize: 42 }}
-        >
-          HydroStations
-        </Typography>
-        <Typography
-          sx={{ color: "secondary.main", fontWeight: 600, fontSize: 22 }}
-        >
-          From roots to fruits, perfected
-        </Typography>
+      <Stack gap={12}>
+        <Stack direction="row" gap={4}>
+          <Stack
+            alignItems="left"
+            flex={1}
+            gap={2}
+            sx={{
+              justifyContent: "center",
+              textAlign: "center",
+              color: "white",
+              fontWeight: 800,
+              fontSize: 22,
+              backgroundColor: "secondary.light",
+              borderRadius: 12,
+              px: 8,
+              mt: 4,
+              py: 12,
+            }}
+          >
+            <Typography
+              sx={{
+                color: "primary.main",
+                fontWeight: 800,
+                fontSize: 92,
+                lineHeight: 0.8,
+              }}
+            >
+              From ROOTS to FRUITS, perfected
+            </Typography>
+          </Stack>
+        </Stack>
+        <InfoCard
+          orientation={"right"}
+          title={"Supplements"}
+          description={
+            "Prevention is better than cure. Bugs never had it so bad."
+          }
+          quote={"Prepare. Prevent. Protect."}
+        />
+        <InfoCard
+          orientation={"left"}
+          title={"Supplements"}
+          description={
+            "Prevention is better than cure. Bugs never had it so bad."
+          }
+          quote={"Prepare. Prevent. Protect."}
+        />
+        <InfoCard
+          orientation={"right"}
+          title={"Supplements"}
+          description={
+            "Prevention is better than cure. Bugs never had it so bad."
+          }
+          quote={"Prepare. Prevent. Protect."}
+        />
+        <InfoCard
+          orientation={"left"}
+          title={"Supplements"}
+          description={
+            "Prevention is better than cure. Bugs never had it so bad."
+          }
+          quote={"Prepare. Prevent. Protect."}
+        />
       </Stack>
-
-      <StationsSection />
     </Container>
   );
 }
