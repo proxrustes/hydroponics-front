@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import { customFetch } from "@/lib/utils/apiUtils";
 import { authService } from "@/lib/services/authService"; // где есть getCurrentUser()
+import { CustomContainer } from "@/components/common/CustomContainer";
 
 export default function PlantLibraryPage() {
   const [groups, setGroups] = useState<any[]>([]);
@@ -34,79 +35,17 @@ export default function PlantLibraryPage() {
     fetchGroups();
   }, []);
 
-  const handleSubmit = async () => {
-    const res = await customFetch("plants", "POST", formState);
-    if (res.status === 200) {
-      setShowForm(false);
-      setFormState({ name: "", description: "", plantGroupId: "" });
-      const updated = await customFetch("plants", "GET");
-      setGroups(updated.message);
-    }
-  };
-
   return (
     <Container sx={{ mt: 4 }}>
-      <Typography variant="h4" gutterBottom>
-        Бібліотека рослин
-      </Typography>
-      {isAdmin && (
-        <Stack mt={4} gap={2}>
-          {!showForm ? (
-            <Button variant="contained" onClick={() => setShowForm(true)}>
-              Додати рослину
-            </Button>
-          ) : (
-            <Button onClick={() => setShowForm(false)}>Скасувати</Button>
-          )}
+      <Stack direction="row" justifyContent="space-between">
+        <Typography variant="h4">Бібліотека рослин</Typography>
+        {isAdmin && (
+          <Button variant="contained" size="small" href="plants/create">
+            Додати рослину
+          </Button>
+        )}
+      </Stack>
 
-          {showForm && (
-            <Paper sx={{ p: 3 }}>
-              <Typography variant="h6" mb={2}>
-                Нова рослина
-              </Typography>
-              <Stack spacing={2}>
-                <TextField
-                  label="Назва"
-                  value={formState.name}
-                  onChange={(e) =>
-                    setFormState({ ...formState, name: e.target.value })
-                  }
-                />
-                <TextField
-                  label="Опис"
-                  multiline
-                  minRows={3}
-                  value={formState.description}
-                  onChange={(e) =>
-                    setFormState({ ...formState, description: e.target.value })
-                  }
-                />
-                <TextField
-                  select
-                  label="Група"
-                  value={formState.plantGroupId}
-                  onChange={(e) =>
-                    setFormState({ ...formState, plantGroupId: e.target.value })
-                  }
-                >
-                  {groups.map((g) => (
-                    <MenuItem key={g.id} value={g.id}>
-                      {g.name}
-                    </MenuItem>
-                  ))}
-                </TextField>
-
-                <Stack direction="row" spacing={2}>
-                  <Button variant="contained" onClick={handleSubmit}>
-                    Зберегти
-                  </Button>
-                  <Button onClick={() => setShowForm(false)}>Скасувати</Button>
-                </Stack>
-              </Stack>
-            </Paper>
-          )}
-        </Stack>
-      )}
       {groups.map((group) => (
         <Paper key={group.id} sx={{ p: 3, my: 2 }}>
           <Typography variant="h6" color="primary">
