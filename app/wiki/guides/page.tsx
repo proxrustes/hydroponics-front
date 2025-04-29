@@ -11,22 +11,28 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 
-const plantsSections = [
+const guides = [
   {
-    title: "Бібліотека рослин",
+    title: "Як налаштувати освітлення",
     description:
-      "Повний список усіх рослин, що доступні в системі, разом із їхніми характеристиками та вимогами.",
-    link: "/wiki/plants/library",
+      "Основні правила виставлення інтенсивності світла та тривалості освітлення для різних рослин.",
+    link: "/wiki/guides/lighting",
   },
   {
-    title: "Групи рослин",
+    title: "Контроль рівня pH",
     description:
-      "Інформація про категорії рослин: плодоносні культури, зелені культури та інші групи.",
-    link: "/wiki/plants/groups",
+      "Як правильно вимірювати та регулювати pH у гідропонній системі.",
+    link: "/wiki/guides/ph-control",
+  },
+  {
+    title: "Оптимізація поживного розчину",
+    description:
+      "Короткий гайд по налаштуванню концентрації добрив для різних культур.",
+    link: "/wiki/guides/nutrients",
   },
 ];
 
-export default function PlantsPage() {
+export default function GuidesPage() {
   return (
     <Container sx={{ py: 6 }}>
       <Stack spacing={4}>
@@ -36,34 +42,33 @@ export default function PlantsPage() {
           color="primary.main"
           textAlign="center"
         >
-          🌿 Рослини в системі
+          🛠️ Гайди і поради
         </Typography>
 
         <Typography variant="h6" color="text.secondary" textAlign="center">
-          Вивчіть доступні культури та їхні особливості для оптимального
-          вирощування
+          Практичні інструкції для покращення роботи вашої гідропонної системи
         </Typography>
 
         <Stack spacing={3}>
-          {plantsSections.map((section, idx) => (
+          {guides.map((guide, idx) => (
             <Card key={idx} sx={{ backgroundColor: "secondary.light" }}>
               <CardContent>
                 <Typography variant="h5" fontWeight="bold" color="primary.main">
-                  {section.title}
+                  {guide.title}
                 </Typography>
                 <Typography
                   variant="body1"
                   color="text.secondary"
                   sx={{ mt: 1 }}
                 >
-                  {section.description}
+                  {guide.description}
                 </Typography>
                 <Box mt={2}>
                   <Button
                     variant="contained"
                     size="small"
                     component={Link}
-                    href={section.link}
+                    href={guide.link}
                   >
                     Перейти
                   </Button>

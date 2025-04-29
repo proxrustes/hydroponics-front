@@ -6,16 +6,16 @@ const prisma = new PrismaClient();
 
 export async function GET(req: Request) {
   try {
-     const url = new URL(req.url)
-  const id = url.pathname.split("/").pop()
+    const url = new URL(req.url);
+    const id = url.pathname.split("/").pop();
 
-  const plantId = parseInt(id || "")
+    const plantId = parseInt(id || "");
 
     const plant = await prisma.plant.findUnique({
       where: { id: plantId },
       include: {
-        plantGroup: true,  
-        norms: true
+        plantGroup: true,
+        norms: true,
       },
     });
 

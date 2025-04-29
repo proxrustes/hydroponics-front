@@ -11,22 +11,22 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 
-const plantsSections = [
+const paramsSections = [
   {
-    title: "Бібліотека рослин",
+    title: "Параметри зони",
     description:
-      "Повний список усіх рослин, що доступні в системі, разом із їхніми характеристиками та вимогами.",
-    link: "/wiki/plants/library",
+      "Температура повітря, вологість, вологість субстрату та інші показники, що контролюються в кожній зоні.",
+    link: "/wiki/params/zone",
   },
   {
-    title: "Групи рослин",
+    title: "Параметри поживного розчину",
     description:
-      "Інформація про категорії рослин: плодоносні культури, зелені культури та інші групи.",
-    link: "/wiki/plants/groups",
+      "pH рівень, концентрація поживних речовин, температура розчину та рівень розчину у станції.",
+    link: "/wiki/params/bucket",
   },
 ];
 
-export default function PlantsPage() {
+export default function ParamsPage() {
   return (
     <Container sx={{ py: 6 }}>
       <Stack spacing={4}>
@@ -36,16 +36,16 @@ export default function PlantsPage() {
           color="primary.main"
           textAlign="center"
         >
-          🌿 Рослини в системі
+          📈 Параметри системи
         </Typography>
 
         <Typography variant="h6" color="text.secondary" textAlign="center">
-          Вивчіть доступні культури та їхні особливості для оптимального
-          вирощування
+          Детальна інформація про основні параметри, які контролюються у
+          гідропоніці
         </Typography>
 
         <Stack spacing={3}>
-          {plantsSections.map((section, idx) => (
+          {paramsSections.map((section, idx) => (
             <Card key={idx} sx={{ backgroundColor: "secondary.light" }}>
               <CardContent>
                 <Typography variant="h5" fontWeight="bold" color="primary.main">

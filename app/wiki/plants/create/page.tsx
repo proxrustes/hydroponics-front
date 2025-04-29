@@ -1,7 +1,5 @@
-// app/(admin)/plants/new/page.tsx
-
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Container,
   TextField,
@@ -9,6 +7,7 @@ import {
   Stack,
   Typography,
   MenuItem,
+  CircularProgress,
 } from "@mui/material";
 import { customFetch } from "@/lib/utils/apiUtils";
 import PlantNormsForm from "@/components/create-plant/PlantNormsForm";
@@ -19,10 +18,27 @@ export default function NewPlantPage() {
   const [groupId, setGroupId] = useState<number | "new">("new");
   const [newGroupName, setNewGroupName] = useState("");
   const [norms, setNorms] = useState({});
-
   const [groups, setGroups] = useState<{ id: number; name: string }[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Підгрузити групи (можна покращити окремим useEffect)
+  // Загружаем группы при загрузке страницы
+  useEffect(() => {
+    const fetchGroups = async () => {
+      setIsLoading(true);
+      const res = await customFetch("plant-groups", "GET"); // ⚡ эндпоинт для групп
+      if (res.status === 200) {
+        setGroups(
+          res.message.map((group: any) => ({
+            id: group.id,
+            name: group.name,
+          }))
+        );
+      }
+      setIsLoading(false);
+    };
+
+    fetchGroups();
+  }, []);
 
   const handleSubmit = async () => {
     const payload = {
@@ -33,11 +49,11 @@ export default function NewPlantPage() {
       norms,
     };
 
-    const res = await customFetch("admin/plants", "POST", payload);
+    const res = await customFetch("plants", "POST", payload);
 
     if (res.status === 200) {
       alert("✅ Рослину додано!");
-      // Можливо, зробити редирект
+      // Можливо, редирект
     } else {
       alert("❌ Помилка при додаванні рослини");
     }
@@ -69,25 +85,29 @@ export default function NewPlantPage() {
           rows={3}
         />
 
-        <TextField
-          select
-          label="Група рослин"
-          value={groupId}
-          size="small"
-          onChange={(e) =>
-            setGroupId(
-              e.target.value === "new" ? "new" : Number(e.target.value)
-            )
-          }
-          fullWidth
-        >
-          {groups.map((group) => (
-            <MenuItem key={group.id} value={group.id}>
-              {group.name}
-            </MenuItem>
-          ))}
-          <MenuItem value="new">Нова група...</MenuItem>
-        </TextField>
+        {isLoading ? (
+          <CircularProgress />
+        ) : (
+          <TextField
+            select
+            label="Група рослин"
+            value={groupId}
+            size="small"
+            onChange={(e) =>
+              setGroupId(
+                e.target.value === "new" ? "new" : Number(e.target.value)
+              )
+            }
+            fullWidth
+          >
+            {groups.map((group) => (
+              <MenuItem key={group.id} value={group.id}>
+                {group.name}
+              </MenuItem>
+            ))}
+            <MenuItem value="new">Нова група...</MenuItem>
+          </TextField>
+        )}
 
         {groupId === "new" && (
           <TextField
