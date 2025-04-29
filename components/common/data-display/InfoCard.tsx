@@ -46,6 +46,9 @@ export function InfoCard(props: {
           justifyContent: "center",
           alignItems: "center",
           p: 4,
+          borderLeft: "8px solid red",
+          borderBottom: "8px solid red",
+          borderColor: "primary.dark",
         }}
       >
         <Typography

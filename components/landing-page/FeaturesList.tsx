@@ -8,7 +8,7 @@ export function FeaturesList() {
     <Stack gap={12}>
       <InfoCard
         orientation={"left"}
-        title={"Nurtients"}
+        title={"Nutrients"}
         description={
           "Optimal plant health starts with perfect nutrition. Deliver the right balance of minerals and elements to maximize growth and yields."
         }

@@ -1,16 +1,16 @@
-import { NextResponse } from "next/server"
-import { sign } from "@/lib/jwtUtils"
+import { NextResponse } from "next/server";
+import { sign } from "@/lib/utils/jwtUtils";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
 export async function POST(req: Request) {
-  const { email, password } = await req.json()
+  const { email, password } = await req.json();
 
-  const user = await prisma.user.findUnique({ where: { email } })
+  const user = await prisma.user.findUnique({ where: { email } });
 
   if (!user || user.password !== password) {
-    return NextResponse.json({ error: "Invalid credentials" }, { status: 401 })
+    return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
   }
 
   const token = await sign(
@@ -22,7 +22,7 @@ export async function POST(req: Request) {
       password: "", // токен не должен хранить пароль
     },
     process.env.JWT_KEY ?? "KEY"
-  )
+  );
 
-  return NextResponse.json({ token })
+  return NextResponse.json({ token });
 }

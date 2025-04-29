@@ -22,6 +22,9 @@ export default function Home() {
               px: 8,
               mt: 4,
               py: 12,
+              borderRight: "24px solid red",
+              borderBottom: "24px solid red",
+              borderColor: "primary.dark",
             }}
           >
             <Typography

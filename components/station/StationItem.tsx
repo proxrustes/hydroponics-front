@@ -4,7 +4,7 @@ import { Station } from "@/enums/types/Station";
 import { BucketParams } from "./BucketParams";
 import { CustomContainer } from "../common/CustomContainer";
 import { ZoneItem } from "../zone/ZoneItem";
-import { customFetch } from "@/lib/apiUtils";
+import { customFetch } from "@/lib/utils/apiUtils";
 import { useEffect, useState } from "react";
 import { Zone } from "@/enums/types/Zone";
 

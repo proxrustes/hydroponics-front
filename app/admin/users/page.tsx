@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useEffect, useState } from "react";
-import { customFetch } from "@/lib/apiUtils";
+import { customFetch } from "@/lib/utils/apiUtils";
 import { CustomContainer } from "@/components/common/CustomContainer";
 
 type User = {

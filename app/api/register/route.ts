@@ -1,16 +1,16 @@
-import { NextResponse } from "next/server"
-import { sign } from "@/lib/jwtUtils"
+import { NextResponse } from "next/server";
+import { sign } from "@/lib/utils/jwtUtils";
 
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
 export async function POST(req: Request) {
-  const { email, password, role, name } = await req.json()
+  const { email, password, role, name } = await req.json();
 
-  const existing = await prisma.user.findUnique({ where: { email } })
+  const existing = await prisma.user.findUnique({ where: { email } });
   if (existing) {
-    return NextResponse.json({ error: "User already exists" }, { status: 400 })
+    return NextResponse.json({ error: "User already exists" }, { status: 400 });
   }
 
   const user = await prisma.user.create({
@@ -20,7 +20,7 @@ export async function POST(req: Request) {
       password,
       role: role || "USER",
     },
-  })
+  });
 
   const token = await sign(
     {
@@ -31,7 +31,7 @@ export async function POST(req: Request) {
       password: "",
     },
     process.env.JWT_KEY ?? "KEY"
-  )
+  );
 
-  return NextResponse.json({ token })
+  return NextResponse.json({ token });
 }

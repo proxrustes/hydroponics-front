@@ -3,7 +3,7 @@ import { Stack } from "@mui/material";
 import { StationItem } from "./StationItem";
 import { useEffect, useState } from "react";
 import { Station } from "@/enums/types/Station";
-import { customFetch } from "@/lib/apiUtils";
+import { customFetch } from "@/lib/utils/apiUtils";
 
 export function StationsSection() {
   const [stations, setStations] = useState<Station[]>([]);

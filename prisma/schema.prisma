@@ -60,6 +60,9 @@ model Station {
   name             String
   zones            Zone[]
   StationParamsLog StationParamsLog[]
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
 }
 
 model Zone {
@@ -137,6 +140,8 @@ model User {
   name     String
   password String
   role     Role   @default(USER)
+
+  stations Station[]
 }
 
 enum Role {

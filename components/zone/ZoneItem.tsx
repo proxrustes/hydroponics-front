@@ -1,68 +1,80 @@
-import { Box, ButtonGroup, Divider, IconButton, LinearProgress, Stack, Typography } from "@mui/material"
-import Grid from "@mui/material/Grid2"
-import { useState, useEffect } from "react"
-import { Parameter } from "./Parameter"
-import SettingsIcon from "@mui/icons-material/Settings"
-import InsertChartIcon from "@mui/icons-material/InsertChart"
-import { createParameters, parameterConfig } from "@/lib/parameterConfig"
-import { customFetch } from "@/lib/apiUtils"
+import {
+  Box,
+  ButtonGroup,
+  Divider,
+  IconButton,
+  LinearProgress,
+  Stack,
+  Typography,
+} from "@mui/material";
+import Grid from "@mui/material/Grid2";
+import { useState, useEffect } from "react";
+import { Parameter } from "./Parameter";
+import SettingsIcon from "@mui/icons-material/Settings";
+import InsertChartIcon from "@mui/icons-material/InsertChart";
+import { createParameters, parameterConfig } from "@/lib/parameterConfig";
+import { customFetch } from "@/lib/utils/apiUtils";
 // Тип Zone — ваш
-import { Zone } from "@/enums/types/Zone"
+import { Zone } from "@/enums/types/Zone";
 
 export function ZoneItem(props: { zoneId: number }) {
-  const [zone, setZone] = useState<Zone | null>()
-  const [currentParams, setCurrentParams] = useState<any>()
-  const [zoneNorms, setZoneNorms] = useState<Record<string, [number, number]>>()
+  const [zone, setZone] = useState<Zone | null>();
+  const [currentParams, setCurrentParams] = useState<any>();
+  const [zoneNorms, setZoneNorms] =
+    useState<Record<string, [number, number]>>();
 
   useEffect(() => {
     const fetchZoneInfo = async () => {
       try {
-        const response = await customFetch(`zone/${props.zoneId}`, "GET")
+        const response = await customFetch(`zone/${props.zoneId}`, "GET");
         if (response.status === 200) {
-          setZone(response.message)
+          setZone(response.message);
         }
       } catch (error) {
-        console.error("Fetch zone info error:", error)
+        console.error("Fetch zone info error:", error);
       }
-    }
+    };
 
     const fetchZoneParams = async () => {
       try {
-        const response = await customFetch(`zone/${props.zoneId}/currentParams`, "GET")
+        const response = await customFetch(
+          `zone/${props.zoneId}/currentParams`,
+          "GET"
+        );
         if (response.status === 200) {
-          setCurrentParams(response.message)
+          setCurrentParams(response.message);
         }
       } catch (error) {
-        console.error("Fetch zone params error:", error)
+        console.error("Fetch zone params error:", error);
       }
-    }
+    };
 
     const fetchZoneNorms = async () => {
       try {
-        const response = await customFetch(`zone/${props.zoneId}/norms`, "GET")
+        const response = await customFetch(`zone/${props.zoneId}/norms`, "GET");
         if (response.status === 200) {
-          setZoneNorms(response.message.effectiveNorms)
+          setZoneNorms(response.message.effectiveNorms);
         }
       } catch (error) {
-        console.error("Fetch zone norms error:", error)
+        console.error("Fetch zone norms error:", error);
       }
-    }
+    };
 
-    fetchZoneInfo()
-    fetchZoneParams()
-    fetchZoneNorms()
-  }, [props.zoneId])
+    fetchZoneInfo();
+    fetchZoneParams();
+    fetchZoneNorms();
+  }, [props.zoneId]);
 
   if (!zone || !currentParams || !zoneNorms) {
-    return <LinearProgress />
+    return <LinearProgress />;
   }
-  
+
   const parameters = createParameters(
     ["airHumidity", "temperature", "substrateHumidity"],
     parameterConfig,
     currentParams, // фактические значения (текущие)
-    zoneNorms          // нормы
-  )
+    zoneNorms // нормы
+  );
 
   return (
     <Box sx={{ p: 2 }}>
@@ -96,5 +108,5 @@ export function ZoneItem(props: { zoneId: number }) {
 
       <Divider sx={{ mt: 2 }} />
     </Box>
-  )
+  );
 }

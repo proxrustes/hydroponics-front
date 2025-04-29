@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { decodeJwt } from "jose";
-import { verify } from "./lib/jwtUtils";
+import { verify } from "./lib/utils/jwtUtils";
 
 export const adminRoutes = ["/admin", "/admin/users", "/admin/users/"];
 

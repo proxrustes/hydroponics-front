@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
 import {
   Stack,
   Typography,
@@ -6,116 +6,134 @@ import {
   Button,
   IconButton,
   Tooltip,
-  LinearProgress
-} from "@mui/material"
-import RestartAltIcon from "@mui/icons-material/RestartAlt"
-import { CustomContainer } from "@/components/common/CustomContainer"
-import { customFetch } from "@/lib/apiUtils"
+  LinearProgress,
+} from "@mui/material";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import { CustomContainer } from "@/components/common/CustomContainer";
+import { customFetch } from "@/lib/utils/apiUtils";
 
-type RangeTuple = [number, number]
+type RangeTuple = [number, number];
 
 export interface ZoneParamNorms {
-  airHumidity: RangeTuple
-  temperature: RangeTuple
-  substrateHumidity: RangeTuple
+  airHumidity: RangeTuple;
+  temperature: RangeTuple;
+  substrateHumidity: RangeTuple;
 }
 
 interface CustomNormsSectionProps {
-  zoneId: number
-  onUpdate?: () => void
+  zoneId: number;
+  onUpdate?: () => void;
 }
 
-export function CustomNormsSection({ zoneId, onUpdate }: CustomNormsSectionProps) {
-  const [customParams, setCustomParams] = useState<ZoneParamNorms | null>(null)
+export function CustomNormsSection({
+  zoneId,
+  onUpdate,
+}: CustomNormsSectionProps) {
+  const [customParams, setCustomParams] = useState<ZoneParamNorms | null>(null);
   useEffect(() => {
     const fetchNorms = async () => {
       try {
-        const response = await customFetch(`zone/${zoneId}/norms`, "GET")
+        const response = await customFetch(`zone/${zoneId}/norms`, "GET");
         if (response.status === 200 && response.message?.effectiveNorms) {
-          setCustomParams(response.message.effectiveNorms)
+          setCustomParams(response.message.effectiveNorms);
         }
       } catch (error) {
-        console.error("Failed to fetch norms:", error)
+        console.error("Failed to fetch norms:", error);
       }
-    }
-    fetchNorms()
-  }, [zoneId])
+    };
+    fetchNorms();
+  }, [zoneId]);
 
   if (!customParams) {
-    return <LinearProgress />
+    return <LinearProgress />;
   }
 
-  const handleParamChange = (key: keyof ZoneParamNorms, value: [number, number]) => {
+  const handleParamChange = (
+    key: keyof ZoneParamNorms,
+    value: [number, number]
+  ) => {
     setCustomParams((prev) => {
-      if (!prev) return prev
-      return { ...prev, [key]: value }
-    })
-  }
+      if (!prev) return prev;
+      return { ...prev, [key]: value };
+    });
+  };
 
   const handleReset = (key: keyof ZoneParamNorms) => {
     setCustomParams((prev) => {
-      if (!prev) return prev
-      return { ...prev, [key]: [0, 0] }
-    })
-  }
+      if (!prev) return prev;
+      return { ...prev, [key]: [0, 0] };
+    });
+  };
 
   // 3. Нажатие на Apply → PUT запрос
   const handleSave = async () => {
     try {
-      const response = await customFetch(`zone/${zoneId}/norms`, "PUT", customParams)
+      const response = await customFetch(
+        `zone/${zoneId}/norms`,
+        "PUT",
+        customParams
+      );
       if (response.status === 200) {
-        alert("Custom norms saved successfully")
-        onUpdate?.()
+        alert("Custom norms saved successfully");
+        onUpdate?.();
       } else {
-        alert("Failed to save norms")
+        alert("Failed to save norms");
       }
     } catch (error) {
-      console.error("Failed to save norms:", error)
-      alert("Error occurred while saving norms")
+      console.error("Failed to save norms:", error);
+      alert("Error occurred while saving norms");
     }
-  }
+  };
 
   return (
     <CustomContainer>
       <Stack spacing={2}>
-        {(["airHumidity", "temperature", "substrateHumidity"] as const).map((key) => (
-          <Stack key={key} spacing={1}>
-            <Typography sx={{ fontWeight: 600 }}>
-              {key.charAt(0).toUpperCase() + key.slice(1)}
-            </Typography>
-            <Stack direction="row" spacing={2} alignItems="center">
-              <TextField
-                label="Min"
-                size="small"
-                type="number"
-                value={customParams[key][0]}
-                onChange={(e) =>
-                  handleParamChange(key, [Number(e.target.value), customParams[key][1]])
-                }
-                fullWidth
-              />
-              <TextField
-                label="Max"
-                size="small"
-                type="number"
-                value={customParams[key][1]}
-                onChange={(e) =>
-                  handleParamChange(key, [customParams[key][0], Number(e.target.value)])
-                }
-                fullWidth
-              />
-              <Tooltip title="Reset to Default">
-                <IconButton onClick={() => handleReset(key)}>
-                  <RestartAltIcon />
-                </IconButton>
-              </Tooltip>
+        {(["airHumidity", "temperature", "substrateHumidity"] as const).map(
+          (key) => (
+            <Stack key={key} spacing={1}>
+              <Typography sx={{ fontWeight: 600 }}>
+                {key.charAt(0).toUpperCase() + key.slice(1)}
+              </Typography>
+              <Stack direction="row" spacing={2} alignItems="center">
+                <TextField
+                  label="Min"
+                  size="small"
+                  type="number"
+                  value={customParams[key][0]}
+                  onChange={(e) =>
+                    handleParamChange(key, [
+                      Number(e.target.value),
+                      customParams[key][1],
+                    ])
+                  }
+                  fullWidth
+                />
+                <TextField
+                  label="Max"
+                  size="small"
+                  type="number"
+                  value={customParams[key][1]}
+                  onChange={(e) =>
+                    handleParamChange(key, [
+                      customParams[key][0],
+                      Number(e.target.value),
+                    ])
+                  }
+                  fullWidth
+                />
+                <Tooltip title="Reset to Default">
+                  <IconButton onClick={() => handleReset(key)}>
+                    <RestartAltIcon />
+                  </IconButton>
+                </Tooltip>
+              </Stack>
             </Stack>
-          </Stack>
-        ))}
+          )
+        )}
         <Button variant="contained" color="primary" onClick={handleSave}>
           Apply
         </Button>
       </Stack>
     </CustomContainer>
-  )
+  );
 }
