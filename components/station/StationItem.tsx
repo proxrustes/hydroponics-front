@@ -10,6 +10,7 @@ import { Zone } from "@/enums/types/Zone";
 
 export function StationItem(props: { stationId: number }) {
   const [station, setStation] = useState<Station>();
+
   useEffect(() => {
     const fetchData = async () => {
       try {

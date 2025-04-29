@@ -1,48 +1,48 @@
-import { PrismaClient } from "@prisma/client"
-import { NextResponse } from "next/server"
-import { HTTP_RESPONSES } from "@/definitions/HttpDefinitions"
+import { PrismaClient } from "@prisma/client";
+import { NextResponse } from "next/server";
+import { HTTP_RESPONSES } from "@/definitions/HttpDefinitions";
+import { parse } from "@/lib/utils/jwtUtils";
+import { cookies } from "next/headers";
 
-// Инициируем Prisma
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
-// Route: GET /api/station/[id]/bucket
-export async function GET(
-  req: Request
-) {
+export async function GET(req: Request) {
   try {
-     const url = new URL(req.url)
-     console.log(url.pathname.split("/"))
-  const id = url.pathname.split("/")[3]
+    const url = new URL(req.url);
+    const id = url.pathname.split("/")[3];
 
-  const stationId = parseInt(id || "")
-    
+    const stationId = parseInt(id || "");
+
     if (isNaN(stationId)) {
-      return NextResponse.json(HTTP_RESPONSES[400]("id"))
+      return NextResponse.json(HTTP_RESPONSES[400]("id"));
     }
-    
+    const cookieStore = await cookies();
+    const token = cookieStore.get("currentUser")?.value;
+    if (!token) return NextResponse.json(HTTP_RESPONSES[401]);
+
+    const user = await parse(token);
+    if (!user) return NextResponse.json(HTTP_RESPONSES[401]);
+
     const station = await prisma.station.findUnique({
-      where: { id: stationId }
-    })
+      where: { id: stationId },
+    });
 
     if (!station) {
-      return NextResponse.json(HTTP_RESPONSES[404]("Station"))
+      return NextResponse.json(HTTP_RESPONSES[404]("Station"));
     }
-
-    // 2. Ищем «последнюю» запись из лога
     const currentStationParams = await prisma.stationParamsLog.findFirst({
       where: { stationId: station.id },
       orderBy: { recordedAt: "desc" },
-    })
+    });
 
-    // 3. Формируем итоговый объект
     const result = {
       station,
       currentStationParams,
-    }
+    };
 
-    return NextResponse.json(HTTP_RESPONSES[200](result))
+    return NextResponse.json(HTTP_RESPONSES[200](result));
   } catch (error: any) {
-    console.error("❌ Error fetching station bucket params:", error)
-    return NextResponse.json(HTTP_RESPONSES[500](error.message))
+    console.error("❌ Error fetching station bucket params:", error);
+    return NextResponse.json(HTTP_RESPONSES[500](error.message));
   }
 }

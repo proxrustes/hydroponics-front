@@ -20,6 +20,7 @@ import { Zone } from "@/enums/types/Zone";
 export function ZoneItem(props: { zoneId: number }) {
   const [zone, setZone] = useState<Zone | null>();
   const [currentParams, setCurrentParams] = useState<any>();
+  console.log(zone);
   const [zoneNorms, setZoneNorms] =
     useState<Record<string, [number, number]>>();
 
@@ -66,6 +67,7 @@ export function ZoneItem(props: { zoneId: number }) {
   }, [props.zoneId]);
 
   if (!zone || !currentParams || !zoneNorms) {
+    console.log(zone, currentParams, zoneNorms);
     return <LinearProgress />;
   }
 

@@ -14,6 +14,7 @@ export async function customFetch(
       next: { revalidate: 0 },
       method,
       headers,
+      credentials: "include",
       body: body ? JSON.stringify(body) : undefined,
     });
 
