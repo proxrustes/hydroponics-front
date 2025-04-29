@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "prisma-setup": "scripts\\prisma-setup.cmd",
-     "vercel-build": "prisma generate && ts-node prisma/seed.ts && next build"
+    "vercel-build": "prisma generate && ts-node prisma/seed.ts && next build"
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
@@ -22,7 +22,9 @@
     "next": "15.0.3",
     "prisma": "^6.2.1",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
     "@types/node": "^20.17.14",
