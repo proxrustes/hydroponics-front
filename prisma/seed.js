@@ -5,7 +5,6 @@ const prisma = new PrismaClient();
 async function seed() {
   console.log("🌱 Начинаем сидирование...");
 
-  // Чистим таблицы
   await prisma.zoneParamsLog.deleteMany({});
   await prisma.stationParamsLog.deleteMany({});
   await prisma.zoneNorms.deleteMany({});
@@ -18,7 +17,6 @@ async function seed() {
 
   console.log("🧹 База данных очищена");
 
-  // Создаём пользователей по одному
   const admin = await prisma.user.create({
     data: {
       email: "admin@hydro.local",
@@ -55,7 +53,6 @@ async function seed() {
     },
   });
 
-  // Создаём растение Томат
   const tomatoPlant = await prisma.plant.create({
     data: {
       name: "Томат",
@@ -64,7 +61,6 @@ async function seed() {
     },
   });
 
-  // Нормы для Томатов
   await prisma.norms.create({
     data: {
       plantId: tomatoPlant.id,

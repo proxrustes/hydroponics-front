@@ -4,7 +4,6 @@ import { Container, Stack, Typography } from "@mui/material";
 import ParameterChart from "@/components/graphs/ParameterChart";
 import { useParams } from "next/navigation";
 import { CustomContainer } from "@/components/common/CustomContainer";
-import Grid from "@mui/material/Grid2";
 
 export default function ZoneParamsDashboardPage() {
   const { zoneId } = useParams();
