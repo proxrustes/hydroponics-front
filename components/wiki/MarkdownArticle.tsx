@@ -1,10 +1,11 @@
-import fs from "fs";
-import path from "path";
+"use client";
+
+import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Container, Divider, Paper, Typography } from "@mui/material";
 
-export async function MarkdownArticle({
+export function MarkdownArticle({
   section,
   filename,
   title,
@@ -13,21 +14,22 @@ export async function MarkdownArticle({
   filename: string;
   title: string;
 }) {
-  const filePath = path.join(
-    process.cwd(),
-    "content",
-    "wiki",
-    section,
-    `${filename}.md`
-  );
-  let fileContent = "";
+  const [content, setContent] = useState("# Завантаження...");
 
-  try {
-    fileContent = fs.readFileSync(filePath, "utf8");
-  } catch (error) {
-    console.log(error);
-    fileContent = "# Помилка\nНе вдалося завантажити статтю.";
-  }
+  useEffect(() => {
+    const fetchContent = async () => {
+      try {
+        const res = await fetch(`/wiki/${section}/${filename}.md`);
+        if (!res.ok) throw new Error("404");
+        const text = await res.text();
+        setContent(text);
+      } catch (e) {
+        setContent("# Помилка\nНе вдалося завантажити статтю.");
+      }
+    };
+
+    fetchContent();
+  }, [section, filename]);
 
   return (
     <Container maxWidth="xl">
@@ -35,8 +37,8 @@ export async function MarkdownArticle({
         <Typography variant="h4" fontWeight="bold" mb={4}>
           {title}
         </Typography>
-        <Divider />
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>{fileContent}</ReactMarkdown>
+        <Divider sx={{ mb: 4 }} />
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
       </Paper>
     </Container>
   );
