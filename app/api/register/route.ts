@@ -1,9 +1,6 @@
 import { NextResponse } from "next/server";
 import { sign } from "@/lib/utils/jwtUtils";
-
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
 
 export async function POST(req: Request) {
   const { email, password, role, name } = await req.json();

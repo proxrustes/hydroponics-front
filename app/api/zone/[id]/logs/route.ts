@@ -1,8 +1,6 @@
-import { PrismaClient } from "@prisma/client"
 import { NextResponse } from "next/server"
 import { HTTP_RESPONSES } from "@/definitions/HttpDefinitions"
-
-const prisma = new PrismaClient()
+import { prisma } from "@/lib/prisma";
 
 /**
  * Пример: GET /api/zone/[id]/logs?start=2025-01-01T00:00:00Z&end=2025-01-30T23:59:59Z&limit=50

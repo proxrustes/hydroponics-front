@@ -1,8 +1,6 @@
 import { HTTP_RESPONSES } from "@/definitions/HttpDefinitions";
-import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
 
 export async function DELETE(req: NextRequest) {
   const url = new URL(req.url);
