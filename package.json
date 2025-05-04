@@ -2,14 +2,13 @@
   "name": "hydroponics-front",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && node prisma/seed.js && next build",
+    "build": "prisma generate  && prisma db seed && next build",
     "start": "next start",
     "lint": "next lint",
     "prisma-setup": "scripts\\prisma-setup.cmd",
-    "vercel-build": "prisma generate && node prisma/seed.js && next build"
+    "vercel-build": "prisma generate && prisma db seed && next build"
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
@@ -35,6 +34,6 @@
     "typescript": "^5"
   },
   "prisma": {
-    "seed": "node prisma/seed.js"
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   }
 }
