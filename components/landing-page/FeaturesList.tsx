@@ -8,30 +8,31 @@ export function FeaturesList() {
     <Stack gap={12}>
       <InfoCard
         orientation={"left"}
-        title={"Nutrients"}
+        title={"Поживні речовини"}
         description={
-          "Optimal plant health starts with perfect nutrition. Deliver the right balance of minerals and elements to maximize growth and yields."
+          "Оптимальне здоров’я рослин починається з правильної поживи. Забезпечте ідеальний баланс мінералів та елементів для максимального росту та врожайності."
         }
-        quote={"Feed the roots, and the leaves will follow."}
+        quote={"Годуй коріння — листя подбає про себе."}
         icon={WaterDropIcon}
       />
 
       <InfoCard
         orientation={"right"}
-        title={"Controls"}
+        title={"Контроль"}
         description={
-          "Automation and precision are key. Monitor and adjust environmental conditions to create the perfect habitat for plants to thrive"
+          "Автоматизація та точність — ключ до успіху. Слідкуйте та регулюйте умови довкілля, щоб створити ідеальне середовище для росту рослин."
         }
-        quote={"Master the environment, master the harvest."}
+        quote={"Хто контролює середовище — той контролює врожай."}
         icon={TuneIcon}
       />
+
       <InfoCard
         orientation={"left"}
-        title={"Monitoring"}
+        title={"Моніторинг"}
         description={
-          "Continuous monitoring ensures early detection of problems and maintains optimal conditions. Stay a step ahead at all times."
+          "Постійний моніторинг дозволяє вчасно виявляти проблеми та підтримувати оптимальні умови. Завжди будьте на крок попереду."
         }
-        quote={"What gets measured, gets improved."}
+        quote={"Що вимірюється — те покращується."}
         icon={AssessmentIcon}
       />
     </Stack>

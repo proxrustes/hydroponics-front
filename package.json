@@ -11,11 +11,12 @@
     "vercel-build": "prisma generate && prisma db seed && next build"
   },
   "dependencies": {
-    "@emotion/react": "^11.13.3",
-    "@emotion/styled": "^11.13.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^6.1.7",
-    "@mui/material": "^6.1.7",
+    "@mui/material": "^6.4.11",
     "@mui/x-charts": "^7.24.1",
+    "@mui/x-data-grid": "^8.2.0",
     "@prisma/client": "^6.6.0",
     "jose": "^6.0.10",
     "jsonwebtoken": "^9.0.2",

@@ -32,10 +32,10 @@ export default function Home() {
                 color: "primary.main",
                 fontWeight: 800,
                 fontSize: 92,
-                lineHeight: 0.8,
+                lineHeight: 1,
               }}
             >
-              From ROOTS to FRUITS, perfected
+              Від росту до врожаю — без компромісів
             </Typography>
           </Stack>
         </Stack>

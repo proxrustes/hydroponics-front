@@ -8,7 +8,6 @@ import {
   Tabs,
   TextField,
   Typography,
-  MenuItem,
   Paper,
 } from "@mui/material";
 import { useState } from "react";
@@ -31,13 +30,17 @@ export default function LoginPage() {
 
     if (tab === 0) {
       res = await authService.login(email, password);
+      if (res.token) {
+        router.push("/");
+      }
     } else {
-      res = await authService.register(email, password, "USER");
+      res = await authService.register(name, email, password, "USER");
+      if (res.token) {
+        router.push("/wiki/guides/how-to-start");
+      }
     }
 
-    if (res.token) {
-      router.push("/");
-    } else {
+    if (!res.token) {
       alert("❌ Ошибка: " + (res.error ?? "неизвестная"));
       router.push("/login");
     }

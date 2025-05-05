@@ -1,17 +1,17 @@
-"use client";
-
 import { MarkdownArticle } from "@/components/wiki/MarkdownArticle";
-import { useParams } from "next/navigation";
+import { notFound } from "next/navigation";
 
-export default async function WikiArticlePage() {
-  const { section, title } = useParams();
+interface PageProps {
+  params: {
+    section: string;
+    title: string;
+  };
+}
 
-  if (!section || typeof section !== "string") {
-    return <div>section</div>;
-  }
-  if (!title || typeof title !== "string") {
-    return <div>title</div>;
-  }
+export default function WikiArticlePage({ params }: PageProps) {
+  const { section, title } = params;
+
+  if (!section || !title) return notFound();
 
   return (
     <MarkdownArticle
