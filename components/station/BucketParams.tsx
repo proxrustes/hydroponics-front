@@ -25,7 +25,7 @@ export function BucketParams(props: { stationId: number }) {
     const fetchData = async () => {
       try {
         const response = await customFetch(
-          `stations/${props.stationId}/bucketParams`,
+          `stations/${props.stationId}/params`,
           "GET"
         );
         if (response.status === 200) {

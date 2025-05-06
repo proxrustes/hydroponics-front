@@ -43,7 +43,7 @@ export function ParamsSection({ zoneId }: { zoneId: number }) {
     // 2. Грузим "текущие параметры" (из логов)
     const fetchCurrentParams = async () => {
       try {
-        const res = await customFetch(`zone/${zoneId}/currentParams`, "GET");
+        const res = await customFetch(`zone/${zoneId}/params`, "GET");
         if (res.status === 200) {
           setCurrentParams(res.message);
         }

@@ -45,3 +45,41 @@ export async function GET(req: Request) {
     return NextResponse.json(HTTP_RESPONSES[500](error.message));
   }
 }
+
+export async function POST(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
+  const stationId = parseInt(params.id);
+  if (isNaN(stationId)) {
+    return NextResponse.json({ error: "Invalid station ID" }, { status: 400 });
+  }
+
+  const body = await req.json();
+  const { phLevel, nutrientConcentration, solutionTemperature, solutionLvl } =
+    body;
+
+  if (
+    typeof phLevel !== "number" ||
+    typeof nutrientConcentration !== "number" ||
+    typeof solutionTemperature !== "number" ||
+    typeof solutionLvl !== "number"
+  ) {
+    return NextResponse.json(
+      { error: "Missing or invalid fields" },
+      { status: 400 }
+    );
+  }
+
+  const log = await prisma.stationParamsLog.create({
+    data: {
+      stationId,
+      phLevel,
+      nutrientConcentration,
+      solutionTemperature,
+      solutionLvl,
+    },
+  });
+
+  return NextResponse.json(log, { status: 201 });
+}

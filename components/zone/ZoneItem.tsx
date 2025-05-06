@@ -39,7 +39,7 @@ export function ZoneItem(props: { zoneId: number }) {
     const fetchZoneParams = async () => {
       try {
         const response = await customFetch(
-          `zone/${props.zoneId}/currentParams`,
+          `zone/${props.zoneId}/params`,
           "GET"
         );
         if (response.status === 200) {
