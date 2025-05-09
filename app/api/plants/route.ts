@@ -35,7 +35,6 @@ export async function POST(req: Request) {
 
     let finalGroupId = groupId;
 
-    // Если указано создание новой группы
     if (!groupId && newGroupName) {
       const newGroup = await prisma.plantGroup.create({
         data: { name: newGroupName },
@@ -47,7 +46,6 @@ export async function POST(req: Request) {
       return NextResponse.json(HTTP_RESPONSES[400]("Plant group is required"));
     }
 
-    // Создаём растение
     const plant = await prisma.plant.create({
       data: {
         name,

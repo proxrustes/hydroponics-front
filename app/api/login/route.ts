@@ -17,7 +17,7 @@ export async function POST(req: Request) {
       email: user.email,
       name: user.email.split("@")[0],
       role: user.role,
-      password: "", // токен не должен хранить пароль
+      password: "",
     },
     process.env.JWT_KEY ?? "KEY"
   );

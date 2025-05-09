@@ -79,7 +79,7 @@ export default function AdminUsersPage() {
               <TableCell>Дії</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
+          <TableBody key="users">
             {users.map((user) => (
               <>
                 <TableRow key={user.id}>

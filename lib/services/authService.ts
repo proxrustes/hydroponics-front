@@ -68,7 +68,6 @@ export const authService = {
 
     const { token } = await res.json();
     if (token) {
-      // 💥 кука вместо localStorage
       document.cookie = `currentUser=${token}; path=/; max-age=3600`;
       return { token };
     }

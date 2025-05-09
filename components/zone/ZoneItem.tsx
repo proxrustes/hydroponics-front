@@ -14,13 +14,11 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import InsertChartIcon from "@mui/icons-material/InsertChart";
 import { createParameters, parameterConfig } from "@/lib/parameterConfig";
 import { customFetch } from "@/lib/utils/apiUtils";
-// Тип Zone — ваш
 import { Zone } from "@/enums/types/Zone";
 
 export function ZoneItem(props: { zoneId: number }) {
   const [zone, setZone] = useState<Zone | null>();
   const [currentParams, setCurrentParams] = useState<any>();
-  console.log(zone);
   const [zoneNorms, setZoneNorms] =
     useState<Record<string, [number, number]>>();
 
@@ -74,8 +72,8 @@ export function ZoneItem(props: { zoneId: number }) {
   const parameters = createParameters(
     ["airHumidity", "temperature", "substrateHumidity"],
     parameterConfig,
-    currentParams, // фактические значения (текущие)
-    zoneNorms // нормы
+    currentParams,
+    zoneNorms
   );
 
   return (

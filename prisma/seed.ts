@@ -46,7 +46,6 @@ async function seed() {
 
   console.log("✅ Пользователи добавлены");
 
-  // Создаём группу растений
   const plantGroup = await prisma.plantGroup.create({
     data: {
       name: "Плодоносні рослини",
@@ -85,7 +84,6 @@ async function seed() {
 
   console.log("✅ Растения и нормы добавлены");
 
-  // Создаём станции по одной
   const station1 = await prisma.station.create({
     data: { name: "Станція 1 користувача 1", userId: user1.id },
   });
@@ -100,7 +98,6 @@ async function seed() {
 
   console.log("✅ Станции добавлены");
 
-  // Создаём зоны по одной
   const zone1 = await prisma.zone.create({
     data: {
       name: "Зона A станції 1",
@@ -130,7 +127,6 @@ async function seed() {
 
   console.log("✅ Зоны добавлены");
 
-  // Создаём логи параметров станций по одной
   await prisma.stationParamsLog.create({
     data: {
       stationId: station1.id,
@@ -155,7 +151,6 @@ async function seed() {
 
   console.log("✅ Логи параметров станций добавлены");
 
-  // Создаём логи параметров зон
   const now = Date.now();
   for (let i = 0; i < 10; i++) {
     await prisma.zoneParamsLog.create({
@@ -183,7 +178,6 @@ async function seed() {
     });
   }
 
-  // Логи для zone3
   for (let i = 0; i < 6; i++) {
     await prisma.zoneParamsLog.create({
       data: {

@@ -28,7 +28,6 @@ export function ParamsSection({ zoneId }: { zoneId: number }) {
   > | null>(null);
 
   useEffect(() => {
-    // 1. Грузим общую инфу о зоне
     const fetchZone = async () => {
       try {
         const res = await customFetch(`zone/${zoneId}`, "GET");
@@ -40,7 +39,6 @@ export function ParamsSection({ zoneId }: { zoneId: number }) {
       }
     };
 
-    // 2. Грузим "текущие параметры" (из логов)
     const fetchCurrentParams = async () => {
       try {
         const res = await customFetch(`zone/${zoneId}/params`, "GET");
@@ -52,7 +50,6 @@ export function ParamsSection({ zoneId }: { zoneId: number }) {
       }
     };
 
-    // 3. Грузим "эффективные" нормы
     const fetchNorms = async () => {
       try {
         const res = await customFetch(`zone/${zoneId}/norms`, "GET");

@@ -7,23 +7,13 @@ import {
   Paper,
   Stack,
   Divider,
-  TextField,
-  MenuItem,
   Button,
 } from "@mui/material";
 import { customFetch } from "@/lib/utils/apiUtils";
-import { authService } from "@/lib/services/authService"; // где есть getCurrentUser()
-import { CustomContainer } from "@/components/common/CustomContainer";
+import { authService } from "@/lib/services/authService";
 
 export default function PlantLibraryPage() {
   const [groups, setGroups] = useState<any[]>([]);
-  const [showForm, setShowForm] = useState(false);
-  const [formState, setFormState] = useState({
-    name: "",
-    description: "",
-    plantGroupId: "",
-  });
-
   const currentUser = authService.getCurrentUser();
   const isAdmin = currentUser?.role === "ADMIN";
 

@@ -21,11 +21,10 @@ export default function NewPlantPage() {
   const [groups, setGroups] = useState<{ id: number; name: string }[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Загружаем группы при загрузке страницы
   useEffect(() => {
     const fetchGroups = async () => {
       setIsLoading(true);
-      const res = await customFetch("plant-groups", "GET"); // ⚡ эндпоинт для групп
+      const res = await customFetch("plant-groups", "GET");
       if (res.status === 200) {
         setGroups(
           res.message.map((group: any) => ({
@@ -53,7 +52,6 @@ export default function NewPlantPage() {
 
     if (res.status === 200) {
       alert("✅ Рослину додано!");
-      // Можливо, редирект
     } else {
       alert("❌ Помилка при додаванні рослини");
     }
