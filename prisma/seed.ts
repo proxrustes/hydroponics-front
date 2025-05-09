@@ -6,7 +6,9 @@ async function seed() {
   console.log("🌱 Начинаем сидирование...");
 
   await prisma.zoneParamsLog.deleteMany({});
-  await prisma.stationParamsLog.deleteMany({});
+  await prisma.bucketParamsLog.deleteMany({});
+  await prisma.zoneParams.deleteMany({});
+  await prisma.bucketParams.deleteMany({});
   await prisma.zoneNorms.deleteMany({});
   await prisma.zone.deleteMany({});
   await prisma.station.deleteMany({});
@@ -85,15 +87,15 @@ async function seed() {
   console.log("✅ Растения и нормы добавлены");
 
   const station1 = await prisma.station.create({
-    data: { name: "Станція 1 користувача 1", userId: user1.id },
+    data: { name: "Станція 1 користувача 1", uuid: "100", userId: user1.id },
   });
 
   const station2 = await prisma.station.create({
-    data: { name: "Станція 2 користувача 1", userId: user1.id },
+    data: { name: "Станція 2 користувача 1", uuid: "101", userId: user1.id },
   });
 
   const station3 = await prisma.station.create({
-    data: { name: "Станція 1 користувача 2", userId: user2.id },
+    data: { name: "Станція 1 користувача 2", uuid: "120", userId: user2.id },
   });
 
   console.log("✅ Станции добавлены");
@@ -127,69 +129,48 @@ async function seed() {
 
   console.log("✅ Зоны добавлены");
 
-  await prisma.stationParamsLog.create({
-    data: {
-      stationId: station1.id,
-      recordedAt: new Date(),
-      phLevel: 6.2,
-      nutrientConcentration: 2.0,
-      solutionTemperature: 22,
-      solutionLvl: 85,
-    },
-  });
+  await Promise.all([
+    prisma.bucketParams.create({
+      data: {
+        stationId: station1.id,
+        phLevel: 6.2,
+        nutrientConcentration: 2.1,
+        solutionTemperature: 22,
+        solutionLvl: 85,
+      },
+    }),
+    prisma.bucketParams.create({
+      data: {
+        stationId: station2.id,
+        phLevel: 6.1,
+        nutrientConcentration: 2.4,
+        solutionTemperature: 21,
+        solutionLvl: 80,
+      },
+    }),
+  ]);
 
-  await prisma.stationParamsLog.create({
-    data: {
-      stationId: station2.id,
-      recordedAt: new Date(),
-      phLevel: 6.1,
-      nutrientConcentration: 2.4,
-      solutionTemperature: 21,
-      solutionLvl: 80,
-    },
-  });
-
-  console.log("✅ Логи параметров станций добавлены");
-
-  const now = Date.now();
-  for (let i = 0; i < 10; i++) {
-    await prisma.zoneParamsLog.create({
+  // Поточні параметри зони
+  await Promise.all([
+    prisma.zoneParams.create({
       data: {
         zoneId: zone1.id,
-        recordedAt: new Date(now - i * 15 * 60_000),
-        temperature: 23 + Math.random(),
-        airHumidity: 70 + Math.floor(Math.random() * 10),
-        substrateHumidity: 65 + Math.floor(Math.random() * 10),
-        isLightOn: i % 2 === 0,
+        temperature: 24,
+        airHumidity: 70,
+        substrateHumidity: 65,
+        isLightOn: true,
       },
-    });
-  }
-
-  for (let i = 0; i < 8; i++) {
-    await prisma.zoneParamsLog.create({
+    }),
+    prisma.zoneParams.create({
       data: {
         zoneId: zone2.id,
-        recordedAt: new Date(now - i * 20 * 60_000),
-        temperature: 22 + Math.random(),
-        airHumidity: 65 + Math.floor(Math.random() * 10),
-        substrateHumidity: 60 + Math.floor(Math.random() * 10),
-        isLightOn: i % 2 === 1,
+        temperature: 23,
+        airHumidity: 68,
+        substrateHumidity: 63,
+        isLightOn: false,
       },
-    });
-  }
-
-  for (let i = 0; i < 6; i++) {
-    await prisma.zoneParamsLog.create({
-      data: {
-        zoneId: zone3.id,
-        recordedAt: new Date(now - i * 30 * 60_000),
-        temperature: 21 + Math.random(),
-        airHumidity: 68 + Math.floor(Math.random() * 10),
-        substrateHumidity: 63 + Math.floor(Math.random() * 10),
-        isLightOn: i % 2 === 0,
-      },
-    });
-  }
+    }),
+  ]);
 
   console.log("✅ Логи параметров зон добавлены");
 
