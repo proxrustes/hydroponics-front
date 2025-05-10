@@ -6,10 +6,9 @@ export const adminRoutes = ["/admin", "/admin/users", "/admin/users/"];
 
 export async function middleware(req: NextRequest) {
   const token = req.cookies.get("currentUser")?.value;
-  const isAdminRoute = adminRoutes.some((path) =>
-    req.nextUrl.pathname.startsWith(path)
-  );
-  if (!token && req.nextUrl.pathname !== "/login") {
+  const pathname = req.nextUrl.pathname;
+  const isAdminRoute = adminRoutes.some((path) => pathname.startsWith(path));
+  if (!token && pathname !== "/login") {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 
@@ -24,6 +23,11 @@ export async function middleware(req: NextRequest) {
       const isValid = await verify(token);
       if (!isValid) {
         return NextResponse.redirect(new URL("/login", req.url));
+      }
+      if (pathname === "/dashboard") {
+        const redirectTo =
+          decodedJWT.role === "ADMIN" ? "/dashboard/admin" : "/dashboard/user";
+        return NextResponse.redirect(new URL(redirectTo, req.url));
       }
       if (isAdminRoute && decodedJWT.role !== "ADMIN") {
         return NextResponse.redirect(new URL("/login", req.url));

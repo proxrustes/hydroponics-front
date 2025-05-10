@@ -29,39 +29,3 @@ export async function GET(req: Request) {
     return NextResponse.json(HTTP_RESPONSES[500](error.message));
   }
 }
-
-export async function POST(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
-  const zoneId = parseInt(params.id);
-  if (isNaN(zoneId)) {
-    return NextResponse.json({ error: "Invalid zone ID" }, { status: 400 });
-  }
-
-  const body = await req.json();
-  const { temperature, airHumidity, substrateHumidity, isLightOn } = body;
-
-  if (
-    typeof temperature !== "number" ||
-    typeof airHumidity !== "number" ||
-    typeof substrateHumidity !== "number"
-  ) {
-    return NextResponse.json(
-      { error: "Missing or invalid fields" },
-      { status: 400 }
-    );
-  }
-
-  const log = await prisma.zoneParamsLog.create({
-    data: {
-      zoneId,
-      temperature,
-      airHumidity,
-      substrateHumidity,
-      isLightOn: typeof isLightOn === "boolean" ? isLightOn : null,
-    },
-  });
-
-  return NextResponse.json(log, { status: 201 });
-}

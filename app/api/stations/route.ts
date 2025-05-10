@@ -68,6 +68,7 @@ export async function POST(req: Request) {
     if (existing) {
       return NextResponse.json(HTTP_RESPONSES[409]("Station with this UUID"));
     }
+    console.log(user.id);
 
     const station = await prisma.station.create({
       data: {

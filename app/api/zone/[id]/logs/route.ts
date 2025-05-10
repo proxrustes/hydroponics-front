@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server"
-import { HTTP_RESPONSES } from "@/definitions/HttpDefinitions"
+import { NextResponse } from "next/server";
+import { HTTP_RESPONSES } from "@/definitions/HttpDefinitions";
 import { prisma } from "@/lib/prisma";
 
 /**
@@ -10,22 +10,20 @@ import { prisma } from "@/lib/prisma";
  * - end (ISO-строка):   брать логи, у которых recordedAt <= end
  * - limit (число):      ограничение кол-ва записей, по умолчанию 100
  */
-export async function GET(
-  req: Request
-) {
+export async function GET(req: Request) {
   try {
-         const url = new URL(req.url)
-  const id = url.pathname.split("/")[3]
-  const zoneId = parseInt(id || "")
+    const url = new URL(req.url);
+    const id = url.pathname.split("/")[3];
+    const zoneId = parseInt(id || "");
     if (isNaN(zoneId)) {
-      return NextResponse.json(HTTP_RESPONSES[400]("Zone ID must be a number"))
+      return NextResponse.json(HTTP_RESPONSES[400]("Zone ID must be a number"));
     }
-    const limit = 100
+    const limit = 100;
 
     // Формируем объект "where" для фильтрации
     const where: any = {
       zoneId,
-    }
+    };
     // Достаём записи из лога
     // По умолчанию берём limit=100, отсортируем по времени (самые новые в конце, чтобы удобно рисовать график).
     // Если нужно, меняйте порядок на "desc"
@@ -35,11 +33,11 @@ export async function GET(
         recordedAt: "asc", // или "desc", если хотите сначала последние
       },
       take: limit,
-    })
+    });
 
-    return NextResponse.json(HTTP_RESPONSES[200](logs))
+    return NextResponse.json(HTTP_RESPONSES[200](logs));
   } catch (error: any) {
-    console.error("GET /api/zone/[id]/logs error:", error)
-    return NextResponse.json(HTTP_RESPONSES[500](error.message))
+    console.error("GET /api/zone/[id]/logs error:", error);
+    return NextResponse.json(HTTP_RESPONSES[500](error.message));
   }
 }
