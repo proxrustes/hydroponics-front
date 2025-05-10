@@ -18,7 +18,7 @@ export function StationsSection() {
         if (response.status === 200) {
           setStations(response.message);
         } else if (response.status === 401) {
-          router.push("/login");
+          router.push("/user/login");
         } else if (response.status === 404) {
           setError("Станції не знайдено.");
         } else {

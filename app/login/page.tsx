@@ -42,7 +42,7 @@ export default function LoginPage() {
 
     if (!res.token) {
       alert("❌ Ошибка: " + (res.error ?? "неизвестная"));
-      router.push("/login");
+      router.push("/user/login");
     }
   };
 
