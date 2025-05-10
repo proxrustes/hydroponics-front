@@ -22,5 +22,11 @@ export async function POST(req: NextRequest) {
     data: params,
   });
 
+  await prisma.bucketParamsLog.create({
+    data: {
+      stationId: station.id,
+      ...params,
+    },
+  });
   return NextResponse.json({ updated });
 }
