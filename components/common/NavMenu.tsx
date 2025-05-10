@@ -22,11 +22,11 @@ export default function NavMenu() {
   const handleLogout = () => {
     document.cookie =
       "currentUser=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    router.push("/login");
+    router.push("/user/login");
   };
 
   const handleLogin = () => {
-    router.push("/login");
+    router.push("/user/login");
   };
 
   return (

@@ -55,7 +55,7 @@ export const authService = {
     endpoint: "login" | "register",
     payload: Record<string, any>
   ): Promise<AuthResponse> {
-    const res = await fetch(`/api/${endpoint}`, {
+    const res = await fetch(`/api/user/${endpoint}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),

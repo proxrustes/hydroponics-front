@@ -9,8 +9,8 @@ export async function middleware(req: NextRequest) {
   const isAdminRoute = adminRoutes.some((path) =>
     req.nextUrl.pathname.startsWith(path)
   );
-  if (!token && req.nextUrl.pathname !== "/login") {
-    return NextResponse.redirect(new URL("/login", req.url));
+  if (!token && req.nextUrl.pathname !== "/user/login") {
+    return NextResponse.redirect(new URL("/user/login", req.url));
   }
 
   if (token) {
@@ -18,20 +18,20 @@ export async function middleware(req: NextRequest) {
       const decodedJWT = decodeJwt(token);
       const currentTimestamp = Math.floor(Date.now() / 1000);
       if (decodedJWT.exp && decodedJWT.exp < currentTimestamp) {
-        return NextResponse.redirect(new URL("/login", req.url));
+        return NextResponse.redirect(new URL("/user/login", req.url));
       }
 
       const isValid = await verify(token);
       if (!isValid) {
-        return NextResponse.redirect(new URL("/login", req.url));
+        return NextResponse.redirect(new URL("/user/login", req.url));
       }
       if (isAdminRoute && decodedJWT.role !== "ADMIN") {
-        return NextResponse.redirect(new URL("/login", req.url));
+        return NextResponse.redirect(new URL("/user/login", req.url));
       }
 
       return NextResponse.next();
     } catch {
-      return NextResponse.redirect(new URL("/login", req.url));
+      return NextResponse.redirect(new URL("/user/login", req.url));
     }
   }
 
