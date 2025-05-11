@@ -112,6 +112,20 @@ model Zone {
   zoneParams       ZoneParams?
   zoneNorms        ZoneNorms?
   zoneTargetParams ZoneTargetParams?
+  schedule         ZoneSchedule?
+}
+
+model ZoneSchedule {
+  id     Int  @id @default(autoincrement())
+  zoneId Int  @unique
+  zone   Zone @relation(fields: [zoneId], references: [id])
+
+  lightOnTime  String // e.g. "08:00"
+  lightOffTime String
+  pumpOnTime   String
+  pumpOffTime  String
+  fanOnTime    String
+  fanOffTime   String
 }
 
 model ZoneNorms {

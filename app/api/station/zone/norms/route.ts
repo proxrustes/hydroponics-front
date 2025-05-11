@@ -2,21 +2,23 @@ import { NextRequest, NextResponse } from "next/server";
 import { HTTP_RESPONSES } from "@/definitions/HttpDefinitions";
 import { prisma } from "@/lib/prisma";
 
+// GET: effective norms for a zone (merged plant.norms + zoneNorms)
 export async function GET(req: NextRequest) {
   try {
-    const id = req.nextUrl.searchParams.get("id");
-    const zoneId = parseInt(id || "");
-    if (isNaN(zoneId)) {
-      return NextResponse.json(HTTP_RESPONSES[400]("Zone ID must be a number"));
+    const uuid = req.nextUrl.searchParams.get("uuid");
+    const index = parseInt(req.nextUrl.searchParams.get("index") || "");
+
+    if (!uuid || isNaN(index)) {
+      return NextResponse.json(HTTP_RESPONSES[400]("Invalid uuid or index"));
     }
 
-    // Ищем зону + базовые нормы (plant.norms) + override (zoneNorms)
-    const zone = await prisma.zone.findUnique({
-      where: { id: zoneId },
+    const zone = await prisma.zone.findFirst({
+      where: {
+        station: { uuid },
+        index,
+      },
       include: {
-        plant: {
-          include: { norms: true },
-        },
+        plant: { include: { norms: true } },
         zoneNorms: true,
       },
     });
@@ -28,11 +30,11 @@ export async function GET(req: NextRequest) {
     const base = zone.plant?.norms;
     const override = zone.zoneNorms;
 
-    // Если базовых норм нет, effectiveNorms будет null или пустым объектом
     if (!base) {
       return NextResponse.json(
         HTTP_RESPONSES[200]({
           zoneId: zone.id,
+          zoneIndex: zone.index,
           zoneName: zone.name,
           plantName: zone.plant?.name || null,
           effectiveNorms: null,
@@ -40,8 +42,6 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    // Мерджим (min, max) для каждого параметра
-    // Если override?.temperatureMin не null, берём его, иначе base.temperatureMin
     const effectiveNorms = {
       temperature: [
         override?.temperatureMin ?? base.temperatureMin,
@@ -77,109 +77,81 @@ export async function GET(req: NextRequest) {
       ],
     };
 
-    const responseBody = {
-      zoneId: zone.id,
-      zoneName: zone.name,
-      plantName: zone.plant?.name || null,
-      effectiveNorms,
-    };
-
-    return NextResponse.json(HTTP_RESPONSES[200](responseBody));
+    return NextResponse.json(
+      HTTP_RESPONSES[200]({
+        zoneId: zone.id,
+        zoneIndex: zone.index,
+        zoneName: zone.name,
+        plantName: zone.plant?.name,
+        effectiveNorms,
+      })
+    );
   } catch (error: any) {
-    console.error("GET /api/zone/[id]/norms error:", error);
+    console.error("GET /api/zone/norms error:", error);
     return NextResponse.json(HTTP_RESPONSES[500](error.message));
   }
 }
 
+// PUT: override zoneNorms using UUID + index
 export async function PUT(req: NextRequest) {
   try {
-    const id = req.nextUrl.searchParams.get("id");
-    const zoneId = parseInt(id || "");
+    const uuid = req.nextUrl.searchParams.get("uuid");
+    const index = parseInt(req.nextUrl.searchParams.get("index") || "");
 
-    if (isNaN(zoneId)) {
-      return NextResponse.json(HTTP_RESPONSES[400]("Zone ID must be a number"));
+    if (!uuid || isNaN(index)) {
+      return NextResponse.json(HTTP_RESPONSES[400]("Invalid uuid or index"));
     }
 
-    const body = await req.json();
-    // Ожидается структура полей:
-    // {
-    //   "temperature": [20, 28],
-    //   "airHumidity": [60, 80],
-    //   ...
-    // }
-    // где каждый элемент - [min, max] (числа либо null)
+    const zone = await prisma.zone.findFirst({
+      where: {
+        station: { uuid },
+        index,
+      },
+      select: { id: true },
+    });
 
-    // Убедимся, что зона существует
-    const zone = await prisma.zone.findUnique({ where: { id: zoneId } });
     if (!zone) {
       return NextResponse.json(HTTP_RESPONSES[404]("Zone not found"));
     }
 
-    // Проверяем, есть ли уже запись в ZoneNorms
-    let existingZoneNorms = await prisma.zoneNorms.findUnique({
-      where: { zoneId },
-    });
-
-    // Формируем объект data для update/create
-    // Если body.temperature = [20, 28], то temperatureMin=20, temperatureMax=28
-    // Если значение не передано, оставляем undefined (чтобы не перезаписывать).
-    // Если передали null, можно либо сбросить поле в null, либо пропустить — на ваше усмотрение.
+    const body = await req.json();
     const dataToWrite: any = {};
 
-    if (body.temperature) {
-      dataToWrite.temperatureMin = body.temperature[0] ?? null;
-      dataToWrite.temperatureMax = body.temperature[1] ?? null;
-    }
-    if (body.airHumidity) {
-      dataToWrite.airHumidityMin = body.airHumidity[0] ?? null;
-      dataToWrite.airHumidityMax = body.airHumidity[1] ?? null;
-    }
-    if (body.substrateHumidity) {
-      dataToWrite.substrateHumidityMin = body.substrateHumidity[0] ?? null;
-      dataToWrite.substrateHumidityMax = body.substrateHumidity[1] ?? null;
-    }
-    if (body.phLevel) {
-      dataToWrite.phLevelMin = body.phLevel[0] ?? null;
-      dataToWrite.phLevelMax = body.phLevel[1] ?? null;
-    }
-    if (body.nutrientConcentration) {
-      dataToWrite.nutrientConcentrationMin =
-        body.nutrientConcentration[0] ?? null;
-      dataToWrite.nutrientConcentrationMax =
-        body.nutrientConcentration[1] ?? null;
-    }
-    if (body.solutionTemperature) {
-      dataToWrite.solutionTemperatureMin = body.solutionTemperature[0] ?? null;
-      dataToWrite.solutionTemperatureMax = body.solutionTemperature[1] ?? null;
-    }
-    if (body.solutionLvl) {
-      dataToWrite.solutionLvlMin = body.solutionLvl[0] ?? null;
-      dataToWrite.solutionLvlMax = body.solutionLvl[1] ?? null;
-    }
-    if (body.lightIntensity) {
-      dataToWrite.lightIntensityMin = body.lightIntensity[0] ?? null;
-      dataToWrite.lightIntensityMax = body.lightIntensity[1] ?? null;
-    }
+    if (body.temperature)
+      [dataToWrite.temperatureMin, dataToWrite.temperatureMax] =
+        body.temperature;
+    if (body.airHumidity)
+      [dataToWrite.airHumidityMin, dataToWrite.airHumidityMax] =
+        body.airHumidity;
+    if (body.substrateHumidity)
+      [dataToWrite.substrateHumidityMin, dataToWrite.substrateHumidityMax] =
+        body.substrateHumidity;
+    if (body.phLevel)
+      [dataToWrite.phLevelMin, dataToWrite.phLevelMax] = body.phLevel;
+    if (body.nutrientConcentration)
+      [
+        dataToWrite.nutrientConcentrationMin,
+        dataToWrite.nutrientConcentrationMax,
+      ] = body.nutrientConcentration;
+    if (body.solutionTemperature)
+      [dataToWrite.solutionTemperatureMin, dataToWrite.solutionTemperatureMax] =
+        body.solutionTemperature;
+    if (body.solutionLvl)
+      [dataToWrite.solutionLvlMin, dataToWrite.solutionLvlMax] =
+        body.solutionLvl;
+    if (body.lightIntensity)
+      [dataToWrite.lightIntensityMin, dataToWrite.lightIntensityMax] =
+        body.lightIntensity;
 
-    if (!existingZoneNorms) {
-      existingZoneNorms = await prisma.zoneNorms.create({
-        data: {
-          zoneId,
-          ...dataToWrite,
-        },
-      });
-    } else {
-      existingZoneNorms = await prisma.zoneNorms.update({
-        where: { zoneId },
-        data: {
-          ...dataToWrite,
-        },
-      });
-    }
+    const updated = await prisma.zoneNorms.upsert({
+      where: { zoneId: zone.id },
+      update: dataToWrite,
+      create: { zoneId: zone.id, ...dataToWrite },
+    });
 
-    return NextResponse.json(HTTP_RESPONSES[200](existingZoneNorms));
+    return NextResponse.json(HTTP_RESPONSES[200](updated));
   } catch (error: any) {
-    console.error("PUT /api/zone/[id]/norms error:", error);
+    console.error("PUT /api/zone/norms error:", error);
     return NextResponse.json(HTTP_RESPONSES[500](error.message));
   }
 }

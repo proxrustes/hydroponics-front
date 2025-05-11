@@ -1,20 +1,33 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-// GET: returns target params for a zone by zoneId
+// GET: returns target params for a zone by station UUID and index
 export async function GET(req: NextRequest) {
-  const zoneIdParam = req.nextUrl.searchParams.get("zoneId");
+  const uuid = req.nextUrl.searchParams.get("uuid");
+  const indexParam = req.nextUrl.searchParams.get("index");
+  const index = parseInt(indexParam || "");
 
-  const zoneId = parseInt(zoneIdParam || "");
-  if (isNaN(zoneId)) {
+  if (!uuid || isNaN(index)) {
     return NextResponse.json(
-      { error: "Missing or invalid zoneId" },
+      { error: "Missing or invalid uuid/index" },
       { status: 400 }
     );
   }
 
+  const zone = await prisma.zone.findFirst({
+    where: {
+      station: { uuid },
+      index,
+    },
+    select: { id: true },
+  });
+
+  if (!zone) {
+    return NextResponse.json({ error: "Zone not found" }, { status: 404 });
+  }
+
   const target = await prisma.zoneTargetParams.findUnique({
-    where: { zoneId },
+    where: { zoneId: zone.id },
   });
 
   if (!target) {
@@ -27,20 +40,23 @@ export async function GET(req: NextRequest) {
   return NextResponse.json(target);
 }
 
-// POST: update or create zone target params
+// POST: update or create zone target params by uuid + index
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { zoneId, params } = body;
+  const { uuid, index, params } = body;
 
-  if (!zoneId || typeof params !== "object") {
+  if (!uuid || typeof index !== "number" || typeof params !== "object") {
     return NextResponse.json(
-      { error: "Missing zoneId or params" },
+      { error: "Missing uuid, index or params" },
       { status: 400 }
     );
   }
 
-  const zone = await prisma.zone.findUnique({
-    where: { id: zoneId },
+  const zone = await prisma.zone.findFirst({
+    where: {
+      station: { uuid },
+      index,
+    },
     select: { id: true },
   });
 
