@@ -1,13 +1,12 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { HTTP_RESPONSES } from "@/definitions/HttpDefinitions";
 import { prisma } from "@/lib/prisma";
 
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
   try {
-    const url = new URL(req.url);
-    const id = url.pathname.split("/")[3];
-
+    const id = req.nextUrl.searchParams.get("id");
     const zoneId = parseInt(id || "");
+
     if (isNaN(zoneId)) {
       return NextResponse.json(HTTP_RESPONSES[400]("Zone ID must be a number"));
     }

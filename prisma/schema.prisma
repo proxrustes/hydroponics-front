@@ -56,12 +56,13 @@ model Norms {
 }
 
 model Station {
-  id           Int               @id @default(autoincrement())
-  uuid         String            @unique
-  name         String
-  zones        Zone[]
-  bucketLogs   BucketParamsLog[]
-  bucketParams BucketParams?
+  id                 Int                 @id @default(autoincrement())
+  uuid               String              @unique
+  name               String
+  zones              Zone[]
+  bucketLogs         BucketParamsLog[]
+  bucketParams       BucketParams?
+  bucketTargetParams BucketTargetParams?
 
   userId           Int
   user             User               @relation(fields: [userId], references: [id])
@@ -106,9 +107,10 @@ model Zone {
   stationId Int
   station   Station @relation(fields: [stationId], references: [id])
 
-  zoneLogs   ZoneParamsLog[]
-  zoneParams ZoneParams?
-  zoneNorms  ZoneNorms?
+  zoneLogs         ZoneParamsLog[]
+  zoneParams       ZoneParams?
+  zoneNorms        ZoneNorms?
+  zoneTargetParams ZoneTargetParams?
 }
 
 model ZoneNorms {
@@ -177,6 +179,30 @@ model ZoneParamsLog {
 
   @@index([zoneId, recordedAt])
   @@map("zone_params_log")
+}
+
+model BucketTargetParams {
+  id        Int     @id @default(autoincrement())
+  stationId Int     @unique
+  station   Station @relation(fields: [stationId], references: [id])
+
+  phLevel               Float
+  nutrientConcentration Float
+  solutionTemperature   Float
+  solutionLvl           Float
+  updatedAt             DateTime @updatedAt
+}
+
+model ZoneTargetParams {
+  id     Int  @id @default(autoincrement())
+  zoneId Int  @unique
+  zone   Zone @relation(fields: [zoneId], references: [id])
+
+  temperature       Float
+  airHumidity       Float
+  substrateHumidity Float
+  isLightOn         Boolean
+  updatedAt         DateTime @updatedAt
 }
 
 model User {
