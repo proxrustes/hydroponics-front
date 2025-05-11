@@ -1,27 +1,50 @@
+import { Box, Typography } from "@mui/material";
 import { ParameterProps } from "@/enums/types/Params";
-import { Typography, Tooltip, Stack } from "@mui/material";
 
-function isParamInRange(value: number, range: [number, number]): boolean {
-  return value >= range[0] && value <= range[1];
+function round(value: number): number {
+  return Math.round(value * 10) / 10;
 }
 
-export function Parameter({ name, value, norm, valueFormatter, icon }: ParameterProps) {
-  const inRange = typeof value === 'number' ? isParamInRange(value, norm) : true
-  const formattedValue = typeof value === "boolean" ? (value ? "ON" : "OFF") : `${value.toPrecision(2)}${valueFormatter || ""}`;
+export function Parameter({
+  name,
+  icon,
+  value,
+  valueFormatter = "",
+  norm,
+  target,
+}: ParameterProps) {
   return (
-    <Tooltip title={name} placement="bottom">
-      <Stack direction="row" gap={2} alignItems="center" mb={1} p={1}
-        sx={{ backgroundColor: inRange ? 'inherit' : '#f58742', borderRadius: 2 }}>
-        <Typography sx={{ fontSize: 62 }}>{icon}</Typography>
-        <Stack>
-          <Typography sx={{ fontSize: 18, fontWeight: 800 }}>
-            {name}
-          </Typography>
-          <Typography sx={{ fontSize: 34, fontWeight: 600, lineHeight: 1 }}>
-          {formattedValue}
-          </Typography>
-        </Stack>
-      </Stack>
-    </Tooltip>
+    <Box
+      sx={{
+        p: 2,
+        border: "1px solid #ccc",
+        borderRadius: 2,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        textAlign: "center",
+        backgroundColor: "#f9f9f9",
+      }}
+    >
+      <Typography variant="h6" fontWeight={700}>
+        {icon} {name}
+      </Typography>
+
+      <Typography variant="h4" fontWeight={700} color="primary">
+        {round(value)} {valueFormatter}
+      </Typography>
+
+      {norm && (
+        <Typography variant="body2" color="text.secondary">
+          Норма: {round(norm[0])}–{round(norm[1])} {valueFormatter}
+        </Typography>
+      )}
+
+      {target !== undefined && (
+        <Typography variant="body2" color="secondary">
+          🎯 Ціль: {round(target)} {valueFormatter}
+        </Typography>
+      )}
+    </Box>
   );
 }

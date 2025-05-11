@@ -19,6 +19,7 @@ import { Zone } from "@/enums/types/Zone";
 export function ZoneItem(props: { uuid: string; index: number }) {
   const [zone, setZone] = useState<Zone | null>();
   const [currentParams, setCurrentParams] = useState<any>();
+  const [targetParams, setTargetParams] = useState<any>();
   const [zoneNorms, setZoneNorms] =
     useState<Record<string, [number, number]>>();
 
@@ -51,7 +52,20 @@ export function ZoneItem(props: { uuid: string; index: number }) {
         console.error("Fetch zone params error:", error);
       }
     };
-
+    const fetchTargetParams = async () => {
+      try {
+        const response = await customFetch(
+          `station/zone/config?uuid=${props.uuid}&index=${props.index}`,
+          "GET"
+        );
+        console.log(response);
+        if (response.status === 200) {
+          setTargetParams(response.message);
+        }
+      } catch (error) {
+        console.error("Fetch zone params error:", error);
+      }
+    };
     const fetchZoneNorms = async () => {
       try {
         const response = await customFetch(
@@ -80,7 +94,8 @@ export function ZoneItem(props: { uuid: string; index: number }) {
     ["airHumidity", "temperature", "substrateHumidity"],
     parameterConfig,
     currentParams,
-    zoneNorms
+    zoneNorms,
+    targetParams // <= передаёшь сюда объект target, если он есть
   );
 
   return (
@@ -108,6 +123,7 @@ export function ZoneItem(props: { uuid: string; index: number }) {
               norm={param.norm}
               icon={param.icon}
               valueFormatter={param.valueFormatter}
+              target={param.target}
             />
           </Grid>
         ))}

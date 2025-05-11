@@ -55,9 +55,13 @@ export const parameterConfig: ParameterConfig = {
 
 export function createParameters<T>(
   keys: readonly string[],
-  parameterConfig: Record<string, Omit<ParameterProps, "value" | "norm">>,
+  parameterConfig: Record<
+    string,
+    Omit<ParameterProps, "value" | "norm" | "target">
+  >,
   params: Record<string, number>,
-  norm: Record<string, [number, number]> | [number, number]
+  norm: Record<string, [number, number]> | [number, number],
+  target?: Record<string, number>
 ): ParameterProps[] {
   return keys
     .filter((key) => parameterConfig[key] && params[key] !== undefined)
@@ -65,5 +69,6 @@ export function createParameters<T>(
       ...parameterConfig[key],
       value: params[key] ?? 0,
       norm: Array.isArray(norm) ? norm : norm[key] ?? [0, 0],
+      target: target?.[key],
     }));
 }
