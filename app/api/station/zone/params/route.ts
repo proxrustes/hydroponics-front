@@ -2,15 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { HTTP_RESPONSES } from "@/definitions/HttpDefinitions";
 import { prisma } from "@/lib/prisma";
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { uuid: string; index: string } }
-) {
+export async function GET(req: NextRequest) {
   try {
-    const { uuid, index } = params;
-    const zoneIndex = parseInt(index);
+    const uuid = req.nextUrl.searchParams.get("uuid");
+    const index = parseInt(req.nextUrl.searchParams.get("index") || "");
 
-    if (!uuid || isNaN(zoneIndex) || zoneIndex < 0 || zoneIndex > 3) {
+    if (!uuid || isNaN(index) || index < 0 || index > 3) {
       return NextResponse.json(
         HTTP_RESPONSES[400]("Invalid UUID or zone index")
       );
@@ -30,7 +27,7 @@ export async function GET(
     const zone = await prisma.zone.findFirst({
       where: {
         stationId: station.id,
-        index: zoneIndex,
+        index,
       },
       select: { id: true },
     });
