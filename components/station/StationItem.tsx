@@ -8,16 +8,13 @@ import { customFetch } from "@/lib/utils/apiUtils";
 import { useEffect, useState } from "react";
 import { Zone } from "@/enums/types/Zone";
 
-export function StationItem(props: { stationId: number }) {
+export function StationItem(props: { uuid: string }) {
   const [station, setStation] = useState<Station>();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await customFetch(
-          `stations/${props.stationId}`,
-          "GET"
-        );
+        const response = await customFetch(`station?uuid=${props.uuid}`, "GET");
         if (response.status === 200) {
           setStation(response.message);
         }
@@ -33,7 +30,7 @@ export function StationItem(props: { stationId: number }) {
   }
   return (
     <CustomContainer>
-      <Typography sx={{ fontWeight: 600, fontSize: 24, textAlign: "center" }}>
+      <Typography sx={{ fontWeight: 600, fontSize: 24 }}>
         Station {station.name}
       </Typography>
 
@@ -41,7 +38,7 @@ export function StationItem(props: { stationId: number }) {
         <Typography sx={{ fontWeight: 800, fontSize: 24 }}>
           🪣 Bucket params
         </Typography>
-        <BucketParams stationId={station.id} />
+        <BucketParams uuid={props.uuid} />
         <Divider sx={{ mt: 2 }} />
       </Box>
       <Grid container spacing={2}>

@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
   const uuid = req.nextUrl.searchParams.get("uuid");
-
+  console.log(uuid);
   if (!uuid) {
     return NextResponse.json({ error: "Missing uuid" }, { status: 400 });
   }

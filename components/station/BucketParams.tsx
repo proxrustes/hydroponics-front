@@ -18,14 +18,14 @@ type Parameter = {
   icon: string;
 };
 
-export function BucketParams(props: { stationId: number }) {
+export function BucketParams(props: { uuid: string }) {
   const [bucketParams, setBucketparams] = useState<Record<string, number>>();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await customFetch(
-          `stations/${props.stationId}/params`,
+          `station/bucket/params?uuid=${props.uuid}`,
           "GET"
         );
         if (response.status === 200) {

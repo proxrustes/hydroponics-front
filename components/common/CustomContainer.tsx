@@ -12,7 +12,7 @@ export function CustomContainer(props: {
         borderColor: "secondary.main",
         borderWidth: 6,
         borderStyle: "solid",
-        borderRadius: 8,
+        borderRadius: 2,
         p: 2,
         backgroundColor: "white",
         ...props.sx,

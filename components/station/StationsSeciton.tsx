@@ -15,7 +15,7 @@ export function StationsSection() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await customFetch(`stations`, "GET");
+        const response = await customFetch(`station`, "GET");
         if (response.status === 200) {
           setStations(response.message);
         } else if (response.status === 401) {
@@ -44,7 +44,7 @@ export function StationsSection() {
         <AddStationForm />
         {stations &&
           stations.map((station) => (
-            <StationItem key={station.id} stationId={station.id} />
+            <StationItem key={station.id} uuid={station.uuid} />
           ))}
       </Stack>
     </Container>

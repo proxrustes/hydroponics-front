@@ -99,6 +99,7 @@ model BucketParamsLog {
 
 model Zone {
   id        Int     @id @default(autoincrement())
+  index     Int
   name      String
   plantId   Int
   plant     Plant   @relation(fields: [plantId], references: [id])

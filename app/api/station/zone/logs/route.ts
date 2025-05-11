@@ -1,43 +1,65 @@
-import { NextRequest, NextResponse } from "next/server";
 import { HTTP_RESPONSES } from "@/definitions/HttpDefinitions";
 import { prisma } from "@/lib/prisma";
+import { NextRequest, NextResponse } from "next/server";
 
-/**
- * Пример: GET /api/zone/[id]/logs?start=2025-01-01T00:00:00Z&end=2025-01-30T23:59:59Z&limit=50
- *
- * Параметры в query:
- * - start (ISO-строка): брать логи, у которых recordedAt >= start
- * - end (ISO-строка):   брать логи, у которых recordedAt <= end
- * - limit (число):      ограничение кол-ва записей, по умолчанию 100
- */
 export async function GET(req: NextRequest) {
   try {
-    const id = req.nextUrl.searchParams.get("id");
-    const zoneId = parseInt(id || "");
+    const uuid = req.nextUrl.searchParams.get("uuid");
+    const indexStr = req.nextUrl.searchParams.get("index");
+    const start = req.nextUrl.searchParams.get("start");
+    const end = req.nextUrl.searchParams.get("end");
+    const limitStr = req.nextUrl.searchParams.get("limit");
 
-    if (isNaN(zoneId)) {
-      return NextResponse.json(HTTP_RESPONSES[400]("Zone ID must be a number"));
+    const index = parseInt(indexStr || "");
+    const limit = Math.min(parseInt(limitStr || "100"), 1000); // safety cap
+
+    if (!uuid || isNaN(index) || index < 0 || index > 3) {
+      return NextResponse.json(
+        HTTP_RESPONSES[400]("Missing or invalid 'uuid' or 'index'")
+      );
     }
-    const limit = 100;
 
-    // Формируем объект "where" для фильтрации
+    const station = await prisma.station.findUnique({
+      where: { uuid },
+      select: { id: true },
+    });
+
+    if (!station) {
+      return NextResponse.json(HTTP_RESPONSES[404]("Station not found"));
+    }
+
+    const zone = await prisma.zone.findFirst({
+      where: {
+        stationId: station.id,
+        index,
+      },
+      select: { id: true },
+    });
+
+    if (!zone) {
+      return NextResponse.json(
+        HTTP_RESPONSES[404]("Zone not found for given index")
+      );
+    }
+
     const where: any = {
-      zoneId,
+      zoneId: zone.id,
     };
-    // Достаём записи из лога
-    // По умолчанию берём limit=100, отсортируем по времени (самые новые в конце, чтобы удобно рисовать график).
-    // Если нужно, меняйте порядок на "desc"
+
+    if (start)
+      where.recordedAt = { ...(where.recordedAt ?? {}), gte: new Date(start) };
+    if (end)
+      where.recordedAt = { ...(where.recordedAt ?? {}), lte: new Date(end) };
+
     const logs = await prisma.zoneParamsLog.findMany({
       where,
-      orderBy: {
-        recordedAt: "asc", // или "desc", если хотите сначала последние
-      },
+      orderBy: { recordedAt: "asc" },
       take: limit,
     });
 
     return NextResponse.json(HTTP_RESPONSES[200](logs));
   } catch (error: any) {
-    console.error("GET /api/zone/[id]/logs error:", error);
+    console.error("❌ GET /station/zone/logs error:", error);
     return NextResponse.json(HTTP_RESPONSES[500](error.message));
   }
 }

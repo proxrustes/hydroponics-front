@@ -87,47 +87,54 @@ async function seed() {
   console.log("✅ Растения и нормы добавлены");
 
   const station1 = await prisma.station.create({
-    data: { name: "Станція 1 користувача 1", uuid: "100", userId: user1.id },
+    data: {
+      name: "Станція 1 користувача 1",
+      uuid: "100",
+      userId: user1.id,
+      zones: {
+        create: [0, 1, 2, 3].map((index) => ({
+          index,
+          name: `Зона ${index + 1}`,
+          plantId: tomatoPlant.id,
+          isLightOn: false,
+        })),
+      },
+    },
   });
 
   const station2 = await prisma.station.create({
-    data: { name: "Станція 2 користувача 1", uuid: "101", userId: user1.id },
+    data: {
+      name: "Станція 2 користувача 1",
+      uuid: "101",
+      userId: user1.id,
+      zones: {
+        create: [0, 1, 2, 3].map((index) => ({
+          index,
+          name: `Зона ${index + 1}`,
+          plantId: tomatoPlant.id,
+          isLightOn: false,
+        })),
+      },
+    },
   });
 
   const station3 = await prisma.station.create({
-    data: { name: "Станція 1 користувача 2", uuid: "120", userId: user2.id },
+    data: {
+      name: "Станція 1 користувача 2",
+      uuid: "120",
+      userId: user2.id,
+      zones: {
+        create: [0, 1, 2, 3].map((index) => ({
+          index,
+          name: `Зона ${index + 1}`,
+          plantId: tomatoPlant.id,
+          isLightOn: false,
+        })),
+      },
+    },
   });
 
   console.log("✅ Станции добавлены");
-
-  const zone1 = await prisma.zone.create({
-    data: {
-      name: "Зона A станції 1",
-      plantId: tomatoPlant.id,
-      stationId: station1.id,
-      isLightOn: true,
-    },
-  });
-
-  const zone2 = await prisma.zone.create({
-    data: {
-      name: "Зона B станції 2",
-      plantId: tomatoPlant.id,
-      stationId: station2.id,
-      isLightOn: false,
-    },
-  });
-
-  const zone3 = await prisma.zone.create({
-    data: {
-      name: "Зона A станції користувача 2",
-      plantId: tomatoPlant.id,
-      stationId: station3.id,
-      isLightOn: true,
-    },
-  });
-
-  console.log("✅ Зоны добавлены");
 
   await Promise.all([
     prisma.bucketParams.create({
@@ -149,31 +156,6 @@ async function seed() {
       },
     }),
   ]);
-
-  // Поточні параметри зони
-  await Promise.all([
-    prisma.zoneParams.create({
-      data: {
-        zoneId: zone1.id,
-        temperature: 24,
-        airHumidity: 70,
-        substrateHumidity: 65,
-        isLightOn: true,
-      },
-    }),
-    prisma.zoneParams.create({
-      data: {
-        zoneId: zone2.id,
-        temperature: 23,
-        airHumidity: 68,
-        substrateHumidity: 63,
-        isLightOn: false,
-      },
-    }),
-  ]);
-
-  console.log("✅ Логи параметров зон добавлены");
-
   console.log("🌱 Сидирование завершено успешно!");
 }
 
