@@ -19,9 +19,14 @@ import { CustomNormsSection } from "@/components/zone/CustomNormsSection";
 import EditIcon from "@mui/icons-material/Edit";
 import { EditZonePlant } from "@/components/EditZonePlant";
 import { customFetch } from "@/lib/utils/apiUtils";
+import { ZoneItem } from "@/components/zone/ZoneItem";
 
 export default function Page() {
-  const { uuid, index } = useParams();
+  const params = useParams();
+
+  const uuid = typeof params.uuid === "string" ? params.uuid : params.uuid?.[0];
+  const index =
+    typeof params.index === "number" ? params.index : params.index?.[0];
   const [zone, setZone] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [isEditMode, setEditMode] = useState(false);
@@ -68,10 +73,10 @@ export default function Page() {
 
         <Grid container spacing={2}>
           <Grid size={12}>
-            <ParamsSection zoneId={zone.id} />
+            <ZoneItem uuid={uuid} index={Number(index) ?? 0} />
           </Grid>
           <Grid size={12}>
-            <CustomNormsSection zoneId={zone.id} onUpdate={() => {}} />
+            <CustomNormsSection uuid={uuid} index={index} onUpdate={() => {}} />
           </Grid>
         </Grid>
 

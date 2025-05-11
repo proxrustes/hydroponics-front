@@ -21,19 +21,24 @@ export interface ZoneParamNorms {
 }
 
 interface CustomNormsSectionProps {
-  zoneId: number;
+  uuid: string;
+  index: string;
   onUpdate?: () => void;
 }
 
 export function CustomNormsSection({
-  zoneId,
+  uuid,
+  index,
   onUpdate,
 }: CustomNormsSectionProps) {
   const [customParams, setCustomParams] = useState<ZoneParamNorms | null>(null);
   useEffect(() => {
     const fetchNorms = async () => {
       try {
-        const response = await customFetch(`zone/${zoneId}/norms`, "GET");
+        const response = await customFetch(
+          `station/zone/norms?uuid=${uuid}&index=${index}`,
+          "GET"
+        );
         if (response.status === 200 && response.message?.effectiveNorms) {
           setCustomParams(response.message.effectiveNorms);
         }
@@ -42,7 +47,7 @@ export function CustomNormsSection({
       }
     };
     fetchNorms();
-  }, [zoneId]);
+  }, [uuid, index]);
 
   if (!customParams) {
     return <LinearProgress />;
@@ -69,7 +74,7 @@ export function CustomNormsSection({
   const handleSave = async () => {
     try {
       const response = await customFetch(
-        `zone/${zoneId}/norms`,
+        `station/zone/norms?uuid=${uuid}&index=${index}`,
         "PUT",
         customParams
       );

@@ -30,7 +30,7 @@ export function ParamsSection({ zoneId }: { zoneId: number }) {
   useEffect(() => {
     const fetchZone = async () => {
       try {
-        const res = await customFetch(`zone/${zoneId}`, "GET");
+        const res = await customFetch(`station/zone/${zoneId}`, "GET");
         if (res.status === 200) {
           setZone(res.message);
         }

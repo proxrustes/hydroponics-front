@@ -15,7 +15,6 @@ type Parameter = {
 
 export function BucketParams(props: { uuid: string }) {
   const [bucketParams, setBucketparams] = useState<Record<string, number>>();
-  console.log(bucketParams);
 
   useEffect(() => {
     const fetchData = async () => {
