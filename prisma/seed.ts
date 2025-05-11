@@ -135,6 +135,23 @@ async function seed() {
   });
 
   console.log("✅ Станции добавлены");
+  const allZones = await prisma.zone.findMany();
+
+  await Promise.all(
+    allZones.map((zone) =>
+      prisma.zoneTargetParams.create({
+        data: {
+          zoneId: zone.id,
+          temperature: 24,
+          airHumidity: 70,
+          substrateHumidity: 65,
+          isLightOn: false,
+        },
+      })
+    )
+  );
+
+  console.log("✅ Целевые параметры зон добавлены");
 
   await Promise.all([
     prisma.bucketParams.create({

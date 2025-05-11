@@ -5,7 +5,7 @@ import { HTTP_RESPONSES } from "@/definitions/HttpDefinitions";
 //returns target params
 export async function GET(req: NextRequest) {
   const uuid = req.nextUrl.searchParams.get("uuid");
-  if (!uuid) return NextResponse.json(HTTP_RESPONSES[400]);
+  if (!uuid) return NextResponse.json(HTTP_RESPONSES[400]("uuid"));
 
   const station = await prisma.station.findUnique({
     where: { uuid },
@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
     },
   });
 
-  if (!station) return NextResponse.json(HTTP_RESPONSES[404]);
+  if (!station) return NextResponse.json(HTTP_RESPONSES[404]("station"));
 
   return NextResponse.json(
     HTTP_RESPONSES[200]({
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
   const { uuid, zoneId, params } = body;
 
   if (!uuid || typeof params !== "object") {
-    return NextResponse.json(HTTP_RESPONSES[400]);
+    return NextResponse.json(HTTP_RESPONSES[400]("uuid"));
   }
 
   const station = await prisma.station.findUnique({
@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
   });
 
   if (!station) {
-    return NextResponse.json(HTTP_RESPONSES[404]);
+    return NextResponse.json(HTTP_RESPONSES[404]("station"));
   }
 
   try {
@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
       });
 
       if (!zone) {
-        return NextResponse.json(HTTP_RESPONSES[404]);
+        return NextResponse.json(HTTP_RESPONSES[404]("zone"));
       }
 
       const updated = await prisma.zoneTargetParams.upsert({
@@ -81,6 +81,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(HTTP_RESPONSES[201]({ updated }));
     }
   } catch (e: any) {
-    return NextResponse.json(HTTP_RESPONSES[500]);
+    return NextResponse.json(HTTP_RESPONSES[500](e));
   }
 }

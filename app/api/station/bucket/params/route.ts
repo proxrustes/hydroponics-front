@@ -7,7 +7,7 @@ export async function POST(req: NextRequest) {
   const { uuid, params } = body;
 
   if (!uuid || typeof params !== "object") {
-    return NextResponse.json(HTTP_RESPONSES[400]);
+    return NextResponse.json(HTTP_RESPONSES[400]("uuid"));
   }
 
   const station = await prisma.station.findUnique({
@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     select: { id: true },
   });
 
-  if (!station) return NextResponse.json(HTTP_RESPONSES[404]);
+  if (!station) return NextResponse.json(HTTP_RESPONSES[404]("station"));
 
   const updated = await prisma.bucketParams.update({
     where: { stationId: station.id },
@@ -35,7 +35,7 @@ export async function GET(req: NextRequest) {
   const uuid = req.nextUrl.searchParams.get("uuid");
   console.log(uuid);
   if (!uuid) {
-    return NextResponse.json(HTTP_RESPONSES[400]);
+    return NextResponse.json(HTTP_RESPONSES[400]("uuid"));
   }
 
   const station = await prisma.station.findUnique({
@@ -46,7 +46,7 @@ export async function GET(req: NextRequest) {
   });
 
   if (!station) {
-    return NextResponse.json(HTTP_RESPONSES[404]);
+    return NextResponse.json(HTTP_RESPONSES[404]("station"));
   }
 
   return NextResponse.json(

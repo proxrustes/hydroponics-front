@@ -21,15 +21,15 @@ export async function GET(req: NextRequest) {
   });
 
   if (!zone) {
-    return NextResponse.json(HTTP_RESPONSES[404]);
+    return NextResponse.json(HTTP_RESPONSES[404]("zone"));
   }
-
+  console.log(zone);
   const target = await prisma.zoneTargetParams.findUnique({
     where: { zoneId: zone.id },
   });
 
   if (!target) {
-    return NextResponse.json(HTTP_RESPONSES[404]);
+    return NextResponse.json(HTTP_RESPONSES[404]("target"));
   }
 
   return NextResponse.json(HTTP_RESPONSES[200](target));
@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
   const { uuid, index, params } = body;
 
   if (!uuid || typeof index !== "number" || typeof params !== "object") {
-    return NextResponse.json(HTTP_RESPONSES[400]);
+    return NextResponse.json(HTTP_RESPONSES[400]("uuid"));
   }
 
   const zone = await prisma.zone.findFirst({
@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
   });
 
   if (!zone) {
-    return NextResponse.json(HTTP_RESPONSES[404]);
+    return NextResponse.json(HTTP_RESPONSES[404]("zone"));
   }
 
   try {
@@ -68,6 +68,6 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(HTTP_RESPONSES[200](updated));
   } catch (e: any) {
-    return NextResponse.json(HTTP_RESPONSES[500]);
+    return NextResponse.json(HTTP_RESPONSES[500](e));
   }
 }
