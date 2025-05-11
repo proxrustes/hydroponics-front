@@ -16,7 +16,7 @@ import { createParameters, parameterConfig } from "@/lib/parameterConfig";
 import { customFetch } from "@/lib/utils/apiUtils";
 import { Zone } from "@/enums/types/Zone";
 
-export function ZoneItem(props: { zoneId: number }) {
+export function ZoneItem(props: { uuid: string; index: number }) {
   const [zone, setZone] = useState<Zone | null>();
   const [currentParams, setCurrentParams] = useState<any>();
   const [zoneNorms, setZoneNorms] =
@@ -26,7 +26,7 @@ export function ZoneItem(props: { zoneId: number }) {
     const fetchZoneInfo = async () => {
       try {
         const response = await customFetch(
-          `station/zone/${props.zoneId}`,
+          `station/zone?uuid=${props.uuid}&index=${props.index}`,
           "GET"
         );
         if (response.status === 200) {
@@ -40,9 +40,10 @@ export function ZoneItem(props: { zoneId: number }) {
     const fetchZoneParams = async () => {
       try {
         const response = await customFetch(
-          `zone/${props.zoneId}/params`,
+          `station/zone/params?uuid=${props.uuid}&index=${props.index}`,
           "GET"
         );
+        console.log(response);
         if (response.status === 200) {
           setCurrentParams(response.message);
         }
@@ -53,7 +54,10 @@ export function ZoneItem(props: { zoneId: number }) {
 
     const fetchZoneNorms = async () => {
       try {
-        const response = await customFetch(`zone/${props.zoneId}/norms`, "GET");
+        const response = await customFetch(
+          `station/zone/norms?uuid=${props.uuid}&index=${props.index}`,
+          "GET"
+        );
         if (response.status === 200) {
           setZoneNorms(response.message.effectiveNorms);
         }
@@ -65,7 +69,7 @@ export function ZoneItem(props: { zoneId: number }) {
     fetchZoneInfo();
     fetchZoneParams();
     fetchZoneNorms();
-  }, [props.zoneId]);
+  }, [props.index]);
 
   if (!zone || !currentParams || !zoneNorms) {
     console.log(zone, currentParams, zoneNorms);

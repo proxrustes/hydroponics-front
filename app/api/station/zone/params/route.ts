@@ -29,18 +29,14 @@ export async function GET(req: NextRequest) {
         stationId: station.id,
         index,
       },
-      select: { id: true },
+      select: { id: true, zoneParams: true },
     });
 
     if (!zone) {
       return NextResponse.json(HTTP_RESPONSES[404]("Zone not found"));
     }
-
-    // Получить последние параметры
-    const currentZoneParams = await prisma.zoneParamsLog.findFirst({
-      where: { zoneId: zone.id },
-      orderBy: { recordedAt: "desc" },
-    });
+    console.log(zone);
+    const currentZoneParams = zone.zoneParams;
 
     if (!currentZoneParams) {
       return NextResponse.json(

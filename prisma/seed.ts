@@ -5,10 +5,11 @@ const prisma = new PrismaClient();
 async function seed() {
   console.log("🌱 Начинаем сидирование...");
 
-  await prisma.zoneParamsLog.deleteMany({});
   await prisma.bucketParamsLog.deleteMany({});
-  await prisma.zoneParams.deleteMany({});
   await prisma.bucketParams.deleteMany({});
+  await prisma.zoneTargetParams.deleteMany({});
+  await prisma.zoneParamsLog.deleteMany({});
+  await prisma.zoneParams.deleteMany({});
   await prisma.zoneNorms.deleteMany({});
   await prisma.zone.deleteMany({});
   await prisma.station.deleteMany({});
@@ -152,6 +153,21 @@ async function seed() {
   );
 
   console.log("✅ Целевые параметры зон добавлены");
+  await Promise.all(
+    allZones.map((zone) =>
+      prisma.zoneParams.create({
+        data: {
+          zoneId: zone.id,
+          temperature: 24 + Math.random(),
+          airHumidity: 68 + Math.floor(Math.random() * 5),
+          substrateHumidity: 60 + Math.floor(Math.random() * 5),
+          isLightOn: false,
+        },
+      })
+    )
+  );
+
+  console.log("✅ Текущие параметры зон добавлены");
 
   await Promise.all([
     prisma.bucketParams.create({
