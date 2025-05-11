@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { HTTP_RESPONSES } from "@/definitions/HttpDefinitions";
 
 // GET: returns target params for a zone by station UUID and index
 export async function GET(req: NextRequest) {
@@ -8,10 +9,7 @@ export async function GET(req: NextRequest) {
   const index = parseInt(indexParam || "");
 
   if (!uuid || isNaN(index)) {
-    return NextResponse.json(
-      { error: "Missing or invalid uuid/index" },
-      { status: 400 }
-    );
+    return NextResponse.json(HTTP_RESPONSES[400]);
   }
 
   const zone = await prisma.zone.findFirst({
@@ -23,7 +21,7 @@ export async function GET(req: NextRequest) {
   });
 
   if (!zone) {
-    return NextResponse.json({ error: "Zone not found" }, { status: 404 });
+    return NextResponse.json(HTTP_RESPONSES[404]);
   }
 
   const target = await prisma.zoneTargetParams.findUnique({
@@ -31,13 +29,10 @@ export async function GET(req: NextRequest) {
   });
 
   if (!target) {
-    return NextResponse.json(
-      { error: "Zone target params not found" },
-      { status: 404 }
-    );
+    return NextResponse.json(HTTP_RESPONSES[404]);
   }
 
-  return NextResponse.json(target);
+  return NextResponse.json(HTTP_RESPONSES[200](target));
 }
 
 // POST: update or create zone target params by uuid + index
@@ -46,10 +41,7 @@ export async function POST(req: NextRequest) {
   const { uuid, index, params } = body;
 
   if (!uuid || typeof index !== "number" || typeof params !== "object") {
-    return NextResponse.json(
-      { error: "Missing uuid, index or params" },
-      { status: 400 }
-    );
+    return NextResponse.json(HTTP_RESPONSES[400]);
   }
 
   const zone = await prisma.zone.findFirst({
@@ -61,7 +53,7 @@ export async function POST(req: NextRequest) {
   });
 
   if (!zone) {
-    return NextResponse.json({ error: "Zone not found" }, { status: 404 });
+    return NextResponse.json(HTTP_RESPONSES[404]);
   }
 
   try {
@@ -74,8 +66,8 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return NextResponse.json({ updated });
+    return NextResponse.json(HTTP_RESPONSES[200](updated));
   } catch (e: any) {
-    return NextResponse.json({ error: e.message }, { status: 500 });
+    return NextResponse.json(HTTP_RESPONSES[500]);
   }
 }

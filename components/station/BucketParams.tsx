@@ -1,10 +1,5 @@
 import Grid from "@mui/material/Grid2";
 import { Parameter } from "../zone/Parameter";
-import {
-  ParameterProps,
-  StationParams,
-  ZoneParams,
-} from "@/enums/types/Params";
 import { createParameters, parameterConfig } from "@/lib/parameterConfig";
 import { customFetch } from "@/lib/utils/apiUtils";
 import { useState, useEffect } from "react";
@@ -20,6 +15,7 @@ type Parameter = {
 
 export function BucketParams(props: { uuid: string }) {
   const [bucketParams, setBucketparams] = useState<Record<string, number>>();
+  console.log(bucketParams);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,8 +24,10 @@ export function BucketParams(props: { uuid: string }) {
           `station/bucket/params?uuid=${props.uuid}`,
           "GET"
         );
+        console.log("response", response, response.status === 200);
         if (response.status === 200) {
-          setBucketparams(response.message.currentStationParams);
+          console.log("200");
+          setBucketparams(response.message);
         }
       } catch (error) {
         console.error("Fetch error:", error);
@@ -39,6 +37,7 @@ export function BucketParams(props: { uuid: string }) {
     fetchData();
   }, []);
   if (!bucketParams) {
+    console.log("hui");
     return <LinearProgress />;
   }
   const parameters = createParameters(

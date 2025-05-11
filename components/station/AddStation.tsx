@@ -22,7 +22,7 @@ export function AddStationForm() {
       return;
     }
 
-    const res = await fetch("/api/stations", {
+    const res = await fetch("/api/station", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, uuid }),

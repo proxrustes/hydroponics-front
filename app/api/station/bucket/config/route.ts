@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { HTTP_RESPONSES } from "@/definitions/HttpDefinitions";
 
 //returns target params
 export async function GET(req: NextRequest) {
   const uuid = req.nextUrl.searchParams.get("uuid");
-  if (!uuid)
-    return NextResponse.json({ error: "Missing uuid" }, { status: 400 });
+  if (!uuid) return NextResponse.json(HTTP_RESPONSES[400]);
 
   const station = await prisma.station.findUnique({
     where: { uuid },
@@ -14,15 +14,16 @@ export async function GET(req: NextRequest) {
     },
   });
 
-  if (!station)
-    return NextResponse.json({ error: "Station not found" }, { status: 404 });
+  if (!station) return NextResponse.json(HTTP_RESPONSES[404]);
 
-  return NextResponse.json({
-    nutrientConcentration: station.bucketTargetParams?.nutrientConcentration,
-    phLevel: station.bucketTargetParams?.phLevel,
-    solutionLvl: station.bucketTargetParams?.solutionLvl,
-    solutionTemperature: station.bucketTargetParams?.solutionTemperature,
-  });
+  return NextResponse.json(
+    HTTP_RESPONSES[200]({
+      nutrientConcentration: station.bucketTargetParams?.nutrientConcentration,
+      phLevel: station.bucketTargetParams?.phLevel,
+      solutionLvl: station.bucketTargetParams?.solutionLvl,
+      solutionTemperature: station.bucketTargetParams?.solutionTemperature,
+    })
+  );
 }
 
 // для апдейта со стороны приложения
@@ -31,10 +32,7 @@ export async function POST(req: NextRequest) {
   const { uuid, zoneId, params } = body;
 
   if (!uuid || typeof params !== "object") {
-    return NextResponse.json(
-      { error: "Missing uuid or params" },
-      { status: 400 }
-    );
+    return NextResponse.json(HTTP_RESPONSES[400]);
   }
 
   const station = await prisma.station.findUnique({
@@ -43,7 +41,7 @@ export async function POST(req: NextRequest) {
   });
 
   if (!station) {
-    return NextResponse.json({ error: "Station not found" }, { status: 404 });
+    return NextResponse.json(HTTP_RESPONSES[404]);
   }
 
   try {
@@ -57,10 +55,7 @@ export async function POST(req: NextRequest) {
       });
 
       if (!zone) {
-        return NextResponse.json(
-          { error: "Zone not found or does not belong to station" },
-          { status: 404 }
-        );
+        return NextResponse.json(HTTP_RESPONSES[404]);
       }
 
       const updated = await prisma.zoneTargetParams.upsert({
@@ -72,7 +67,7 @@ export async function POST(req: NextRequest) {
         },
       });
 
-      return NextResponse.json({ updated });
+      return NextResponse.json(HTTP_RESPONSES[201]({ updated }));
     } else {
       const updated = await prisma.bucketTargetParams.upsert({
         where: { stationId: station.id },
@@ -83,9 +78,9 @@ export async function POST(req: NextRequest) {
         },
       });
 
-      return NextResponse.json({ updated });
+      return NextResponse.json(HTTP_RESPONSES[201]({ updated }));
     }
   } catch (e: any) {
-    return NextResponse.json({ error: e.message }, { status: 500 });
+    return NextResponse.json(HTTP_RESPONSES[500]);
   }
 }

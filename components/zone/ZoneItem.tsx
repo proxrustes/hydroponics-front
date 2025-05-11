@@ -25,7 +25,10 @@ export function ZoneItem(props: { zoneId: number }) {
   useEffect(() => {
     const fetchZoneInfo = async () => {
       try {
-        const response = await customFetch(`zone/${props.zoneId}`, "GET");
+        const response = await customFetch(
+          `station/zone/${props.zoneId}`,
+          "GET"
+        );
         if (response.status === 200) {
           setZone(response.message);
         }

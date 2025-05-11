@@ -18,6 +18,7 @@ export async function GET(req: Request) {
     const uuid = url.searchParams.get("uuid");
 
     if (uuid) {
+      console.log("uuid:", uuid, "user.id:", user.id);
       const station = await prisma.station.findUnique({
         where: { uuid, userId: user.id },
         include: {
@@ -36,6 +37,7 @@ export async function GET(req: Request) {
       return NextResponse.json(HTTP_RESPONSES[200](station));
     }
 
+    console.log("user.id:", user.id);
     const stations = await prisma.station.findMany({
       where: { userId: user.id },
       include: {
@@ -138,7 +140,7 @@ export async function PUT(req: Request) {
       data: { name },
     });
 
-    return NextResponse.json(HTTP_RESPONSES[200](updated));
+    return NextResponse.json(HTTP_RESPONSES[201](updated));
   } catch (error: any) {
     console.error("❌ Error in PUT /stations:", error);
     return NextResponse.json(HTTP_RESPONSES[500](error.message));
