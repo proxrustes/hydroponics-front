@@ -9,7 +9,7 @@ export async function customFetch(
     const headers = {
       "Content-Type": "application/json",
     };
-    const response = await fetch(`../../api/${endpoint}`, {
+    const response = await fetch(`/api/${endpoint}`, {
       cache: "no-store",
       next: { revalidate: 0 },
       method,

@@ -1,21 +1,22 @@
 "use client";
-import React from "react";
+
+import React, { useEffect, useState } from "react";
 import { Container, Stack, Typography } from "@mui/material";
-import ParameterChart from "@/components/graphs/ParameterChart";
 import { useParams } from "next/navigation";
 import { CustomContainer } from "@/components/common/CustomContainer";
+import ParameterChart from "@/components/graphs/ParameterChart";
 
 export default function ZoneParamsDashboardPage() {
-  const { zoneId } = useParams();
-  let safeZoneId: string | undefined;
-  if (Array.isArray(zoneId)) {
-    safeZoneId = zoneId[0];
-  } else {
-    safeZoneId = zoneId;
-  }
+  const params = useParams();
+  const rawUuid = params.uuid;
+  const rawIndex = params.index;
 
-  if (!safeZoneId || typeof safeZoneId !== "string") {
-    return <div>Invalid Zone ID</div>;
+  const uuid = Array.isArray(rawUuid) ? rawUuid[0] : rawUuid;
+  const indexStr = Array.isArray(rawIndex) ? rawIndex[0] : rawIndex;
+  const index = indexStr !== undefined ? parseInt(indexStr, 10) : NaN;
+
+  if (!uuid || (isNaN(index) && index !== 0)) {
+    return <div>Invalid UUID or Index</div>;
   }
 
   return (
@@ -28,11 +29,13 @@ export default function ZoneParamsDashboardPage() {
             Temperature Over Time
           </Typography>
           <ParameterChart
-            zoneId={safeZoneId}
+            uuid={uuid}
+            index={index}
             paramKey="temperature"
             yAxisLabel="Temperature (°C)"
           />
         </CustomContainer>
+
         <CustomContainer>
           <Typography
             sx={{ textAlign: "center", fontWeight: 600, fontSize: 20 }}
@@ -40,7 +43,8 @@ export default function ZoneParamsDashboardPage() {
             Humidity Over Time
           </Typography>
           <ParameterChart
-            zoneId={safeZoneId}
+            uuid={uuid}
+            index={index}
             paramKey="airHumidity"
             yAxisLabel="Humidity (%)"
           />
@@ -53,7 +57,8 @@ export default function ZoneParamsDashboardPage() {
             Substrate Humidity Over Time
           </Typography>
           <ParameterChart
-            zoneId={safeZoneId}
+            uuid={uuid}
+            index={index}
             paramKey="substrateHumidity"
             yAxisLabel="Substrate (%)"
           />

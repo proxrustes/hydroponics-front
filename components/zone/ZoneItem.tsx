@@ -105,10 +105,16 @@ export function ZoneItem(props: { uuid: string; index: number }) {
           {zone.name}: {zone.plant?.name}
         </Typography>
         <ButtonGroup>
-          <IconButton href={`zone/${zone.id}/details`} color="secondary">
+          <IconButton
+            href={`/station/${props.uuid}/${props.index}/details`}
+            color="secondary"
+          >
             <InsertChartIcon fontSize="large" />
           </IconButton>
-          <IconButton href={`zone/${zone.id}/settings`} color="secondary">
+          <IconButton
+            href={`/station/${props.uuid}/${props.index}/settings`}
+            color="secondary"
+          >
             <SettingsIcon fontSize="large" />
           </IconButton>
         </ButtonGroup>

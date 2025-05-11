@@ -25,7 +25,8 @@ export interface ZoneLogLocal {
 }
 
 export default function ParameterChart(props: {
-  zoneId: string;
+  uuid: string;
+  index: number;
   paramKey: keyof ZoneLogLocal;
   yAxisLabel: string;
 }) {
@@ -38,7 +39,10 @@ export default function ParameterChart(props: {
       setIsLoading(true);
       setError(null);
       try {
-        const res = await customFetch(`zone/${props.zoneId}/logs`, "GET");
+        const res = await customFetch(
+          `station/zone/logs?uuid=${props.uuid}&index=${props.index}`,
+          "GET"
+        );
         if (res.status === 200) {
           const rawLogs: ZoneLogDto[] = res.message;
           const mappedLogs: ZoneLogLocal[] = rawLogs.map((item) => ({
@@ -57,7 +61,7 @@ export default function ParameterChart(props: {
       }
     }
     fetchLogs();
-  }, []);
+  }, [props.uuid, props.index]);
 
   if (isLoading) return <div>Loading logs...</div>;
   if (error) return <div style={{ color: "red" }}>{error}</div>;
