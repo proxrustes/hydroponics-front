@@ -8,8 +8,11 @@ export async function GET(req: NextRequest) {
   const indexParam = req.nextUrl.searchParams.get("index");
   const index = parseInt(indexParam || "");
 
-  if (!uuid || isNaN(index)) {
-    return NextResponse.json(HTTP_RESPONSES[400]);
+  if (!uuid) {
+    return NextResponse.json(HTTP_RESPONSES[400]("uuid"));
+  }
+  if (isNaN(index)) {
+    return NextResponse.json(HTTP_RESPONSES[400]("index"));
   }
 
   const zone = await prisma.zone.findFirst({
@@ -31,7 +34,7 @@ export async function GET(req: NextRequest) {
   if (!target) {
     return NextResponse.json(HTTP_RESPONSES[404]("target"));
   }
-
+  console.log("target:", target);
   return NextResponse.json(HTTP_RESPONSES[200](target));
 }
 

@@ -88,7 +88,7 @@ export default function Page() {
             currentPlantId={zone.plant?.id}
             onSuccess={() => {
               setEditMode(false);
-              location.reload(); // Можно заменить на обновление setZone() при необходимости
+              location.reload();
             }}
           />
         </Dialog>
