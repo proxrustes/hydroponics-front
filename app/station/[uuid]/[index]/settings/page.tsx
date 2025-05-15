@@ -10,8 +10,6 @@ import {
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Grid from "@mui/material/Grid2";
-
-import { ParamsSection } from "@/components/zone/ParamsSection";
 import { DeviceControlSection } from "@/components/zone/DeviceControlSection";
 import { CustomContainer } from "@/components/common/CustomContainer";
 import { Loader } from "@/components/common/Loader";

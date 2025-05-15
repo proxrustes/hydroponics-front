@@ -82,6 +82,7 @@ export function ZoneItem(props: { uuid: string; index: number }) {
 
     fetchZoneInfo();
     fetchZoneParams();
+    fetchTargetParams();
     fetchZoneNorms();
   }, [props.index]);
 
