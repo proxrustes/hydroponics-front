@@ -4,6 +4,7 @@ import { HTTP_RESPONSES } from "@/definitions/HttpDefinitions";
 
 // GET: returns target params for a zone by station UUID and index
 export async function GET(req: NextRequest) {
+  console.log(req.nextUrl.searchParams);
   const uuid = req.nextUrl.searchParams.get("uuid");
   const indexParam = req.nextUrl.searchParams.get("index");
   const index = parseInt(indexParam || "");

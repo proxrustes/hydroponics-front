@@ -9,10 +9,6 @@ export function CustomContainer(props: {
     <Stack
       gap={1}
       sx={{
-        borderColor: "secondary.main",
-        borderWidth: 6,
-        borderStyle: "solid",
-        borderRadius: 2,
         p: 2,
         backgroundColor: "white",
         ...props.sx,

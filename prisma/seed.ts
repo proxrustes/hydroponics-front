@@ -157,7 +157,6 @@ async function seed() {
         temperature: 22.5,
         airHumidity: 65,
         substrateHumidity: 60,
-        isLightOn: true,
       },
     });
   }

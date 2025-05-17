@@ -98,12 +98,11 @@ model BucketParamsLog {
 }
 
 model Zone {
-  id        Int     @id @default(autoincrement())
-  index     Int
-  name      String
-  plantId   Int?
-  plant     Plant?  @relation(fields: [plantId], references: [id])
-  isLightOn Boolean @default(false)
+  id      Int    @id @default(autoincrement())
+  index   Int
+  name    String
+  plantId Int?
+  plant   Plant? @relation(fields: [plantId], references: [id])
 
   stationId Int
   station   Station @relation(fields: [stationId], references: [id])
@@ -120,7 +119,7 @@ model ZoneSchedule {
   zoneId Int  @unique
   zone   Zone @relation(fields: [zoneId], references: [id])
 
-  lightOnTime  String // e.g. "08:00"
+  lightOnTime  String
   lightOffTime String
   pumpOnTime   String
   pumpOffTime  String
@@ -160,7 +159,6 @@ model ZoneParams {
   temperature       Float
   airHumidity       Float
   substrateHumidity Float
-  isLightOn         Boolean
   updatedAt         DateTime @updatedAt
 }
 
@@ -190,7 +188,6 @@ model ZoneParamsLog {
   temperature       Float
   airHumidity       Float
   substrateHumidity Float
-  isLightOn         Boolean?
 
   @@index([zoneId, recordedAt])
   @@map("zone_params_log")
@@ -216,7 +213,6 @@ model ZoneTargetParams {
   temperature       Float
   airHumidity       Float
   substrateHumidity Float
-  isLightOn         Boolean
   updatedAt         DateTime @updatedAt
 }
 

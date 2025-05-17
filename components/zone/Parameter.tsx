@@ -29,9 +29,6 @@ export function Parameter({
         borderRadius: 2,
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
-        textAlign: "center",
-        backgroundColor: "#f9f9f9",
       }}
     >
       <Typography variant="h6" fontWeight={700}>

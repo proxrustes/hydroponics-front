@@ -13,7 +13,7 @@ import Grid from "@mui/material/Grid2";
 import { DeviceControlSection } from "@/components/zone/DeviceControlSection";
 import { CustomContainer } from "@/components/common/CustomContainer";
 import { Loader } from "@/components/common/Loader";
-import { CustomNormsSection } from "@/components/zone/CustomNormsSection";
+import { CustomTargetSection } from "@/components/zone/CustomNormsSection";
 import EditIcon from "@mui/icons-material/Edit";
 import { EditZonePlant } from "@/components/EditZonePlant";
 import { customFetch } from "@/lib/utils/apiUtils";
@@ -51,7 +51,7 @@ export default function Page() {
     if (uuid && index !== undefined) fetchZone();
   }, [uuid, index]);
 
-  if (!uuid || !index) return <div>Некорректные параметры маршрута</div>;
+  if (!uuid || !index) return <div>404</div>;
 
   if (!zone || loading) return <Loader sx={{ mt: "30vh" }} />;
 
@@ -74,7 +74,11 @@ export default function Page() {
             <ZoneItem uuid={uuid} index={Number(index) ?? 0} />
           </Grid>
           <Grid size={12}>
-            <CustomNormsSection uuid={uuid} index={index} onUpdate={() => {}} />
+            <CustomTargetSection
+              uuid={uuid}
+              index={index}
+              onUpdate={() => {}}
+            />
           </Grid>
         </Grid>
 
@@ -82,12 +86,12 @@ export default function Page() {
 
         <Dialog open={isEditMode} onClose={() => setEditMode(false)}>
           <EditZonePlant
-            zoneId={zone.id}
-            currentPlantId={zone.plant?.id}
             onSuccess={() => {
               setEditMode(false);
               location.reload();
             }}
+            uuid={uuid}
+            index={index}
           />
         </Dialog>
       </Stack>

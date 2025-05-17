@@ -55,14 +55,13 @@ export async function PUT(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { name, plantId, isLightOn } = body;
+    const { name, plantId } = body;
 
     const updated = await prisma.zone.update({
       where: { id: zone.id },
       data: {
         ...(name && { name }),
         ...(plantId && { plantId }),
-        ...(isLightOn !== undefined && { isLightOn }),
       },
     });
 
