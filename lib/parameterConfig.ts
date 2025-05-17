@@ -1,4 +1,4 @@
-import { ParameterProps } from "../enums/types/Params";
+import { ParameterProps } from "@/components/zone/Parameter";
 
 type ParameterConfig = {
   [key in
@@ -60,7 +60,7 @@ export function createParameters<T>(
     Omit<ParameterProps, "value" | "norm" | "target">
   >,
   params: Record<string, number>,
-  norm: Record<string, [number, number]> | [number, number],
+  norm?: Record<string, [number, number]> | [number, number],
   target?: Record<string, number>
 ): ParameterProps[] {
   return keys
@@ -68,7 +68,11 @@ export function createParameters<T>(
     .map((key) => ({
       ...parameterConfig[key],
       value: params[key] ?? 0,
-      norm: Array.isArray(norm) ? norm : norm[key] ?? [0, 0],
+      norm: !norm
+        ? undefined
+        : Array.isArray(norm)
+        ? norm
+        : norm[key] ?? undefined,
       target: target?.[key],
     }));
 }

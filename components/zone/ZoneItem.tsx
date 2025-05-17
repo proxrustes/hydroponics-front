@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   ButtonGroup,
   Divider,
   IconButton,
@@ -15,6 +16,7 @@ import InsertChartIcon from "@mui/icons-material/InsertChart";
 import { createParameters, parameterConfig } from "@/lib/parameterConfig";
 import { customFetch } from "@/lib/utils/apiUtils";
 import { Zone } from "@/enums/types/Zone";
+import { ZoneParameters } from "./ZoneParams";
 
 export function ZoneItem(props: { uuid: string; index: number }) {
   const [zone, setZone] = useState<Zone | null>();
@@ -44,7 +46,6 @@ export function ZoneItem(props: { uuid: string; index: number }) {
           `station/zone/params?uuid=${props.uuid}&index=${props.index}`,
           "GET"
         );
-        console.log(response);
         if (response.status === 200) {
           setCurrentParams(response.message);
         }
@@ -52,20 +53,21 @@ export function ZoneItem(props: { uuid: string; index: number }) {
         console.error("Fetch zone params error:", error);
       }
     };
+
     const fetchTargetParams = async () => {
       try {
         const response = await customFetch(
           `station/zone/config?uuid=${props.uuid}&index=${props.index}`,
           "GET"
         );
-        console.log(response);
         if (response.status === 200) {
           setTargetParams(response.message);
         }
       } catch (error) {
-        console.error("Fetch zone params error:", error);
+        console.error("Fetch target params error:", error);
       }
     };
+
     const fetchZoneNorms = async () => {
       try {
         const response = await customFetch(
@@ -85,19 +87,14 @@ export function ZoneItem(props: { uuid: string; index: number }) {
     fetchTargetParams();
     fetchZoneNorms();
   }, [props.index]);
-
-  if (!zone || !currentParams || !zoneNorms) {
-    console.log(zone, currentParams, zoneNorms);
-    return <LinearProgress />;
+  if (!zone) {
+    return (
+      <Box sx={{ p: 2 }}>
+        <Typography>Завантаження інформації про зону...</Typography>
+        <LinearProgress sx={{ mt: 1 }} />
+      </Box>
+    );
   }
-
-  const parameters = createParameters(
-    ["airHumidity", "temperature", "substrateHumidity"],
-    parameterConfig,
-    currentParams,
-    zoneNorms,
-    targetParams // <= передаёшь сюда объект target, если он есть
-  );
 
   return (
     <Box sx={{ p: 2 }}>
@@ -121,20 +118,7 @@ export function ZoneItem(props: { uuid: string; index: number }) {
         </ButtonGroup>
       </Stack>
 
-      <Grid container spacing={2} sx={{ mt: 2 }}>
-        {parameters.map((param, index) => (
-          <Grid size={4} key={index}>
-            <Parameter
-              name={param.name}
-              value={param.value}
-              norm={param.norm}
-              icon={param.icon}
-              valueFormatter={param.valueFormatter}
-              target={param.target}
-            />
-          </Grid>
-        ))}
-      </Grid>
+      <ZoneParameters uuid={props.uuid} index={props.index} />
 
       <Divider sx={{ mt: 2 }} />
     </Box>

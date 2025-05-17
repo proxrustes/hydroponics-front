@@ -1,5 +1,13 @@
 import { Box, Typography } from "@mui/material";
-import { ParameterProps } from "@/enums/types/Params";
+
+export type ParameterProps = {
+  name: string;
+  value: number;
+  target?: number;
+  valueFormatter?: string;
+  norm?: [number, number];
+  icon: string;
+};
 
 function round(value: number): number {
   return Math.round(value * 10) / 10;

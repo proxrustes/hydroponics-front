@@ -119,6 +119,50 @@ async function seed() {
   }
 
   console.log("✅ Группы и растения успешно добавлены");
+
+  const stationAdmin = await prisma.station.create({
+    data: {
+      name: "Станція підвал",
+      uuid: "admin-station-uuid",
+      userId: user1.id,
+      zones: {
+        create: Array.from({ length: 4 }).map((_, i) => ({
+          name: `Зона A${i + 1}`,
+          index: i,
+        })),
+      },
+    },
+    include: { zones: true },
+  });
+
+  const stationUser1 = await prisma.station.create({
+    data: {
+      name: "Станція балкон",
+      uuid: "user1-station-uuid",
+      userId: user1.id,
+      zones: {
+        create: Array.from({ length: 4 }).map((_, i) => ({
+          name: `Зона B${i + 1}`,
+          index: i,
+        })),
+      },
+    },
+  });
+
+  console.log("✅ Станції та зони створені");
+  for (const zone of stationAdmin.zones) {
+    await prisma.zoneParams.create({
+      data: {
+        zoneId: zone.id,
+        temperature: 22.5,
+        airHumidity: 65,
+        substrateHumidity: 60,
+        isLightOn: true,
+      },
+    });
+  }
+
+  console.log("✅ Поточні параметри зон для станції адміністратора додані");
   console.log("🌱 Сидирование завершено успешно!");
 }
 
