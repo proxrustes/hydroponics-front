@@ -92,7 +92,6 @@ export async function POST(req: Request) {
           create: Array.from({ length: 4 }).map((_, index) => ({
             name: `Зона ${index + 1}`,
             index,
-            plant: { connect: { id: 1 } },
           })),
         },
       },
