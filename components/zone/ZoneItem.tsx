@@ -9,12 +9,15 @@ import {
 } from "@mui/material";
 import { useState, useEffect } from "react";
 import SettingsIcon from "@mui/icons-material/Settings";
-import InsertChartIcon from "@mui/icons-material/InsertChart";
 import { customFetch } from "@/lib/utils/apiUtils";
 import { Zone } from "@/enums/types/Zone";
 import { ZoneParameters } from "./ZoneParams";
 
-export function ZoneItem(props: { uuid: string; index: number }) {
+export function ZoneItem(props: {
+  uuid: string;
+  index: number;
+  showButton?: boolean;
+}) {
   const [zone, setZone] = useState<Zone | null>();
 
   useEffect(() => {
@@ -46,27 +49,23 @@ export function ZoneItem(props: { uuid: string; index: number }) {
   return (
     <Box sx={{ px: 2 }}>
       <Stack
-        direction="row"
+        direction={"row"}
         justifyContent="space-between"
         alignItems={"center"}
       >
         <Typography sx={{ fontWeight: 600, fontSize: 24 }}>
           {zone.name}: {zone.plant?.name}
         </Typography>
-        <ButtonGroup>
-          <IconButton
-            href={`/station/${props.uuid}/${props.index}/details`}
-            color="secondary"
-          >
-            <InsertChartIcon fontSize="large" />
-          </IconButton>
-          <IconButton
-            href={`/station/${props.uuid}/${props.index}/settings`}
-            color="secondary"
-          >
-            <SettingsIcon fontSize="large" />
-          </IconButton>
-        </ButtonGroup>
+        {props.showButton && (
+          <ButtonGroup>
+            <IconButton
+              href={`/station/${props.uuid}/${props.index}`}
+              color="secondary"
+            >
+              <SettingsIcon fontSize="large" />
+            </IconButton>
+          </ButtonGroup>
+        )}
       </Stack>
 
       <ZoneParameters uuid={props.uuid} index={props.index} />

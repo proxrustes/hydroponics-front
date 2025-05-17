@@ -6,11 +6,11 @@ import {
   Stack,
   IconButton,
   Dialog,
+  Divider,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Grid from "@mui/material/Grid2";
-import { DeviceControlSection } from "@/components/zone/DeviceControlSection";
 import { CustomContainer } from "@/components/common/CustomContainer";
 import { Loader } from "@/components/common/Loader";
 import { CustomTargetSection } from "@/components/zone/CustomNormsSection";
@@ -18,6 +18,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import { EditZonePlant } from "@/components/EditZonePlant";
 import { customFetch } from "@/lib/utils/apiUtils";
 import { ZoneItem } from "@/components/zone/ZoneItem";
+import { DeviceControlSection } from "@/components/zone/device-schedule/DeviceControlSection";
+import ParameterChart from "@/components/graphs/ParameterChart";
 
 export default function Page() {
   const params = useParams();
@@ -70,20 +72,19 @@ export default function Page() {
         </CustomContainer>
 
         <Grid container spacing={2}>
-          <Grid size={12}>
+          <Grid size={8}>
             <ZoneItem uuid={uuid} index={Number(index) ?? 0} />
-          </Grid>
-          <Grid size={12}>
+
             <CustomTargetSection
               uuid={uuid}
               index={index}
               onUpdate={() => {}}
             />
           </Grid>
+          <Grid size={4}>
+            <DeviceControlSection />
+          </Grid>
         </Grid>
-
-        <DeviceControlSection />
-
         <Dialog open={isEditMode} onClose={() => setEditMode(false)}>
           <EditZonePlant
             onSuccess={() => {
@@ -94,6 +95,50 @@ export default function Page() {
             index={index}
           />
         </Dialog>
+      </Stack>
+      <Divider sx={{ my: 4 }} />
+      <Stack gap={4}>
+        <CustomContainer>
+          <Typography
+            sx={{ textAlign: "center", fontWeight: 600, fontSize: 20 }}
+          >
+            Temperature Over Time
+          </Typography>
+          <ParameterChart
+            uuid={uuid}
+            index={index}
+            paramKey="temperature"
+            yAxisLabel="Temperature (°C)"
+          />
+        </CustomContainer>
+
+        <CustomContainer>
+          <Typography
+            sx={{ textAlign: "center", fontWeight: 600, fontSize: 20 }}
+          >
+            Humidity Over Time
+          </Typography>
+          <ParameterChart
+            uuid={uuid}
+            index={index}
+            paramKey="airHumidity"
+            yAxisLabel="Humidity (%)"
+          />
+        </CustomContainer>
+
+        <CustomContainer>
+          <Typography
+            sx={{ textAlign: "center", fontWeight: 600, fontSize: 20 }}
+          >
+            Substrate Humidity Over Time
+          </Typography>
+          <ParameterChart
+            uuid={uuid}
+            index={index}
+            paramKey="substrateHumidity"
+            yAxisLabel="Substrate (%)"
+          />
+        </CustomContainer>
       </Stack>
     </Container>
   );

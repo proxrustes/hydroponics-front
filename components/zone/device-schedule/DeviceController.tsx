@@ -1,16 +1,25 @@
 import { useState } from "react";
-import { Button, Stack, Typography, TextField, IconButton } from "@mui/material";
+import {
+  Button,
+  Stack,
+  Typography,
+  TextField,
+  IconButton,
+} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { CustomContainer } from "../common/CustomContainer";
-
+import { CustomContainer } from "@/components/common/CustomContainer";
 interface DeviceControlProps {
   title: string;
   scheduleFields: { label: string; type: string }[];
   onApplySchedule: (schedule: Record<string, string>[]) => void;
 }
 
-export function DeviceController({ title, scheduleFields, onApplySchedule }: DeviceControlProps) {
+export function DeviceController({
+  title,
+  scheduleFields,
+  onApplySchedule,
+}: DeviceControlProps) {
   const [isOn, setIsOn] = useState(false);
   const [schedule, setSchedule] = useState<Record<string, string>[]>([
     Object.fromEntries(scheduleFields.map((field) => [field.label, ""])),
@@ -19,14 +28,19 @@ export function DeviceController({ title, scheduleFields, onApplySchedule }: Dev
     schedule.map(() => scheduleFields.map(() => false))
   );
 
-  const handleScheduleChange = (index: number, field: string, value: string) => {
+  const handleScheduleChange = (
+    index: number,
+    field: string,
+    value: string
+  ) => {
     const updatedSchedule = [...schedule];
     updatedSchedule[index][field] = value;
     setSchedule(updatedSchedule);
 
     // Clear errors when the field is filled
     const updatedErrors = [...errors];
-    updatedErrors[index][scheduleFields.findIndex((f) => f.label === field)] = !value;
+    updatedErrors[index][scheduleFields.findIndex((f) => f.label === field)] =
+      !value;
     setErrors(updatedErrors);
   };
 
@@ -88,7 +102,9 @@ export function DeviceController({ title, scheduleFields, onApplySchedule }: Dev
                 }
                 fullWidth
                 error={errors[rowIndex]?.[fieldIndex] || false}
-                helperText={errors[rowIndex]?.[fieldIndex] ? "This field is required" : ""}
+                helperText={
+                  errors[rowIndex]?.[fieldIndex] ? "This field is required" : ""
+                }
               />
             ))}
             <IconButton
@@ -114,7 +130,11 @@ export function DeviceController({ title, scheduleFields, onApplySchedule }: Dev
         <Button variant="outlined" color="error" onClick={handleStop}>
           Stop
         </Button>
-        <Button variant="contained" color="primary" onClick={handleApplySchedule}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleApplySchedule}
+        >
           Save
         </Button>
       </Stack>

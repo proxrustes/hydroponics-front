@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 
 export type ParameterProps = {
   name: string;
@@ -35,19 +35,25 @@ export function Parameter({
         {icon} {name}
       </Typography>
 
-      <Typography variant="h4" fontWeight={700} color="primary">
-        {round(value)} {valueFormatter}
-      </Typography>
+      <Stack direction={"row"} gap={2}>
+        <Typography variant="h4" color="primary.main" sx={{ fontWeight: 600 }}>
+          {round(value)} {valueFormatter}
+        </Typography>
+
+        {target !== undefined && (
+          <Typography
+            variant="h4"
+            color="primary.main"
+            sx={{ fontWeight: 600 }}
+          >
+            → {round(target)} {valueFormatter}
+          </Typography>
+        )}
+      </Stack>
 
       {norm && (
         <Typography variant="body2" color="text.secondary">
           Норма: {round(norm[0])}–{round(norm[1])} {valueFormatter}
-        </Typography>
-      )}
-
-      {target !== undefined && (
-        <Typography variant="body2" color="secondary">
-          🎯 Ціль: {round(target)} {valueFormatter}
         </Typography>
       )}
     </Box>
