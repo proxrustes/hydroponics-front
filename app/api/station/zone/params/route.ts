@@ -51,7 +51,7 @@ export async function GET(req: NextRequest) {
       );
 
       // Оновлюємо або створюємо параметри
-      await prisma.zoneParams.upsert({
+      const res = await prisma.zoneParams.upsert({
         where: { zoneId: zone.id },
         update: {
           temperature,
@@ -65,6 +65,7 @@ export async function GET(req: NextRequest) {
           substrateHumidity,
         },
       });
+      console.log(res);
     }
 
     // Завжди повертаємо актуальні параметри

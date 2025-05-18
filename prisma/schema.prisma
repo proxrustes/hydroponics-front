@@ -107,24 +107,28 @@ model Zone {
   stationId Int
   station   Station @relation(fields: [stationId], references: [id])
 
-  zoneLogs         ZoneParamsLog[]
-  zoneParams       ZoneParams?
-  zoneNorms        ZoneNorms?
-  zoneTargetParams ZoneTargetParams?
-  schedule         ZoneSchedule?
+  zoneLogs             ZoneParamsLog[]
+  zoneParams           ZoneParams?
+  zoneNorms            ZoneNorms?
+  zoneTargetParams     ZoneTargetParams?
+  ZoneScheduleInterval ZoneScheduleInterval[]
 }
 
-model ZoneSchedule {
+model ZoneScheduleInterval {
   id     Int  @id @default(autoincrement())
-  zoneId Int  @unique
+  zoneId Int
   zone   Zone @relation(fields: [zoneId], references: [id])
 
-  lightOnTime  String
-  lightOffTime String
-  pumpOnTime   String
-  pumpOffTime  String
-  fanOnTime    String
-  fanOffTime   String
+  device         DeviceType
+  onTime         String
+  offTime        String
+  zoneScheduleId Int?
+}
+
+enum DeviceType {
+  LIGHT
+  PUMP
+  FAN
 }
 
 model ZoneNorms {

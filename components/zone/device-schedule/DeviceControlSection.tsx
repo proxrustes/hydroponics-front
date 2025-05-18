@@ -1,9 +1,33 @@
-import { Divider, Stack, } from "@mui/material";
+import { Divider, Stack } from "@mui/material";
 import { DeviceController } from "./DeviceController";
+import { customFetch } from "@/lib/utils/apiUtils";
 
-export function DeviceControlSection() {
-  const handleApplySchedule = (title: string, schedule: Record<string, string>[]) => {
+export function DeviceControlSection({
+  uuid,
+  index,
+}: {
+  uuid: string;
+  index: number;
+}) {
+  const handleApplySchedule = (
+    title: string,
+    schedule: Record<string, string>[]
+  ) => {
     console.log(`Schedule for ${title}:`, schedule);
+
+    customFetch(`/station/zone/config`, "POST", {
+      uuid,
+      index,
+      scheduleIntervals: schedule, // Передаємо інтервали
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          alert("Розклад успішно збережений!");
+        } else {
+          alert("Не вдалося зберегти розклад");
+        }
+      })
+      .catch((err) => console.error("Failed to save schedule:", err));
   };
 
   return (
@@ -33,7 +57,9 @@ export function DeviceControlSection() {
           { label: "Start Time", type: "time" },
           { label: "Liters to Pump", type: "number" },
         ]}
-        onApplySchedule={(schedule) => handleApplySchedule("Water Pump", schedule)}
+        onApplySchedule={(schedule) =>
+          handleApplySchedule("Water Pump", schedule)
+        }
       />
     </Stack>
   );

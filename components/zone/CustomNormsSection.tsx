@@ -3,8 +3,6 @@ import {
   Typography,
   TextField,
   Button,
-  Switch,
-  FormControlLabel,
   LinearProgress,
 } from "@mui/material";
 import { useState, useEffect } from "react";
@@ -19,7 +17,7 @@ interface ZoneTargetParams {
 
 interface CustomTargetSectionProps {
   uuid: string;
-  index: string;
+  index: number;
   onUpdate?: () => void;
 }
 

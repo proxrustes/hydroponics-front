@@ -4,16 +4,11 @@ import { HTTP_RESPONSES } from "@/definitions/HttpDefinitions";
 
 // GET: returns target params for a zone by station UUID and index
 export async function GET(req: NextRequest) {
-  console.log(req.nextUrl.searchParams);
   const uuid = req.nextUrl.searchParams.get("uuid");
-  const indexParam = req.nextUrl.searchParams.get("index");
-  const index = parseInt(indexParam || "");
+  const index = parseInt(req.nextUrl.searchParams.get("index") || "");
 
-  if (!uuid) {
-    return NextResponse.json(HTTP_RESPONSES[400]("uuid"));
-  }
-  if (isNaN(index)) {
-    return NextResponse.json(HTTP_RESPONSES[400]("index"));
+  if (!uuid || isNaN(index)) {
+    return NextResponse.json(HTTP_RESPONSES[400]("Invalid uuid or index"));
   }
 
   const zone = await prisma.zone.findFirst({
@@ -25,27 +20,32 @@ export async function GET(req: NextRequest) {
   });
 
   if (!zone) {
-    return NextResponse.json(HTTP_RESPONSES[404]("zone"));
+    return NextResponse.json(HTTP_RESPONSES[404]("Zone not found"));
   }
-  console.log(zone);
-  const target = await prisma.zoneTargetParams.findUnique({
-    where: { zoneId: zone.id },
-  });
 
-  if (!target) {
-    return NextResponse.json(HTTP_RESPONSES[404]("target"));
-  }
-  console.log("target:", target);
-  return NextResponse.json(HTTP_RESPONSES[200](target));
+  const [targetParams, scheduleIntervals] = await Promise.all([
+    prisma.zoneTargetParams.findUnique({
+      where: { zoneId: zone.id },
+    }),
+    prisma.zoneScheduleInterval.findMany({
+      where: { zoneId: zone.id },
+    }),
+  ]);
+
+  return NextResponse.json(
+    HTTP_RESPONSES[200]({
+      targetParams: targetParams ?? null,
+      scheduleIntervals: scheduleIntervals ?? [],
+    })
+  );
 }
 
-// POST: update or create zone target params by uuid + index
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { uuid, index, params } = body;
+  const { uuid, index, params, scheduleIntervals } = body;
 
-  if (!uuid || typeof index !== "number" || typeof params !== "object") {
-    return NextResponse.json(HTTP_RESPONSES[400]("uuid"));
+  if (!uuid || isNaN(index)) {
+    return NextResponse.json(HTTP_RESPONSES[400]("Invalid uuid or index"));
   }
 
   const zone = await prisma.zone.findFirst({
@@ -57,11 +57,12 @@ export async function POST(req: NextRequest) {
   });
 
   if (!zone) {
-    return NextResponse.json(HTTP_RESPONSES[404]("zone"));
+    return NextResponse.json(HTTP_RESPONSES[404]("Zone not found"));
   }
 
   try {
-    const updated = await prisma.zoneTargetParams.upsert({
+    // Оновлення або створення targetParams
+    const updatedTarget = await prisma.zoneTargetParams.upsert({
       where: { zoneId: zone.id },
       update: params,
       create: {
@@ -70,8 +71,24 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return NextResponse.json(HTTP_RESPONSES[200](updated));
+    // Оновлення або створення кількох інтервалів
+    const updatedIntervals = await prisma.zoneScheduleInterval.createMany({
+      data: scheduleIntervals.map((interval: any) => ({
+        zoneId: zone.id,
+        device: interval.device,
+        onTime: interval.onTime,
+        offTime: interval.offTime,
+      })),
+    });
+
+    return NextResponse.json(
+      HTTP_RESPONSES[200]({
+        targetParams: updatedTarget,
+        scheduleIntervals: updatedIntervals,
+      })
+    );
   } catch (e: any) {
-    return NextResponse.json(HTTP_RESPONSES[500](e));
+    console.error("❌ Error in POST /station/zone/schedule:", e);
+    return NextResponse.json(HTTP_RESPONSES[500](e.message));
   }
 }

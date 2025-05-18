@@ -25,8 +25,8 @@ export default function Page() {
   const params = useParams();
 
   const uuid = typeof params.uuid === "string" ? params.uuid : params.uuid?.[0];
-  const index =
-    typeof params.index === "number" ? params.index : params.index?.[0];
+  const index = Number(params.index) ?? 0;
+
   const [zone, setZone] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [isEditMode, setEditMode] = useState(false);
@@ -82,7 +82,7 @@ export default function Page() {
             />
           </Grid>
           <Grid size={4}>
-            <DeviceControlSection />
+            <DeviceControlSection uuid={uuid} index={index} />
           </Grid>
         </Grid>
         <Dialog open={isEditMode} onClose={() => setEditMode(false)}>

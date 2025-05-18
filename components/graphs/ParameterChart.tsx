@@ -26,7 +26,7 @@ export interface ZoneLogLocal {
 
 export default function ParameterChart(props: {
   uuid: string;
-  index: string;
+  index: number;
   paramKey: keyof ZoneLogLocal;
   yAxisLabel: string;
 }) {

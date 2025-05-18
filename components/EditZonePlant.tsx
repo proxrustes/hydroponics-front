@@ -19,7 +19,7 @@ interface Plant {
 
 interface EditZonePlantProps {
   uuid: string;
-  index: string;
+  index: number;
   currentPlantId?: number;
   onSuccess?: () => void;
 }
