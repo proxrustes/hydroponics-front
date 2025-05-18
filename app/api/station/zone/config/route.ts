@@ -43,11 +43,13 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   const body = await req.json();
   const { uuid, index, params, scheduleIntervals } = body;
-
+  console.log("BODX", body);
+  // Перевірка наявності uuid та index
   if (!uuid || isNaN(index)) {
     return NextResponse.json(HTTP_RESPONSES[400]("Invalid uuid or index"));
   }
 
+  // Знаходимо зону за uuid та index
   const zone = await prisma.zone.findFirst({
     where: {
       station: { uuid },
@@ -61,30 +63,35 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    // Оновлення або створення targetParams
-    const updatedTarget = await prisma.zoneTargetParams.upsert({
-      where: { zoneId: zone.id },
-      update: params,
-      create: {
-        zoneId: zone.id,
-        ...params,
-      },
-    });
+    // Якщо params надано, оновлюємо або створюємо targetParams
+    const updatedTarget = params
+      ? await prisma.zoneTargetParams.upsert({
+          where: { zoneId: zone.id },
+          update: params,
+          create: {
+            zoneId: zone.id,
+            ...params,
+          },
+        })
+      : null; // Якщо params не надано, пропускаємо оновлення
 
-    // Оновлення або створення кількох інтервалів
-    const updatedIntervals = await prisma.zoneScheduleInterval.createMany({
-      data: scheduleIntervals.map((interval: any) => ({
-        zoneId: zone.id,
-        device: interval.device,
-        onTime: interval.onTime,
-        offTime: interval.offTime,
-      })),
-    });
+    // Якщо scheduleIntervals надано, створюємо інтервали
+    const updatedIntervals = scheduleIntervals?.length
+      ? await prisma.zoneScheduleInterval.createMany({
+          data: scheduleIntervals.map((interval: any) => ({
+            zoneId: zone.id,
+            device: interval.device,
+            onTime: interval.onTime,
+            offTime: interval.offTime,
+          })),
+        })
+      : null; // Якщо scheduleIntervals не надано, пропускаємо
 
+    // Повертаємо результат залежно від того, що було оновлено
     return NextResponse.json(
       HTTP_RESPONSES[200]({
-        targetParams: updatedTarget,
-        scheduleIntervals: updatedIntervals,
+        targetParams: updatedTarget ?? null,
+        scheduleIntervals: updatedIntervals ?? null,
       })
     );
   } catch (e: any) {

@@ -26,7 +26,8 @@ export default function Page() {
 
   const uuid = typeof params.uuid === "string" ? params.uuid : params.uuid?.[0];
   const index = Number(params.index) ?? 0;
-
+  console.log("uuid", uuid);
+  console.log("index", index);
   const [zone, setZone] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [isEditMode, setEditMode] = useState(false);
@@ -53,7 +54,8 @@ export default function Page() {
     if (uuid && index !== undefined) fetchZone();
   }, [uuid, index]);
 
-  if (!uuid || !index) return <div>404</div>;
+  if (!uuid || (!index && index !== 0))
+    return <div>404 {(uuid?.toString(), index)}</div>;
 
   if (!zone || loading) return <Loader sx={{ mt: "30vh" }} />;
 

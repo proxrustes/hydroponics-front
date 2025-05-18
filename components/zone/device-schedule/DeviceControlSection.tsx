@@ -34,32 +34,21 @@ export function DeviceControlSection({
     <Stack>
       <DeviceController
         title="Light"
-        scheduleFields={[
-          { label: "Start Time", type: "time" },
-          { label: "End Time", type: "time" },
-        ]}
-        onApplySchedule={(schedule) => handleApplySchedule("Light", schedule)}
+        device="LIGHT"
+        onApplySchedule={(schedule) => handleApplySchedule("LIGHT", schedule)}
       />
       <Divider sx={{ my: 2 }} />
       <DeviceController
         title="Fan"
-        scheduleFields={[
-          { label: "Start Time", type: "time" },
-          { label: "End Time", type: "time" },
-        ]}
-        onApplySchedule={(schedule) => handleApplySchedule("Fan", schedule)}
+        device="FAN"
+        onApplySchedule={(schedule) => handleApplySchedule("FAN", schedule)}
       />
 
       <Divider sx={{ my: 2 }} />
       <DeviceController
         title="Water Pump"
-        scheduleFields={[
-          { label: "Start Time", type: "time" },
-          { label: "Liters to Pump", type: "number" },
-        ]}
-        onApplySchedule={(schedule) =>
-          handleApplySchedule("Water Pump", schedule)
-        }
+        device="PUMP"
+        onApplySchedule={(schedule) => handleApplySchedule("PUMP", schedule)}
       />
     </Stack>
   );
