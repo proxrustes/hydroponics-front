@@ -35,6 +35,8 @@ export function DeviceControlSection({
       <DeviceController
         title="Light"
         device="LIGHT"
+        uuid={uuid}
+        index={index}
         onApplySchedule={(schedule) => handleApplySchedule("LIGHT", schedule)}
       />
       <Divider sx={{ my: 2 }} />
@@ -42,12 +44,16 @@ export function DeviceControlSection({
         title="Fan"
         device="FAN"
         onApplySchedule={(schedule) => handleApplySchedule("FAN", schedule)}
+        uuid={uuid}
+        index={index}
       />
 
       <Divider sx={{ my: 2 }} />
       <DeviceController
         title="Water Pump"
         device="PUMP"
+        uuid={uuid}
+        index={index}
         onApplySchedule={(schedule) => handleApplySchedule("PUMP", schedule)}
       />
     </Stack>

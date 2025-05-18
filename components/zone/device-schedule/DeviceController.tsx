@@ -1,17 +1,45 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Stack, TextField, Typography } from "@mui/material";
+import { customFetch } from "@/lib/utils/apiUtils";
 
 export function DeviceController({
   title,
   device,
+  uuid,
+  index,
   onApplySchedule,
 }: {
   title: string;
   device: string;
+  uuid: string;
+  index: number;
   onApplySchedule: (schedule: Record<string, string>[]) => void;
 }) {
   const [schedule, setSchedule] = useState<any[]>([]);
+  useEffect(() => {
+    const fetchCurrentSchedule = async () => {
+      try {
+        const response = await customFetch(
+          `station/zone/config?uuid=${uuid}&index=${index}`,
+          "GET"
+        );
+        if (response.status === 200) {
+          const message = response.message;
+          console.log(message);
+          const filteredSchedule = message.scheduleIntervals.filter(
+            (interval: any) => interval.device === device
+          );
+          setSchedule(filteredSchedule);
+        } else {
+          console.error("Failed to load schedule");
+        }
+      } catch (error) {
+        console.error("Error fetching schedule:", error);
+      }
+    };
 
+    fetchCurrentSchedule();
+  }, [uuid, index]);
   const handleAddSchedule = () => {
     setSchedule([
       ...schedule,
