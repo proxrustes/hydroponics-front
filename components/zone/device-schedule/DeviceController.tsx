@@ -70,7 +70,7 @@ export function DeviceController({
   };
 
   return (
-    <Stack>
+    <Stack gap={2}>
       <Typography variant="h6">{title}</Typography>
       {schedule.map((item, index) => (
         <Stack direction="row" spacing={2} key={index} alignItems="center">
@@ -92,12 +92,14 @@ export function DeviceController({
           />
         </Stack>
       ))}
-      <Button variant="outlined" onClick={handleAddSchedule}>
-        Додати інтервал
-      </Button>
-      <Button variant="contained" onClick={handleApply}>
-        Застосувати розклад
-      </Button>
+      <Stack direction="row" gap={2}>
+        <Button variant="outlined" fullWidth onClick={handleAddSchedule}>
+          Додати інтервал
+        </Button>
+        <Button variant="contained" fullWidth onClick={handleApply}>
+          Застосувати розклад
+        </Button>
+      </Stack>
     </Stack>
   );
 }

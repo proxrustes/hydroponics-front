@@ -18,7 +18,7 @@ export function DeviceControlSection({
     customFetch(`/station/zone/config`, "POST", {
       uuid,
       index,
-      scheduleIntervals: schedule, // Передаємо інтервали
+      scheduleIntervals: schedule,
     })
       .then((response) => {
         if (response.status === 200) {

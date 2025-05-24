@@ -65,6 +65,14 @@ export async function GET(req: NextRequest) {
           substrateHumidity,
         },
       });
+      await prisma.zoneParamsLog.create({
+        data: {
+          zoneId: zone.id,
+          temperature,
+          airHumidity,
+          substrateHumidity,
+        },
+      });
       console.log(res);
     }
 
