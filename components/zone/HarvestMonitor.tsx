@@ -1,12 +1,37 @@
 "use client";
 
-import { Box, Typography, Stack, Chip, Divider } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Stack,
+  Chip,
+  Divider,
+  Button,
+  ButtonGroup,
+} from "@mui/material";
 import AgricultureIcon from "@mui/icons-material/Agriculture";
 import PrecisionManufacturingIcon from "@mui/icons-material/PrecisionManufacturing";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import HourglassBottomIcon from "@mui/icons-material/HourglassBottom";
+import { useState } from "react";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import StopIcon from "@mui/icons-material/Stop";
 
 export function HarvestMonitor() {
+  const [status, setStatus] = useState<"idle" | "active" | "stopped">("idle");
+
+  const handleStart = () => {
+    setStatus("active");
+    console.log("🔄 Маніпулятор запущено");
+    // TODO: fetch("/api/station/zone/harvest/start")
+  };
+
+  const handleStop = () => {
+    setStatus("stopped");
+    console.log("🛑 Маніпулятор зупинено");
+    // TODO: fetch("/api/station/zone/harvest/stop")
+  };
+
   const dummy = {
     stageStats: {
       unripe: 8,
@@ -14,7 +39,6 @@ export function HarvestMonitor() {
       ripe: 3,
     },
     harvestedToday: 7,
-    manipulatorStatus: "active", // або "idle"
   };
 
   return (
@@ -25,28 +49,46 @@ export function HarvestMonitor() {
       </Typography>
       <Stack direction="row" gap={4} mt={2}>
         <Stack flex={1}>
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <Typography variant="body1">Статус маніпулятора:</Typography>
-            <Chip
-              label={
-                dummy.manipulatorStatus === "active" ? "Активний" : "Очікує"
-              }
-              color={
-                dummy.manipulatorStatus === "active" ? "success" : "default"
-              }
-              icon={<PrecisionManufacturingIcon />}
-              sx={{
-                animation:
-                  dummy.manipulatorStatus === "active"
-                    ? "pulse 1.5s infinite"
-                    : "none",
-                "@keyframes pulse": {
-                  "0%": { opacity: 1 },
-                  "50%": { opacity: 0.5 },
-                  "100%": { opacity: 1 },
-                },
-              }}
-            />
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <Typography variant="body1">Статус маніпулятора:</Typography>
+              <Chip
+                label={status === "active" ? "Активний" : "Очікує"}
+                color={status === "active" ? "success" : "default"}
+                icon={<PrecisionManufacturingIcon />}
+                sx={{
+                  animation:
+                    status === "active" ? "pulse 1.5s infinite" : "none",
+                  "@keyframes pulse": {
+                    "0%": { opacity: 1 },
+                    "50%": { opacity: 0.5 },
+                    "100%": { opacity: 1 },
+                  },
+                }}
+              />
+            </Stack>
+            <ButtonGroup variant="contained">
+              <Button
+                color="success"
+                startIcon={<PlayArrowIcon />}
+                disabled={status === "active"}
+                onClick={handleStart}
+              >
+                Старт
+              </Button>
+              <Button
+                color="error"
+                startIcon={<StopIcon />}
+                disabled={status === "stopped"}
+                onClick={handleStop}
+              >
+                Стоп
+              </Button>
+            </ButtonGroup>
           </Stack>
           <Divider sx={{ my: 2 }} />
           <Typography variant="body2" sx={{ mb: 1 }}>
