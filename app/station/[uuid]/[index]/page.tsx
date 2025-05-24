@@ -20,6 +20,7 @@ import { customFetch } from "@/lib/utils/apiUtils";
 import { ZoneItem } from "@/components/zone/ZoneItem";
 import { DeviceControlSection } from "@/components/zone/device-schedule/DeviceControlSection";
 import ParameterChart from "@/components/graphs/ParameterChart";
+import { HarvestMonitor } from "../../../../components/zone/HarvestMonitor";
 
 export default function Page() {
   const params = useParams();
@@ -98,6 +99,8 @@ export default function Page() {
           />
         </Dialog>
       </Stack>
+      <Divider sx={{ my: 4 }} />
+      <HarvestMonitor />
       <Divider sx={{ my: 4 }} />
       <Stack gap={4}>
         <CustomContainer>
