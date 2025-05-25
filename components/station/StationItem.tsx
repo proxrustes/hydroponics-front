@@ -48,7 +48,7 @@ export function StationItem(props: { uuid: string }) {
       </Box>
       <Grid container spacing={2}>
         {station.zones.map((zone) => (
-          <Grid key={zone.id} size={12}>
+          <Grid key={zone.id} size={3}>
             <ZoneItem uuid={props.uuid} index={zone.index} showButton />
           </Grid>
         ))}

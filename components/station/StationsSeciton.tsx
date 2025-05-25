@@ -1,5 +1,5 @@
 "use client";
-import { Container, Stack, Typography } from "@mui/material";
+import { Container, Grid2, Stack, Typography } from "@mui/material";
 import { StationItem } from "./StationItem";
 import { useEffect, useState } from "react";
 import { Station } from "@/enums/types/Station";
@@ -39,13 +39,18 @@ export function StationsSection() {
   }
 
   return (
-    <Container>
+    <Container maxWidth="xl">
       <Stack gap={4}>
         <AddStationForm />
-        {stations &&
-          stations.map((station) => (
-            <StationItem key={station.id} uuid={station.uuid} />
-          ))}
+        <Stack>
+          {stations &&
+            stations.map((station) => (
+              <StationItem
+                key={`${station.name}-${station.id}`}
+                uuid={station.uuid}
+              />
+            ))}
+        </Stack>
       </Stack>
     </Container>
   );

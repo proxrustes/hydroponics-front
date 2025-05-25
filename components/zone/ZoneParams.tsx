@@ -1,15 +1,17 @@
-import { Box, Grid2, LinearProgress, Typography } from "@mui/material";
+import { Box, Grid2, LinearProgress, Stack, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
-import { Parameter } from "./Parameter";
+import { ParameterCard, ParameterRow } from "./Parameter";
 import { customFetch } from "@/lib/utils/apiUtils";
 import { createParameters, parameterConfig } from "@/lib/parameterConfig";
 
 export function ZoneParameters({
   uuid,
   index,
+  compact = false,
 }: {
   uuid: string;
   index: number;
+  compact?: boolean;
 }) {
   const [currentParams, setCurrentParams] = useState<any>(null);
   const [targetParams, setTargetParams] = useState<any>(null);
@@ -29,7 +31,8 @@ export function ZoneParameters({
         ]);
 
         if (paramsRes.status === 200) setCurrentParams(paramsRes.message);
-        if (targetRes.status === 200) setTargetParams(targetRes.message);
+        if (targetRes.status === 200)
+          setTargetParams(targetRes.message.targetParams);
         if (normsRes.status === 200)
           setZoneNorms(normsRes.message.effectiveNorms);
       } catch (error) {
@@ -69,11 +72,17 @@ export function ZoneParameters({
     targetParams
   );
 
-  return (
+  return compact ? (
+    <Stack spacing={1} sx={{ mt: 2 }}>
+      {parameters.map((param, i) => (
+        <ParameterRow {...param} key={param} />
+      ))}
+    </Stack>
+  ) : (
     <Grid2 container spacing={2} sx={{ mt: 2 }}>
       {parameters.map((param, i) => (
-        <Grid2 size={4} key={i}>
-          <Parameter {...param} />
+        <Grid2 key={param} size={4}>
+          <ParameterCard {...param} />
         </Grid2>
       ))}
     </Grid2>

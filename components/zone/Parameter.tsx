@@ -1,6 +1,6 @@
 import { Box, Stack, Typography } from "@mui/material";
 
-export type ParameterProps = {
+export type ParameterCardProps = {
   name: string;
   value: number;
   target?: number;
@@ -13,14 +13,14 @@ function round(value: number): number {
   return Math.round(value * 10) / 10;
 }
 
-export function Parameter({
+export function ParameterCard({
   name,
   icon,
   value,
   valueFormatter = "",
   norm,
   target,
-}: ParameterProps) {
+}: ParameterCardProps) {
   return (
     <Box
       sx={{
@@ -35,7 +35,7 @@ export function Parameter({
         {icon} {name}
       </Typography>
 
-      <Stack direction={"row"} gap={2}>
+      <Stack direction="row" gap={2}>
         <Typography variant="h4" color="primary.main" sx={{ fontWeight: 600 }}>
           {round(value)} {valueFormatter}
         </Typography>
@@ -57,5 +57,47 @@ export function Parameter({
         </Typography>
       )}
     </Box>
+  );
+}
+
+export type ParameterRowProps = {
+  name: string;
+  value: number;
+  target?: number;
+  valueFormatter?: string;
+  norm?: [number, number];
+  icon: string;
+};
+
+export function ParameterRow({
+  name,
+  icon,
+  value,
+  valueFormatter = "",
+  norm,
+  target,
+}: ParameterRowProps) {
+  return (
+    <Stack direction="row" spacing={1} alignItems="center">
+      <Typography width={120} variant="body1">
+        {icon} {name}
+      </Typography>
+
+      <Typography variant="body1" width={80} fontWeight={600}>
+        {round(value)} {valueFormatter}
+      </Typography>
+
+      {target !== undefined && (
+        <Typography variant="body1" color="primary">
+          → {round(target)} {valueFormatter}
+        </Typography>
+      )}
+
+      {norm && (
+        <Typography variant="body2" color="text.secondary">
+          ({round(norm[0])}–{round(norm[1])} {valueFormatter})
+        </Typography>
+      )}
+    </Stack>
   );
 }

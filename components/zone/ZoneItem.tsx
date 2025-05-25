@@ -68,7 +68,7 @@ export function ZoneItem(props: {
         )}
       </Stack>
 
-      <ZoneParameters uuid={props.uuid} index={props.index} />
+      <ZoneParameters uuid={props.uuid} index={props.index} compact />
 
       <Divider sx={{ mt: 4 }} />
     </Box>

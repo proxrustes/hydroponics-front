@@ -1,9 +1,9 @@
 import Grid from "@mui/material/Grid2";
-import { Parameter } from "../zone/Parameter";
 import { createParameters, parameterConfig } from "@/lib/parameterConfig";
 import { customFetch } from "@/lib/utils/apiUtils";
 import { useState, useEffect } from "react";
 import { LinearProgress } from "@mui/material";
+import { ParameterRow } from "../zone/Parameter";
 
 type Parameter = {
   name: string;
@@ -51,7 +51,7 @@ export function BucketParams(props: { uuid: string }) {
     <Grid container spacing={2} sx={{ mt: 2 }}>
       {parameters.map((param, index) => (
         <Grid size={6} key={index}>
-          <Parameter
+          <ParameterRow
             name={param.name}
             value={param.value}
             norm={param.norm}
