@@ -29,7 +29,6 @@ export async function GET(req: NextRequest) {
 
     const base = zone.plant?.norms;
     const override = zone.zoneNorms;
-
     if (!base) {
       return NextResponse.json(
         HTTP_RESPONSES[200]({

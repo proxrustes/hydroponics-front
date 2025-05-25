@@ -26,9 +26,12 @@ export function CustomTargetSection({
   index,
   onUpdate,
 }: CustomTargetSectionProps) {
-  const [targetParams, setTargetParams] = useState<ZoneTargetParams | null>(
-    null
-  );
+  const [targetParams, setTargetParams] = useState<ZoneTargetParams>({
+    airHumidity: 0,
+    temperature: 0,
+    substrateHumidity: 0,
+  });
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -45,7 +48,7 @@ export function CustomTargetSection({
 
         // Якщо є збережені target → використовуємо їх
         if (target) {
-          setTargetParams(target);
+          setTargetParams(target.targetParams);
         } else if (current) {
           // Інакше — ініціалізуємо target з поточних
           setTargetParams({
