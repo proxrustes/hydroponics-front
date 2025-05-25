@@ -75,13 +75,13 @@ export function ZoneParameters({
   return compact ? (
     <Stack spacing={1} sx={{ mt: 2 }}>
       {parameters.map((param, i) => (
-        <ParameterRow {...param} key={param} />
+        <ParameterRow {...param} key={i} />
       ))}
     </Stack>
   ) : (
     <Grid2 container spacing={2} sx={{ mt: 2 }}>
       {parameters.map((param, i) => (
-        <Grid2 key={param} size={4}>
+        <Grid2 key={i} size={4}>
           <ParameterCard {...param} />
         </Grid2>
       ))}
