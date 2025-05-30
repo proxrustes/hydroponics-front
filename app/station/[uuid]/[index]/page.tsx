@@ -107,7 +107,7 @@ export default function Page() {
           <Typography
             sx={{ textAlign: "center", fontWeight: 600, fontSize: 20 }}
           >
-            Temperature Over Time
+            Температура повітря
           </Typography>
           <ParameterChart
             uuid={uuid}
@@ -121,7 +121,7 @@ export default function Page() {
           <Typography
             sx={{ textAlign: "center", fontWeight: 600, fontSize: 20 }}
           >
-            Humidity Over Time
+            Вологість повітря
           </Typography>
           <ParameterChart
             uuid={uuid}
@@ -135,7 +135,7 @@ export default function Page() {
           <Typography
             sx={{ textAlign: "center", fontWeight: 600, fontSize: 20 }}
           >
-            Substrate Humidity Over Time
+            Вологість грунту
           </Typography>
           <ParameterChart
             uuid={uuid}

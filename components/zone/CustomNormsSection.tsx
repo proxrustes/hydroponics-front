@@ -47,7 +47,7 @@ export function CustomTargetSection({
         const target = targetRes.status === 200 ? targetRes.message : null;
 
         // Якщо є збережені target → використовуємо їх
-        if (target) {
+        if (target.targetParams) {
           setTargetParams(target.targetParams);
         } else if (current) {
           // Інакше — ініціалізуємо target з поточних
@@ -103,7 +103,7 @@ export function CustomTargetSection({
     }
   };
 
-  if (loading || !targetParams) {
+  if (loading) {
     return (
       <Stack spacing={2}>
         <Typography>Завантаження цільових параметрів...</Typography>

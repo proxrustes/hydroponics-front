@@ -7,15 +7,20 @@ async function seed() {
 
   await prisma.bucketParamsLog.deleteMany({});
   await prisma.bucketParams.deleteMany({});
+  await prisma.bucketTargetParams.deleteMany({});
+
+  await prisma.zoneScheduleInterval.deleteMany({});
   await prisma.zoneTargetParams.deleteMany({});
   await prisma.zoneParamsLog.deleteMany({});
   await prisma.zoneParams.deleteMany({});
   await prisma.zoneNorms.deleteMany({});
   await prisma.zone.deleteMany({});
-  await prisma.station.deleteMany({});
+
   await prisma.norms.deleteMany({});
   await prisma.plant.deleteMany({});
   await prisma.plantGroup.deleteMany({});
+
+  await prisma.station.deleteMany({});
   await prisma.user.deleteMany({});
 
   console.log("🧹 База данных очищена");
@@ -123,7 +128,7 @@ async function seed() {
   const stationAdmin = await prisma.station.create({
     data: {
       name: "Станція підвал",
-      uuid: "admin-station-uuid",
+      uuid: "100",
       userId: user1.id,
       zones: {
         create: Array.from({ length: 4 }).map((_, i) => ({
@@ -138,7 +143,7 @@ async function seed() {
   const stationUser1 = await prisma.station.create({
     data: {
       name: "Станція балкон",
-      uuid: "user1-station-uuid",
+      uuid: "101",
       userId: user1.id,
       zones: {
         create: Array.from({ length: 4 }).map((_, i) => ({

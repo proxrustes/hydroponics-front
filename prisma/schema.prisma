@@ -64,9 +64,8 @@ model Station {
   bucketParams       BucketParams?
   bucketTargetParams BucketTargetParams?
 
-  userId           Int
-  user             User               @relation(fields: [userId], references: [id])
-  StationParamsLog StationParamsLog[]
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
 }
 
 model BucketParams {
@@ -164,22 +163,6 @@ model ZoneParams {
   airHumidity       Float
   substrateHumidity Float
   updatedAt         DateTime @updatedAt
-}
-
-model StationParamsLog {
-  id        Int     @id @default(autoincrement())
-  stationId Int
-  station   Station @relation(fields: [stationId], references: [id])
-
-  recordedAt DateTime @default(now())
-
-  phLevel               Float
-  nutrientConcentration Float
-  solutionTemperature   Float
-  solutionLvl           Float
-
-  @@index([stationId, recordedAt])
-  @@map("station_params_log")
 }
 
 model ZoneParamsLog {
