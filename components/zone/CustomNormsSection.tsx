@@ -18,14 +18,9 @@ interface ZoneTargetParams {
 interface CustomTargetSectionProps {
   uuid: string;
   index: number;
-  onUpdate?: () => void;
 }
 
-export function CustomTargetSection({
-  uuid,
-  index,
-  onUpdate,
-}: CustomTargetSectionProps) {
+export function CustomTargetSection({ uuid, index }: CustomTargetSectionProps) {
   const [targetParams, setTargetParams] = useState<ZoneTargetParams>({
     airHumidity: 0,
     temperature: 0,
@@ -93,7 +88,6 @@ export function CustomTargetSection({
 
       if (response.status === 200) {
         alert("Target parameters saved successfully");
-        onUpdate?.();
       } else {
         alert("Failed to save target parameters");
       }
@@ -113,35 +107,33 @@ export function CustomTargetSection({
   }
 
   return (
-    <CustomContainer>
-      <Stack spacing={2}>
-        <TextField
-          label="Температура"
-          type="number"
-          value={targetParams.temperature}
-          onChange={(e) => handleChange("temperature", Number(e.target.value))}
-          fullWidth
-        />
-        <TextField
-          label="Вологість повітря"
-          type="number"
-          value={targetParams.airHumidity}
-          onChange={(e) => handleChange("airHumidity", Number(e.target.value))}
-          fullWidth
-        />
-        <TextField
-          label="Вологість субстрату"
-          type="number"
-          value={targetParams.substrateHumidity}
-          onChange={(e) =>
-            handleChange("substrateHumidity", Number(e.target.value))
-          }
-          fullWidth
-        />
-        <Button variant="contained" color="primary" onClick={handleSave}>
-          Зберегти
-        </Button>
-      </Stack>
-    </CustomContainer>
+    <Stack spacing={2}>
+      <TextField
+        label="Температура"
+        type="number"
+        value={targetParams.temperature}
+        onChange={(e) => handleChange("temperature", Number(e.target.value))}
+        fullWidth
+      />
+      <TextField
+        label="Вологість повітря"
+        type="number"
+        value={targetParams.airHumidity}
+        onChange={(e) => handleChange("airHumidity", Number(e.target.value))}
+        fullWidth
+      />
+      <TextField
+        label="Вологість субстрату"
+        type="number"
+        value={targetParams.substrateHumidity}
+        onChange={(e) =>
+          handleChange("substrateHumidity", Number(e.target.value))
+        }
+        fullWidth
+      />
+      <Button variant="contained" color="primary" onClick={handleSave}>
+        Зберегти
+      </Button>
+    </Stack>
   );
 }

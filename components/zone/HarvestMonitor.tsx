@@ -123,10 +123,10 @@ export function HarvestMonitor() {
               <Typography variant="body2" sx={{ fontWeight: 500 }}>
                 Останні події:
               </Typography>
-              <Typography variant="caption" color="success.main">
+              <Typography variant="body1" color="success.main">
                 ✔️ 13:24 – Зрізано рослину #12 (зона 3)
               </Typography>
-              <Typography variant="caption" color="warning.main">
+              <Typography variant="body1" color="warning.main">
                 ⚠️ 13:21 – Помилка позиціонування (зона 2)
               </Typography>
             </Stack>

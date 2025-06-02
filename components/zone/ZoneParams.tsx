@@ -79,7 +79,7 @@ export function ZoneParameters({
       ))}
     </Stack>
   ) : (
-    <Grid2 container spacing={2} sx={{ mt: 2 }}>
+    <Grid2 container spacing={2}>
       {parameters.map((param, i) => (
         <Grid2 key={i} size={4}>
           <ParameterCard {...param} />

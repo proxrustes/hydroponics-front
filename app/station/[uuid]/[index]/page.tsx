@@ -21,6 +21,7 @@ import { ZoneItem } from "@/components/zone/ZoneItem";
 import { DeviceControlSection } from "@/components/zone/device-schedule/DeviceControlSection";
 import ParameterChart from "@/components/graphs/ParameterChart";
 import { HarvestMonitor } from "../../../../components/zone/HarvestMonitor";
+import { ZoneParameters } from "../../../../components/zone/ZoneParams";
 
 export default function Page() {
   const params = useParams();
@@ -66,7 +67,7 @@ export default function Page() {
         <CustomContainer
           sx={{ flexDirection: "row", justifyContent: "space-between" }}
         >
-          <Typography variant="h3" sx={{ fontWeight: 900 }}>
+          <Typography variant="h3" sx={{ fontWeight: 700 }}>
             🪴 {zone.name}: {zone.plant?.name}
           </Typography>
           <IconButton onClick={() => setEditMode(true)}>
@@ -74,15 +75,13 @@ export default function Page() {
           </IconButton>
         </CustomContainer>
 
-        <Grid container spacing={2}>
+        <Grid container spacing={4}>
           <Grid size={8}>
-            <ZoneItem uuid={uuid} index={Number(index) ?? 0} />
+            <Stack gap={2}>
+              <ZoneParameters uuid={uuid} index={index} />
 
-            <CustomTargetSection
-              uuid={uuid}
-              index={index}
-              onUpdate={() => {}}
-            />
+              <CustomTargetSection uuid={uuid} index={index} />
+            </Stack>
           </Grid>
           <Grid size={4}>
             <DeviceControlSection uuid={uuid} index={index} />

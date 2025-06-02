@@ -31,7 +31,7 @@ export function DeviceControlSection({
   };
 
   return (
-    <Stack>
+    <Stack sx={{ border: "1px solid #ccc", borderRadius: 2, p: 2 }}>
       <DeviceController
         title="Light"
         device="LIGHT"
