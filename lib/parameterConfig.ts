@@ -1,5 +1,3 @@
-import { ParameterProps } from "@/components/zone/Parameter";
-
 type ParameterConfig = {
   [key in
     | "temperature"
@@ -55,14 +53,11 @@ export const parameterConfig: ParameterConfig = {
 
 export function createParameters<T>(
   keys: readonly string[],
-  parameterConfig: Record<
-    string,
-    Omit<ParameterProps, "value" | "norm" | "target">
-  >,
+  parameterConfig: Record<string, Omit<any, "value" | "norm" | "target">>,
   params: Record<string, number>,
   norm?: Record<string, [number, number]> | [number, number],
   target?: Record<string, number>
-): ParameterProps[] {
+): any[] {
   return keys
     .filter((key) => parameterConfig[key] && params[key] !== undefined)
     .map((key) => ({

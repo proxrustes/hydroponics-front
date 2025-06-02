@@ -33,7 +33,7 @@ export async function DELETE(req: NextRequest) {
         });
       }
 
-      await prisma.stationParamsLog.deleteMany({
+      await prisma.bucketParamsLog.deleteMany({
         where: { stationId: { in: stationIds } },
       });
       await prisma.zone.deleteMany({
