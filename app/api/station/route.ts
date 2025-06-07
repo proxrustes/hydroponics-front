@@ -71,6 +71,7 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
+    console.log(body)
     const { name, uuid } = body;
 
     if (!name || !uuid) {
@@ -92,7 +93,6 @@ export async function POST(req: Request) {
           create: Array.from({ length: 4 }).map((_, index) => ({
             name: `Зона ${index + 1}`,
             index,
-            plant: { connect: { id: 1 } },
           })),
         },
       },
