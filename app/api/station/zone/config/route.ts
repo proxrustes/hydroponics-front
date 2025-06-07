@@ -5,14 +5,10 @@ import { HTTP_RESPONSES } from "@/definitions/HttpDefinitions";
 // GET: returns target params for a zone by station UUID and index
 export async function GET(req: NextRequest) {
   const uuid = req.nextUrl.searchParams.get("uuid");
-  const indexParam = req.nextUrl.searchParams.get("index");
-  const index = parseInt(indexParam || "");
+  const index = parseInt(req.nextUrl.searchParams.get("index") || "");
 
-  if (!uuid) {
-    return NextResponse.json(HTTP_RESPONSES[400]("uuid"));
-  }
-  if (isNaN(index)) {
-    return NextResponse.json(HTTP_RESPONSES[400]("index"));
+  if (!uuid || isNaN(index)) {
+    return NextResponse.json(HTTP_RESPONSES[400]("Invalid uuid or index"));
   }
 
   const zone = await prisma.zone.findFirst({
@@ -24,29 +20,36 @@ export async function GET(req: NextRequest) {
   });
 
   if (!zone) {
-    return NextResponse.json(HTTP_RESPONSES[404]("zone"));
+    return NextResponse.json(HTTP_RESPONSES[404]("Zone not found"));
   }
-  console.log(zone);
-  const target = await prisma.zoneTargetParams.findUnique({
-    where: { zoneId: zone.id },
-  });
 
-  if (!target) {
-    return NextResponse.json(HTTP_RESPONSES[404]("target"));
-  }
-  console.log("target:", target);
-  return NextResponse.json(HTTP_RESPONSES[200](target));
+  const [targetParams, scheduleIntervals] = await Promise.all([
+    prisma.zoneTargetParams.findUnique({
+      where: { zoneId: zone.id },
+    }),
+    prisma.zoneScheduleInterval.findMany({
+      where: { zoneId: zone.id },
+    }),
+  ]);
+
+  return NextResponse.json(
+    HTTP_RESPONSES[200]({
+      targetParams: targetParams ?? null,
+      scheduleIntervals: scheduleIntervals ?? [],
+    })
+  );
 }
 
-// POST: update or create zone target params by uuid + index
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { uuid, index, params } = body;
-
-  if (!uuid || typeof index !== "number" || typeof params !== "object") {
-    return NextResponse.json(HTTP_RESPONSES[400]("uuid"));
+  const { uuid, index, targetParams, scheduleIntervals } = body;
+  console.log("BODX", body);
+  // Перевірка наявності uuid та index
+  if (!uuid || isNaN(index)) {
+    return NextResponse.json(HTTP_RESPONSES[400]("Invalid uuid or index"));
   }
 
+  // Знаходимо зону за uuid та index
   const zone = await prisma.zone.findFirst({
     where: {
       station: { uuid },
@@ -56,21 +59,43 @@ export async function POST(req: NextRequest) {
   });
 
   if (!zone) {
-    return NextResponse.json(HTTP_RESPONSES[404]("zone"));
+    return NextResponse.json(HTTP_RESPONSES[404]("Zone not found"));
   }
 
   try {
-    const updated = await prisma.zoneTargetParams.upsert({
-      where: { zoneId: zone.id },
-      update: params,
-      create: {
-        zoneId: zone.id,
-        ...params,
-      },
-    });
+    // Якщо params надано, оновлюємо або створюємо targetParams
+    const updatedTarget = targetParams
+      ? await prisma.zoneTargetParams.upsert({
+          where: { zoneId: zone.id },
+          update: targetParams,
+          create: {
+            zoneId: zone.id,
+            ...targetParams,
+          },
+        })
+      : null; // Якщо params не надано, пропускаємо оновлення
 
-    return NextResponse.json(HTTP_RESPONSES[200](updated));
+    // Якщо scheduleIntervals надано, створюємо інтервали
+    const updatedIntervals = scheduleIntervals?.length
+      ? await prisma.zoneScheduleInterval.createMany({
+          data: scheduleIntervals.map((interval: any) => ({
+            zoneId: zone.id,
+            device: interval.device,
+            onTime: interval.onTime,
+            offTime: interval.offTime,
+          })),
+        })
+      : null; // Якщо scheduleIntervals не надано, пропускаємо
+
+    // Повертаємо результат залежно від того, що було оновлено
+    return NextResponse.json(
+      HTTP_RESPONSES[200]({
+        targetParams: updatedTarget ?? null,
+        scheduleIntervals: updatedIntervals ?? null,
+      })
+    );
   } catch (e: any) {
-    return NextResponse.json(HTTP_RESPONSES[500](e));
+    console.error("❌ Error in POST /station/zone/schedule:", e);
+    return NextResponse.json(HTTP_RESPONSES[500](e.message));
   }
 }

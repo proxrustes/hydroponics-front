@@ -1,5 +1,5 @@
 import Grid from "@mui/material/Grid2";
-import { Box, Divider, LinearProgress, Typography } from "@mui/material";
+import { Box, Divider, LinearProgress, Stack, Typography } from "@mui/material";
 import { Station } from "@/enums/types/Station";
 import { BucketParams } from "./BucketParams";
 import { CustomContainer } from "../common/CustomContainer";
@@ -29,9 +29,15 @@ export function StationItem(props: { uuid: string }) {
   }
   return (
     <CustomContainer>
-      <Typography sx={{ fontWeight: 600, fontSize: 24 }}>
-        Station {station.name}
-      </Typography>
+      <Stack direction="row" justifyContent="space-between">
+        <Typography sx={{ fontWeight: 600, fontSize: 24 }}>
+          Station {station.name}
+        </Typography>
+
+        <Typography sx={{ fontWeight: 600, fontSize: 24 }}>
+          # {station.uuid}
+        </Typography>
+      </Stack>
 
       <Box sx={{ p: 2 }}>
         <Typography sx={{ fontWeight: 800, fontSize: 24 }}>
@@ -42,8 +48,8 @@ export function StationItem(props: { uuid: string }) {
       </Box>
       <Grid container spacing={2}>
         {station.zones.map((zone) => (
-          <Grid key={zone.id} size={12}>
-            <ZoneItem uuid={props.uuid} index={zone.index} />
+          <Grid key={zone.id} size={3}>
+            <ZoneItem uuid={props.uuid} index={zone.index} showButton />
           </Grid>
         ))}
       </Grid>

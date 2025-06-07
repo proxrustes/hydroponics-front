@@ -10,12 +10,6 @@ const plantsSections = [
       "Повний список усіх рослин, що доступні в системі, разом із їхніми характеристиками та вимогами.",
     link: "/wiki/plants/library",
   },
-  {
-    title: "Групи рослин",
-    description:
-      "Інформація про категорії рослин: плодоносні культури, зелені культури та інші групи.",
-    link: "/wiki/plants/groups",
-  },
 ];
 
 const guides = [
@@ -65,35 +59,6 @@ export default function Wiki() {
           Тут зібрана інформація про рослини, параметри станцій та інші важливі
           теми.
         </Typography>
-        <Stack direction="row" gap={2}>
-          <Button
-            component={Link}
-            href="/wiki/params"
-            variant="contained"
-            color="primary"
-            size="large"
-          >
-            Параметри станцій
-          </Button>
-          <Button
-            component={Link}
-            href="/wiki/plants"
-            variant="contained"
-            color="secondary"
-            size="large"
-          >
-            Бібліотека рослин
-          </Button>
-          <Button
-            component={Link}
-            href="/wiki/guides"
-            variant="outlined"
-            color="primary"
-            size="large"
-          >
-            Гайди і поради
-          </Button>
-        </Stack>
         <Stack gap={12} sx={{ mt: 12 }}>
           <SectionBlock
             title="🌿 Рослини в системі"

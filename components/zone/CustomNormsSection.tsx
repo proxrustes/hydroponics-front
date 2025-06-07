@@ -1,144 +1,139 @@
-import { useState, useEffect } from "react";
 import {
   Stack,
   Typography,
   TextField,
   Button,
-  IconButton,
-  Tooltip,
   LinearProgress,
 } from "@mui/material";
-import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import { useState, useEffect } from "react";
 import { CustomContainer } from "@/components/common/CustomContainer";
 import { customFetch } from "@/lib/utils/apiUtils";
 
-type RangeTuple = [number, number];
-
-export interface ZoneParamNorms {
-  airHumidity: RangeTuple;
-  temperature: RangeTuple;
-  substrateHumidity: RangeTuple;
+interface ZoneTargetParams {
+  airHumidity: number;
+  temperature: number;
+  substrateHumidity: number;
 }
 
-interface CustomNormsSectionProps {
+interface CustomTargetSectionProps {
   uuid: string;
-  index: string;
-  onUpdate?: () => void;
+  index: number;
 }
 
-export function CustomNormsSection({
-  uuid,
-  index,
-  onUpdate,
-}: CustomNormsSectionProps) {
-  const [customParams, setCustomParams] = useState<ZoneParamNorms | null>(null);
+export function CustomTargetSection({ uuid, index }: CustomTargetSectionProps) {
+  const [targetParams, setTargetParams] = useState<ZoneTargetParams>({
+    airHumidity: 0,
+    temperature: 0,
+    substrateHumidity: 0,
+  });
+
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    const fetchNorms = async () => {
+    const fetchData = async () => {
+      setLoading(true);
       try {
-        const response = await customFetch(
-          `station/zone/norms?uuid=${uuid}&index=${index}`,
-          "GET"
-        );
-        if (response.status === 200 && response.message?.effectiveNorms) {
-          setCustomParams(response.message.effectiveNorms);
+        const [targetRes, currentRes] = await Promise.all([
+          customFetch(`station/zone/config?uuid=${uuid}&index=${index}`, "GET"),
+          customFetch(`station/zone/params?uuid=${uuid}&index=${index}`, "GET"),
+        ]);
+
+        const current = currentRes.status === 200 ? currentRes.message : null;
+        const target = targetRes.status === 200 ? targetRes.message : null;
+
+        // Якщо є збережені target → використовуємо їх
+        if (target.targetParams) {
+          setTargetParams(target.targetParams);
+        } else if (current) {
+          // Інакше — ініціалізуємо target з поточних
+          setTargetParams({
+            airHumidity: current.airHumidity,
+            temperature: current.temperature,
+            substrateHumidity: current.substrateHumidity,
+          });
         }
       } catch (error) {
-        console.error("Failed to fetch norms:", error);
+        console.error("❌ Failed to fetch params:", error);
+      } finally {
+        setLoading(false);
       }
     };
-    fetchNorms();
+
+    fetchData();
   }, [uuid, index]);
 
-  if (!customParams) {
-    return <LinearProgress />;
-  }
-
-  const handleParamChange = (
-    key: keyof ZoneParamNorms,
-    value: [number, number]
+  const handleChange = (
+    key: keyof ZoneTargetParams,
+    value: number | boolean
   ) => {
-    setCustomParams((prev) => {
+    setTargetParams((prev) => {
       if (!prev) return prev;
       return { ...prev, [key]: value };
     });
   };
 
-  const handleReset = (key: keyof ZoneParamNorms) => {
-    setCustomParams((prev) => {
-      if (!prev) return prev;
-      return { ...prev, [key]: [0, 0] };
-    });
-  };
-
-  // 3. Нажатие на Apply → PUT запрос
   const handleSave = async () => {
+    if (!targetParams) return;
+
     try {
       const response = await customFetch(
-        `station/zone/norms?uuid=${uuid}&index=${index}`,
-        "PUT",
-        customParams
+        `station/zone/config?uuid=${uuid}&index=${index}`,
+        "POST",
+        {
+          uuid,
+          index: Number(index),
+          params: targetParams,
+        }
       );
+
       if (response.status === 200) {
-        alert("Custom norms saved successfully");
-        onUpdate?.();
+        alert("Target parameters saved successfully");
       } else {
-        alert("Failed to save norms");
+        alert("Failed to save target parameters");
       }
     } catch (error) {
-      console.error("Failed to save norms:", error);
-      alert("Error occurred while saving norms");
+      console.error("Failed to save:", error);
+      alert("Error occurred while saving");
     }
   };
 
-  return (
-    <CustomContainer>
+  if (loading) {
+    return (
       <Stack spacing={2}>
-        {(["airHumidity", "temperature", "substrateHumidity"] as const).map(
-          (key) => (
-            <Stack key={key} spacing={1}>
-              <Typography sx={{ fontWeight: 600 }}>
-                {key.charAt(0).toUpperCase() + key.slice(1)}
-              </Typography>
-              <Stack direction="row" spacing={2} alignItems="center">
-                <TextField
-                  label="Min"
-                  size="small"
-                  type="number"
-                  value={customParams[key][0]}
-                  onChange={(e) =>
-                    handleParamChange(key, [
-                      Number(e.target.value),
-                      customParams[key][1],
-                    ])
-                  }
-                  fullWidth
-                />
-                <TextField
-                  label="Max"
-                  size="small"
-                  type="number"
-                  value={customParams[key][1]}
-                  onChange={(e) =>
-                    handleParamChange(key, [
-                      customParams[key][0],
-                      Number(e.target.value),
-                    ])
-                  }
-                  fullWidth
-                />
-                <Tooltip title="Reset to Default">
-                  <IconButton onClick={() => handleReset(key)}>
-                    <RestartAltIcon />
-                  </IconButton>
-                </Tooltip>
-              </Stack>
-            </Stack>
-          )
-        )}
-        <Button variant="contained" color="primary" onClick={handleSave}>
-          Apply
-        </Button>
+        <Typography>Завантаження цільових параметрів...</Typography>
+        <LinearProgress />
       </Stack>
-    </CustomContainer>
+    );
+  }
+
+  return (
+    <Stack spacing={2}>
+      <TextField
+        label="Температура"
+        type="number"
+        value={targetParams.temperature}
+        onChange={(e) => handleChange("temperature", Number(e.target.value))}
+        fullWidth
+      />
+      <TextField
+        label="Вологість повітря"
+        type="number"
+        value={targetParams.airHumidity}
+        onChange={(e) => handleChange("airHumidity", Number(e.target.value))}
+        fullWidth
+      />
+      <TextField
+        label="Вологість субстрату"
+        type="number"
+        value={targetParams.substrateHumidity}
+        onChange={(e) =>
+          handleChange("substrateHumidity", Number(e.target.value))
+        }
+        fullWidth
+      />
+      <Button variant="contained" color="primary" onClick={handleSave}>
+        Зберегти
+      </Button>
+    </Stack>
   );
 }

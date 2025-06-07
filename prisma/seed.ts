@@ -7,15 +7,20 @@ async function seed() {
 
   await prisma.bucketParamsLog.deleteMany({});
   await prisma.bucketParams.deleteMany({});
+  await prisma.bucketTargetParams.deleteMany({});
+
+  await prisma.zoneScheduleInterval.deleteMany({});
   await prisma.zoneTargetParams.deleteMany({});
   await prisma.zoneParamsLog.deleteMany({});
   await prisma.zoneParams.deleteMany({});
   await prisma.zoneNorms.deleteMany({});
   await prisma.zone.deleteMany({});
-  await prisma.station.deleteMany({});
+
   await prisma.norms.deleteMany({});
   await prisma.plant.deleteMany({});
   await prisma.plantGroup.deleteMany({});
+
+  await prisma.station.deleteMany({});
   await prisma.user.deleteMany({});
 
   console.log("🧹 База данных очищена");
@@ -119,6 +124,49 @@ async function seed() {
   }
 
   console.log("✅ Группы и растения успешно добавлены");
+
+  const stationAdmin = await prisma.station.create({
+    data: {
+      name: "Станція підвал",
+      uuid: "100",
+      userId: user1.id,
+      zones: {
+        create: Array.from({ length: 4 }).map((_, i) => ({
+          name: `Зона A${i + 1}`,
+          index: i,
+        })),
+      },
+    },
+    include: { zones: true },
+  });
+
+  const stationUser1 = await prisma.station.create({
+    data: {
+      name: "Станція балкон",
+      uuid: "101",
+      userId: user1.id,
+      zones: {
+        create: Array.from({ length: 4 }).map((_, i) => ({
+          name: `Зона B${i + 1}`,
+          index: i,
+        })),
+      },
+    },
+  });
+
+  console.log("✅ Станції та зони створені");
+  for (const zone of stationAdmin.zones) {
+    await prisma.zoneParams.create({
+      data: {
+        zoneId: zone.id,
+        temperature: 22.5,
+        airHumidity: 65,
+        substrateHumidity: 60,
+      },
+    });
+  }
+
+  console.log("✅ Поточні параметри зон для станції адміністратора додані");
   console.log("🌱 Сидирование завершено успешно!");
 }
 

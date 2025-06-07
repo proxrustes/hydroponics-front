@@ -30,14 +30,10 @@ export function MarkdownArticle({
 
     fetchContent();
   }, [section, filename]);
-
+  console.log(section, title, filename);
   return (
-    <Container maxWidth="xl">
+    <Container maxWidth="lg">
       <Paper sx={{ p: 6 }}>
-        <Typography variant="h2" fontWeight="bold" mb={8} textAlign="center">
-          {title}
-        </Typography>
-        <Divider sx={{ mb: 4 }} />
         <Box sx={{ fontFamily: "Gill Sans, Arial, sans-serif" }}>
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}

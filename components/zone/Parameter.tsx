@@ -1,18 +1,26 @@
-import { Box, Typography } from "@mui/material";
-import { ParameterProps } from "@/enums/types/Params";
+import { Box, Stack, Typography } from "@mui/material";
+
+export type ParameterCardProps = {
+  name: string;
+  value: number;
+  target?: number;
+  valueFormatter?: string;
+  norm?: [number, number];
+  icon: string;
+};
 
 function round(value: number): number {
   return Math.round(value * 10) / 10;
 }
 
-export function Parameter({
+export function ParameterCard({
   name,
   icon,
   value,
   valueFormatter = "",
   norm,
   target,
-}: ParameterProps) {
+}: ParameterCardProps) {
   return (
     <Box
       sx={{
@@ -21,30 +29,75 @@ export function Parameter({
         borderRadius: 2,
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
-        textAlign: "center",
-        backgroundColor: "#f9f9f9",
       }}
     >
       <Typography variant="h6" fontWeight={700}>
         {icon} {name}
       </Typography>
 
-      <Typography variant="h4" fontWeight={700} color="primary">
-        {round(value)} {valueFormatter}
-      </Typography>
+      <Stack direction="row" gap={2}>
+        <Typography variant="h4" color="primary.main" sx={{ fontWeight: 600 }}>
+          {round(value)} {valueFormatter}
+        </Typography>
+
+        {target !== undefined && (
+          <Typography
+            variant="h4"
+            color="primary.main"
+            sx={{ fontWeight: 600 }}
+          >
+            → {round(target)} {valueFormatter}
+          </Typography>
+        )}
+      </Stack>
 
       {norm && (
         <Typography variant="body2" color="text.secondary">
           Норма: {round(norm[0])}–{round(norm[1])} {valueFormatter}
         </Typography>
       )}
+    </Box>
+  );
+}
+
+export type ParameterRowProps = {
+  name: string;
+  value: number;
+  target?: number;
+  valueFormatter?: string;
+  norm?: [number, number];
+  icon: string;
+};
+
+export function ParameterRow({
+  name,
+  icon,
+  value,
+  valueFormatter = "",
+  norm,
+  target,
+}: ParameterRowProps) {
+  return (
+    <Stack direction="row" spacing={1} alignItems="center">
+      <Typography width={120} variant="body1">
+        {icon} {name}
+      </Typography>
+
+      <Typography variant="body1" width={80} fontWeight={600}>
+        {round(value)} {valueFormatter}
+      </Typography>
 
       {target !== undefined && (
-        <Typography variant="body2" color="secondary">
-          🎯 Ціль: {round(target)} {valueFormatter}
+        <Typography variant="body1" color="primary">
+          → {round(target)} {valueFormatter}
         </Typography>
       )}
-    </Box>
+
+      {norm && (
+        <Typography variant="body2" color="text.secondary">
+          ({round(norm[0])}–{round(norm[1])} {valueFormatter})
+        </Typography>
+      )}
+    </Stack>
   );
 }

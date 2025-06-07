@@ -37,7 +37,7 @@ export default function PlantNormsForm({ norms, setNorms }: NormsFormProps) {
       </Typography>
       <Grid2 container spacing={2}>
         {fields.map(([key, label]) => (
-          <Grid2 size={6} key={key}>
+          <Grid2 size={6} key={label}>
             <TextField
               type="number"
               label={label}

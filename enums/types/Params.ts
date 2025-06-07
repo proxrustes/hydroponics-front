@@ -24,12 +24,3 @@ export type StationParamNorms = {
   solutionLvl: [number, number];
   lightIntensity: [number, number];
 };
-
-export type ParameterProps = {
-  name: string;
-  value: number;
-  target?: number;
-  valueFormatter?: string;
-  norm: [number, number];
-  icon: string;
-};

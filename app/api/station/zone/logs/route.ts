@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
     const limitStr = req.nextUrl.searchParams.get("limit");
 
     const index = parseInt(indexStr || "");
-    const limit = Math.min(parseInt(limitStr || "100"), 1000); // safety cap
+    const limit = Math.min(parseInt(limitStr || "100"), 1000);
 
     if (!uuid || isNaN(index) || index < 0 || index > 3) {
       return NextResponse.json(
@@ -52,7 +52,6 @@ export async function GET(req: NextRequest) {
       where.recordedAt = { ...(where.recordedAt ?? {}), lte: new Date(end) };
 
     const logs = await prisma.zoneParamsLog.findMany({
-      where,
       orderBy: { recordedAt: "asc" },
       take: limit,
     });
