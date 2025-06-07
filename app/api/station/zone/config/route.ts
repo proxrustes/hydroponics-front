@@ -42,7 +42,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { uuid, index, targetParams, scheduleIntervals } = body;
+  const { uuid, index, params, scheduleIntervals } = body;
   console.log("BODX", body);
   // Перевірка наявності uuid та index
   if (!uuid || isNaN(index)) {
@@ -64,17 +64,17 @@ export async function POST(req: NextRequest) {
 
   try {
     // Якщо params надано, оновлюємо або створюємо targetParams
-    const updatedTarget = targetParams
+    const updatedTarget = params
       ? await prisma.zoneTargetParams.upsert({
           where: { zoneId: zone.id },
-          update: targetParams,
+          update: params,
           create: {
             zoneId: zone.id,
-            ...targetParams,
+            ...params,
           },
         })
       : null; // Якщо params не надано, пропускаємо оновлення
-
+    console.log("updated ", updatedTarget, params);
     // Якщо scheduleIntervals надано, створюємо інтервали
     const updatedIntervals = scheduleIntervals?.length
       ? await prisma.zoneScheduleInterval.createMany({

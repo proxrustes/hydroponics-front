@@ -79,7 +79,7 @@ export function ParameterRow({
 }: ParameterRowProps) {
   return (
     <Stack direction="row" spacing={1} alignItems="center">
-      <Typography width={120} variant="body1">
+      <Typography width={220} variant="body1">
         {icon} {name}
       </Typography>
 

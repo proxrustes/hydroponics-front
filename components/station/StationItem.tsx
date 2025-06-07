@@ -40,7 +40,7 @@ export function StationItem(props: { uuid: string }) {
       </Stack>
 
       <Box sx={{ p: 2 }}>
-        <Typography sx={{ fontWeight: 800, fontSize: 24 }}>
+        <Typography sx={{ fontWeight: 600, fontSize: 24 }}>
           🪣 Bucket params
         </Typography>
         <BucketParams uuid={props.uuid} />
