@@ -118,10 +118,9 @@ model ZoneScheduleInterval {
   zoneId Int
   zone   Zone @relation(fields: [zoneId], references: [id])
 
-  device         DeviceType
-  onTime         String
-  offTime        String
-  zoneScheduleId Int?
+  device  DeviceType
+  onTime  String
+  offTime String
 }
 
 enum DeviceType {
