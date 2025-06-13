@@ -37,7 +37,6 @@ export function BucketParams(props: { uuid: string }) {
     fetchData();
   }, []);
   if (!bucketParams) {
-    console.log("hui");
     return <LinearProgress />;
   }
   const parameters = createParameters(

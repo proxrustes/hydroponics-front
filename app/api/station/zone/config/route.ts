@@ -76,16 +76,24 @@ export async function POST(req: NextRequest) {
       : null; // Якщо params не надано, пропускаємо оновлення
     console.log("updated ", updatedTarget, params);
     // Якщо scheduleIntervals надано, створюємо інтервали
-    const updatedIntervals = scheduleIntervals?.length
-      ? await prisma.zoneScheduleInterval.createMany({
-          data: scheduleIntervals.map((interval: any) => ({
-            zoneId: zone.id,
-            device: interval.device,
-            onTime: interval.onTime,
-            offTime: interval.offTime,
-          })),
-        })
-      : null; // Якщо scheduleIntervals не надано, пропускаємо
+    let updatedIntervals = null;
+
+    if (scheduleIntervals?.length) {
+      // 1. Удаляем старые интервалы
+      await prisma.zoneScheduleInterval.deleteMany({
+        where: { zoneId: zone.id },
+      });
+
+      // 2. Создаём новые
+      updatedIntervals = await prisma.zoneScheduleInterval.createMany({
+        data: scheduleIntervals.map((interval: any) => ({
+          zoneId: zone.id,
+          device: interval.device,
+          onTime: interval.onTime,
+          offTime: interval.offTime,
+        })),
+      });
+    }
 
     // Повертаємо результат залежно від того, що було оновлено
     return NextResponse.json(
