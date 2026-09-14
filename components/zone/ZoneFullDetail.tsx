@@ -1,15 +1,7 @@
 "use client";
 
-import {
-  Container,
-  Typography,
-  Stack,
-  IconButton,
-  Dialog,
-  Divider,
-} from "@mui/material";
+import { Typography, Stack, IconButton, Dialog, Divider } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
 import Grid from "@mui/material/Grid2";
 import { CustomContainer } from "@/components/common/CustomContainer";
 import { Loader } from "@/components/common/Loader";
@@ -17,25 +9,19 @@ import { CustomTargetSection } from "@/components/zone/CustomNormsSection";
 import EditIcon from "@mui/icons-material/Edit";
 import { EditZonePlant } from "@/components/EditZonePlant";
 import { customFetch } from "@/lib/utils/apiUtils";
-import { ZoneItem } from "@/components/zone/ZoneItem";
 import { DeviceControlSection } from "@/components/zone/device-schedule/DeviceControlSection";
 import ParameterChart from "@/components/graphs/ParameterChart";
-import { HarvestMonitor } from "../../../../components/zone/HarvestMonitor";
-import { ZoneParameters } from "../../../../components/zone/ZoneParams";
+import { HarvestMonitor } from "@/components/zone/HarvestMonitor";
+import { ZoneParameters } from "@/components/zone/ZoneParams";
 
-export default function Page() {
-  const params = useParams();
-
-  const uuid = typeof params.uuid === "string" ? params.uuid : params.uuid?.[0];
-  const index = Number(params.index) ?? 0;
-  console.log("uuid", uuid);
-  console.log("index", index);
+export function ZoneFullDetail({ uuid, index }: { uuid: string; index: number }) {
   const [zone, setZone] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [isEditMode, setEditMode] = useState(false);
 
   useEffect(() => {
     async function fetchZone() {
+      setLoading(true);
       try {
         const res = await customFetch(
           `station/zone?uuid=${uuid}&index=${index}`,
@@ -53,31 +39,29 @@ export default function Page() {
       }
     }
 
-    if (uuid && index !== undefined) fetchZone();
+    fetchZone();
   }, [uuid, index]);
-
-  if (!uuid || (!index && index !== 0))
-    return <div>404 {(uuid?.toString(), index)}</div>;
 
   if (!zone || loading) return <Loader sx={{ mt: "30vh" }} />;
 
   return (
-    <Container maxWidth="xl">
-      <Stack gap={2}>
+    <>
+      <Stack gap={1.5}>
         <CustomContainer
-          sx={{ flexDirection: "row", justifyContent: "space-between" }}
+          sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", py: 1 }}
         >
-          <Typography variant="h3" sx={{ fontWeight: 700 }}>
-            🪴 {zone.name}: {zone.plant?.name}
+          <Typography variant="h6" sx={{ fontWeight: 700 }}>
+            🪴 {zone.name}
+            {zone.plant?.name ? `: ${zone.plant.name}` : ""}
           </Typography>
-          <IconButton onClick={() => setEditMode(true)}>
-            <EditIcon sx={{ fontSize: 36 }} />
+          <IconButton size="small" onClick={() => setEditMode(true)}>
+            <EditIcon fontSize="small" />
           </IconButton>
         </CustomContainer>
 
-        <Grid container spacing={4}>
+        <Grid container spacing={2}>
           <Grid size={8}>
-            <Stack gap={2}>
+            <Stack gap={1.5}>
               <ZoneParameters uuid={uuid} index={index} />
 
               <CustomTargetSection uuid={uuid} index={index} />
@@ -98,14 +82,12 @@ export default function Page() {
           />
         </Dialog>
       </Stack>
-      <Divider sx={{ my: 4 }} />
+      <Divider sx={{ my: 2 }} />
       <HarvestMonitor />
-      <Divider sx={{ my: 4 }} />
-      <Stack gap={4}>
-        <CustomContainer>
-          <Typography
-            sx={{ textAlign: "center", fontWeight: 600, fontSize: 20 }}
-          >
+      <Divider sx={{ my: 2 }} />
+      <Stack gap={2}>
+        <CustomContainer sx={{ py: 1 }}>
+          <Typography sx={{ textAlign: "center", fontWeight: 600, fontSize: 13 }}>
             Температура повітря
           </Typography>
           <ParameterChart
@@ -113,13 +95,12 @@ export default function Page() {
             index={index}
             paramKey="temperature"
             yAxisLabel="Temperature (°C)"
+            height={180}
           />
         </CustomContainer>
 
-        <CustomContainer>
-          <Typography
-            sx={{ textAlign: "center", fontWeight: 600, fontSize: 20 }}
-          >
+        <CustomContainer sx={{ py: 1 }}>
+          <Typography sx={{ textAlign: "center", fontWeight: 600, fontSize: 13 }}>
             Вологість повітря
           </Typography>
           <ParameterChart
@@ -127,13 +108,12 @@ export default function Page() {
             index={index}
             paramKey="airHumidity"
             yAxisLabel="Humidity (%)"
+            height={180}
           />
         </CustomContainer>
 
-        <CustomContainer>
-          <Typography
-            sx={{ textAlign: "center", fontWeight: 600, fontSize: 20 }}
-          >
+        <CustomContainer sx={{ py: 1 }}>
+          <Typography sx={{ textAlign: "center", fontWeight: 600, fontSize: 13 }}>
             Вологість грунту
           </Typography>
           <ParameterChart
@@ -141,9 +121,10 @@ export default function Page() {
             index={index}
             paramKey="substrateHumidity"
             yAxisLabel="Substrate (%)"
+            height={180}
           />
         </CustomContainer>
       </Stack>
-    </Container>
+    </>
   );
 }

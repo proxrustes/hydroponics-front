@@ -29,6 +29,7 @@ export default function ParameterChart(props: {
   index: number;
   paramKey: keyof ZoneLogLocal;
   yAxisLabel: string;
+  height?: number;
 }) {
   const [logs, setLogs] = useState<ZoneLogLocal[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -96,8 +97,8 @@ export default function ParameterChart(props: {
           color: "pink",
         },
       ]}
-      height={300}
-      margin={{ top: 50, right: 80, bottom: 50, left: 50 }}
+      height={props.height ?? 300}
+      margin={{ top: 24, right: 40, bottom: 30, left: 40 }}
     />
   );
 }

@@ -17,6 +17,7 @@ export function ZoneItem(props: {
   uuid: string;
   index: number;
   showButton?: boolean;
+  onOpen?: () => void;
 }) {
   const [zone, setZone] = useState<Zone | null>();
 
@@ -47,22 +48,20 @@ export function ZoneItem(props: {
   }
 
   return (
-    <Box sx={{ px: 2 }}>
+    <Box sx={{ px: 1.5, py: 1 }}>
       <Stack
         direction={"row"}
         justifyContent="space-between"
         alignItems={"center"}
       >
-        <Typography sx={{ fontWeight: 600, fontSize: 24 }}>
-          {zone.name}: {zone.plant?.name}
+        <Typography sx={{ fontWeight: 600, fontSize: 15 }}>
+          {zone.name}
+          {zone.plant?.name ? `: ${zone.plant.name}` : ""}
         </Typography>
         {props.showButton && (
           <ButtonGroup>
-            <IconButton
-              href={`/station/${props.uuid}/${props.index}`}
-              color="secondary"
-            >
-              <SettingsIcon fontSize="large" />
+            <IconButton onClick={props.onOpen} color="secondary" size="small">
+              <SettingsIcon fontSize="small" />
             </IconButton>
           </ButtonGroup>
         )}
@@ -70,7 +69,7 @@ export function ZoneItem(props: {
 
       <ZoneParameters uuid={props.uuid} index={props.index} compact />
 
-      <Divider sx={{ mt: 4 }} />
+      <Divider sx={{ mt: 1.5 }} />
     </Box>
   );
 }

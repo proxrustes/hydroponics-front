@@ -1,21 +1,12 @@
 import Grid from "@mui/material/Grid2";
-import { createParameters, parameterConfig } from "@/lib/parameterConfig";
+import { parameterConfig } from "@/lib/parameterConfig";
 import { customFetch } from "@/lib/utils/apiUtils";
 import { useState, useEffect } from "react";
 import { LinearProgress } from "@mui/material";
 import { ParameterRow } from "../zone/Parameter";
 
-type Parameter = {
-  name: string;
-  value: number;
-  norm: [number, number];
-  valueFormatter?: string;
-  icon: string;
-};
-
 export function BucketParams(props: { uuid: string }) {
   const [bucketParams, setBucketparams] = useState<Record<string, number>>();
-  console.log(bucketParams);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,9 +15,7 @@ export function BucketParams(props: { uuid: string }) {
           `station/bucket/params?uuid=${props.uuid}`,
           "GET"
         );
-        console.log("response", response, response.status === 200);
         if (response.status === 200) {
-          console.log("200");
           setBucketparams(response.message);
         }
       } catch (error) {
@@ -39,12 +28,21 @@ export function BucketParams(props: { uuid: string }) {
   if (!bucketParams) {
     return <LinearProgress />;
   }
-  const parameters = createParameters(
-    ["phLevel", "solutionLvl", "solutionTemperature", "nutrientConcentration"],
-    parameterConfig,
-    bucketParams,
-    [0, 100]
-  );
+
+  const BUCKET_PARAM_KEYS = [
+    "phLevel",
+    "solutionLvl",
+    "solutionTemperature",
+    "nutrientConcentration",
+  ] as const;
+
+  // Show every known bucket parameter, even ones the API hasn't reported
+  // a value for yet, instead of silently dropping them.
+  const parameters = BUCKET_PARAM_KEYS.map((key) => ({
+    ...parameterConfig[key],
+    value: bucketParams[key],
+    norm: [0, 100] as [number, number],
+  }));
 
   return (
     <Grid container spacing={2} sx={{ mt: 2 }}>

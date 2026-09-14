@@ -25,34 +25,38 @@ model Plant {
   id           Int        @id @default(autoincrement())
   name         String
   description  String
-  plantGroupId Int
+  plantGroupId Int        @map("plant_group_id")
   plantGroup   PlantGroup @relation(fields: [plantGroupId], references: [id])
   norms        Norms?     @relation("PlantNorms")
   zones        Zone[]
+
+  @@map("plant")
 }
 
 model Norms {
   id Int @id @default(autoincrement())
 
-  temperatureMin           Float
-  temperatureMax           Float
-  airHumidityMin           Float
-  airHumidityMax           Float
-  substrateHumidityMin     Float
-  substrateHumidityMax     Float
-  phLevelMin               Float
-  phLevelMax               Float
-  nutrientConcentrationMin Float
-  nutrientConcentrationMax Float
-  solutionTemperatureMin   Float
-  solutionTemperatureMax   Float
-  solutionLvlMin           Float
-  solutionLvlMax           Float
-  lightIntensityMin        Float
-  lightIntensityMax        Float
+  temperatureMin           Float @map("temperature_min")
+  temperatureMax           Float @map("temperature_max")
+  airHumidityMin           Float @map("air_humidity_min")
+  airHumidityMax           Float @map("air_humidity_max")
+  substrateHumidityMin     Float @map("substrate_humidity_min")
+  substrateHumidityMax     Float @map("substrate_humidity_max")
+  phLevelMin               Float @map("ph_level_min")
+  phLevelMax               Float @map("ph_level_max")
+  nutrientConcentrationMin Float @map("nutrient_concentration_min")
+  nutrientConcentrationMax Float @map("nutrient_concentration_max")
+  solutionTemperatureMin   Float @map("solution_temperature_min")
+  solutionTemperatureMax   Float @map("solution_temperature_max")
+  solutionLvlMin           Float @map("solution_lvl_min")
+  solutionLvlMax           Float @map("solution_lvl_max")
+  lightIntensityMin        Float @map("light_intensity_min")
+  lightIntensityMax        Float @map("light_intensity_max")
 
-  plantId Int   @unique
+  plantId Int   @unique @map("plant_id")
   plant   Plant @relation("PlantNorms", fields: [plantId], references: [id])
+
+  @@map("norms")
 }
 
 model Station {
@@ -64,33 +68,37 @@ model Station {
   bucketParams       BucketParams?
   bucketTargetParams BucketTargetParams?
 
-  userId Int
+  userId Int  @map("user_id")
   user   User @relation(fields: [userId], references: [id])
+
+  @@map("station")
 }
 
 model BucketParams {
   id        Int     @id @default(autoincrement())
-  stationId Int     @unique
+  stationId Int     @unique @map("station_id")
   station   Station @relation(fields: [stationId], references: [id])
 
-  phLevel               Float
-  nutrientConcentration Float
-  solutionTemperature   Float
-  solutionLvl           Float
-  updatedAt             DateTime @updatedAt
+  phLevel               Float    @map("ph_level")
+  nutrientConcentration Float    @map("nutrient_concentration")
+  solutionTemperature   Float    @map("solution_temperature")
+  solutionLvl           Float    @map("solution_lvl")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  @@map("bucket_params")
 }
 
 model BucketParamsLog {
   id        Int     @id @default(autoincrement())
-  stationId Int
+  stationId Int     @map("station_id")
   station   Station @relation(fields: [stationId], references: [id])
 
-  recordedAt DateTime @default(now())
+  recordedAt DateTime @default(now()) @map("recorded_at")
 
-  phLevel               Float
-  nutrientConcentration Float
-  solutionTemperature   Float
-  solutionLvl           Float
+  phLevel               Float @map("ph_level")
+  nutrientConcentration Float @map("nutrient_concentration")
+  solutionTemperature   Float @map("solution_temperature")
+  solutionLvl           Float @map("solution_lvl")
 
   @@index([stationId, recordedAt])
   @@map("bucket_params_log")
@@ -100,80 +108,90 @@ model Zone {
   id      Int    @id @default(autoincrement())
   index   Int
   name    String
-  plantId Int?
+  plantId Int?   @map("plant_id")
   plant   Plant? @relation(fields: [plantId], references: [id])
 
-  stationId Int
+  stationId Int     @map("station_id")
   station   Station @relation(fields: [stationId], references: [id])
 
   zoneLogs             ZoneParamsLog[]
   zoneParams           ZoneParams?
   zoneNorms            ZoneNorms?
   zoneTargetParams     ZoneTargetParams?
-  ZoneScheduleInterval ZoneScheduleInterval[]
+  zoneScheduleInterval ZoneScheduleInterval[]
+
+  @@map("zone")
 }
 
 model ZoneScheduleInterval {
   id     Int  @id @default(autoincrement())
-  zoneId Int
+  zoneId Int  @map("zone_id")
   zone   Zone @relation(fields: [zoneId], references: [id])
 
   device  DeviceType
-  onTime  String
-  offTime String
+  onTime  String     @map("on_time")
+  offTime String     @map("off_time")
+
+  @@map("zone_schedule_interval")
 }
 
 enum DeviceType {
   LIGHT
   PUMP
   FAN
+
+  @@map("device_type")
 }
 
 model ZoneNorms {
   id Int @id @default(autoincrement())
 
-  temperatureMin           Float?
-  temperatureMax           Float?
-  airHumidityMin           Float?
-  airHumidityMax           Float?
-  substrateHumidityMin     Float?
-  substrateHumidityMax     Float?
-  phLevelMin               Float?
-  phLevelMax               Float?
-  nutrientConcentrationMin Float?
-  nutrientConcentrationMax Float?
-  solutionTemperatureMin   Float?
-  solutionTemperatureMax   Float?
-  solutionLvlMin           Float?
-  solutionLvlMax           Float?
-  lightIntensityMin        Float?
-  lightIntensityMax        Float?
+  temperatureMin           Float? @map("temperature_min")
+  temperatureMax           Float? @map("temperature_max")
+  airHumidityMin           Float? @map("air_humidity_min")
+  airHumidityMax           Float? @map("air_humidity_max")
+  substrateHumidityMin     Float? @map("substrate_humidity_min")
+  substrateHumidityMax     Float? @map("substrate_humidity_max")
+  phLevelMin               Float? @map("ph_level_min")
+  phLevelMax               Float? @map("ph_level_max")
+  nutrientConcentrationMin Float? @map("nutrient_concentration_min")
+  nutrientConcentrationMax Float? @map("nutrient_concentration_max")
+  solutionTemperatureMin   Float? @map("solution_temperature_min")
+  solutionTemperatureMax   Float? @map("solution_temperature_max")
+  solutionLvlMin           Float? @map("solution_lvl_min")
+  solutionLvlMax           Float? @map("solution_lvl_max")
+  lightIntensityMin        Float? @map("light_intensity_min")
+  lightIntensityMax        Float? @map("light_intensity_max")
 
-  zoneId Int  @unique
+  zoneId Int  @unique @map("zone_id")
   zone   Zone @relation(fields: [zoneId], references: [id])
+
+  @@map("zone_norms")
 }
 
 model ZoneParams {
   id     Int  @id @default(autoincrement())
-  zoneId Int  @unique
+  zoneId Int  @unique @map("zone_id")
   zone   Zone @relation(fields: [zoneId], references: [id])
 
   temperature       Float
-  airHumidity       Float
-  substrateHumidity Float
-  updatedAt         DateTime @updatedAt
+  airHumidity       Float    @map("air_humidity")
+  substrateHumidity Float    @map("substrate_humidity")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  @@map("zone_params")
 }
 
 model ZoneParamsLog {
   id     Int  @id @default(autoincrement())
-  zoneId Int
+  zoneId Int  @map("zone_id")
   zone   Zone @relation(fields: [zoneId], references: [id])
 
-  recordedAt DateTime @default(now())
+  recordedAt DateTime @default(now()) @map("recorded_at")
 
   temperature       Float
-  airHumidity       Float
-  substrateHumidity Float
+  airHumidity       Float @map("air_humidity")
+  substrateHumidity Float @map("substrate_humidity")
 
   @@index([zoneId, recordedAt])
   @@map("zone_params_log")
@@ -181,25 +199,29 @@ model ZoneParamsLog {
 
 model BucketTargetParams {
   id        Int     @id @default(autoincrement())
-  stationId Int     @unique
+  stationId Int     @unique @map("station_id")
   station   Station @relation(fields: [stationId], references: [id])
 
-  phLevel               Float
-  nutrientConcentration Float
-  solutionTemperature   Float
-  solutionLvl           Float
-  updatedAt             DateTime @updatedAt
+  phLevel               Float    @map("ph_level")
+  nutrientConcentration Float    @map("nutrient_concentration")
+  solutionTemperature   Float    @map("solution_temperature")
+  solutionLvl           Float    @map("solution_lvl")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  @@map("bucket_target_params")
 }
 
 model ZoneTargetParams {
   id     Int  @id @default(autoincrement())
-  zoneId Int  @unique
+  zoneId Int  @unique @map("zone_id")
   zone   Zone @relation(fields: [zoneId], references: [id])
 
   temperature       Float
-  airHumidity       Float
-  substrateHumidity Float
-  updatedAt         DateTime @updatedAt
+  airHumidity       Float    @map("air_humidity")
+  substrateHumidity Float    @map("substrate_humidity")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  @@map("zone_target_params")
 }
 
 model User {
@@ -210,9 +232,13 @@ model User {
   role     Role   @default(USER)
 
   stations Station[]
+
+  @@map("user")
 }
 
 enum Role {
   ADMIN
   USER
+
+  @@map("role")
 }

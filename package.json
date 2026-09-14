@@ -7,7 +7,7 @@
     "build": "prisma generate  && prisma db seed && next build",
     "start": "next start",
     "lint": "next lint",
-    "prisma-setup": "scripts\\prisma-setup.cmd",
+    "prisma-setup": "bash scripts/prisma-setup.sh",
     "vercel-build": "prisma generate && prisma db seed && next build"
   },
   "dependencies": {

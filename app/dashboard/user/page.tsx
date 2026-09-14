@@ -1,5 +1,5 @@
-import { StationsSection } from "@/components/station/StationsSeciton";
+import { StationsMasterDetail } from "@/components/station/StationsMasterDetail";
 
 export default async function Dashboard() {
-  return <StationsSection />;
+  return <StationsMasterDetail />;
 }

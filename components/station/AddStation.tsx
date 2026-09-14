@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Box, Button, Paper, TextField, Typography } from "@mui/material";
+import { Box, Button, Paper, SxProps, TextField, Theme, Typography } from "@mui/material";
 
-export function AddStationForm() {
+export function AddStationForm({ sx }: { sx?: SxProps<Theme> } = {}) {
   const [name, setName] = useState("");
   const [uuid, setUuid] = useState("");
   const router = useRouter();
@@ -30,7 +30,7 @@ export function AddStationForm() {
   };
 
   return (
-    <Paper sx={{ mt: 8, p: 4, boxShadow: 3, borderRadius: 2 }}>
+    <Paper sx={{ mt: 8, p: 4, boxShadow: 3, borderRadius: 2, ...sx }}>
       <Typography variant="h5" gutterBottom>
         Додати нову станцію
       </Typography>

@@ -24,25 +24,26 @@ export function ParameterCard({
   return (
     <Box
       sx={{
-        p: 2,
+        p: 1.25,
         border: "1px solid #ccc",
-        borderRadius: 2,
+        borderRadius: 1.5,
         display: "flex",
         flexDirection: "column",
+        gap: 0.25,
       }}
     >
-      <Typography variant="h6" fontWeight={700}>
+      <Typography variant="subtitle2" fontWeight={700}>
         {icon} {name}
       </Typography>
 
-      <Stack direction="row" gap={2}>
-        <Typography variant="h4" color="primary.main" sx={{ fontWeight: 600 }}>
+      <Stack direction="row" gap={1} alignItems="baseline">
+        <Typography variant="h6" color="primary.main" sx={{ fontWeight: 600 }}>
           {round(value)} {valueFormatter}
         </Typography>
 
         {target !== undefined && (
           <Typography
-            variant="h4"
+            variant="body2"
             color="primary.main"
             sx={{ fontWeight: 600 }}
           >
@@ -52,7 +53,7 @@ export function ParameterCard({
       </Stack>
 
       {norm && (
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="caption" color="text.secondary">
           Норма: {round(norm[0])}–{round(norm[1])} {valueFormatter}
         </Typography>
       )}
@@ -62,7 +63,7 @@ export function ParameterCard({
 
 export type ParameterRowProps = {
   name: string;
-  value: number;
+  value?: number;
   target?: number;
   valueFormatter?: string;
   norm?: [number, number];
@@ -78,23 +79,30 @@ export function ParameterRow({
   target,
 }: ParameterRowProps) {
   return (
-    <Stack direction="row" spacing={1} alignItems="center">
-      <Typography width={220} variant="body1">
+    <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" rowGap={0.25}>
+      <Typography width={140} variant="body2" noWrap>
         {icon} {name}
       </Typography>
 
-      <Typography variant="body1" width={80} fontWeight={600}>
-        {round(value)} {valueFormatter}
+      <Typography
+        variant="body2"
+        width={value === undefined ? 90 : 64}
+        fontWeight={value === undefined ? 400 : 600}
+        fontStyle={value === undefined ? "italic" : undefined}
+        color={value === undefined ? "text.secondary" : undefined}
+        sx={{ whiteSpace: "nowrap" }}
+      >
+        {value === undefined ? "немає даних" : `${round(value)} ${valueFormatter}`}
       </Typography>
 
       {target !== undefined && (
-        <Typography variant="body1" color="primary">
+        <Typography variant="body2" color="primary">
           → {round(target)} {valueFormatter}
         </Typography>
       )}
 
       {norm && (
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="caption" color="text.secondary">
           ({round(norm[0])}–{round(norm[1])} {valueFormatter})
         </Typography>
       )}
