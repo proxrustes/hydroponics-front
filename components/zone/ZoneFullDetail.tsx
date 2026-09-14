@@ -5,16 +5,22 @@ import { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid2";
 import { CustomContainer } from "@/components/common/CustomContainer";
 import { Loader } from "@/components/common/Loader";
-import { CustomTargetSection } from "@/components/zone/CustomNormsSection";
 import EditIcon from "@mui/icons-material/Edit";
+import LocalFloristOutlinedIcon from "@mui/icons-material/LocalFloristOutlined";
 import { EditZonePlant } from "@/components/EditZonePlant";
 import { customFetch } from "@/lib/utils/apiUtils";
 import { DeviceControlSection } from "@/components/zone/device-schedule/DeviceControlSection";
 import ParameterChart from "@/components/graphs/ParameterChart";
 import { HarvestMonitor } from "@/components/zone/HarvestMonitor";
-import { ZoneParameters } from "@/components/zone/ZoneParams";
+import { ZoneParamsComparison } from "@/components/zone/ZoneParamsComparison";
 
-export function ZoneFullDetail({ uuid, index }: { uuid: string; index: number }) {
+export function ZoneFullDetail({
+  uuid,
+  index,
+}: {
+  uuid: string;
+  index: number;
+}) {
   const [zone, setZone] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [isEditMode, setEditMode] = useState(false);
@@ -48,10 +54,19 @@ export function ZoneFullDetail({ uuid, index }: { uuid: string; index: number })
     <>
       <Stack gap={1.5}>
         <CustomContainer
-          sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", py: 1 }}
+          sx={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            py: 1,
+          }}
         >
-          <Typography variant="h6" sx={{ fontWeight: 700 }}>
-            🪴 {zone.name}
+          <Typography
+            variant="h6"
+            sx={{ fontWeight: 700, display: "flex", alignItems: "center", gap: 0.75 }}
+          >
+            <LocalFloristOutlinedIcon color="primary" />
+            {zone.name}
             {zone.plant?.name ? `: ${zone.plant.name}` : ""}
           </Typography>
           <IconButton size="small" onClick={() => setEditMode(true)}>
@@ -60,15 +75,11 @@ export function ZoneFullDetail({ uuid, index }: { uuid: string; index: number })
         </CustomContainer>
 
         <Grid container spacing={2}>
-          <Grid size={8}>
-            <Stack gap={1.5}>
-              <ZoneParameters uuid={uuid} index={index} />
-
-              <CustomTargetSection uuid={uuid} index={index} />
-            </Stack>
+          <Grid size={6}>
+            <ZoneParamsComparison uuid={uuid} index={index} />
           </Grid>
-          <Grid size={4}>
-            <DeviceControlSection uuid={uuid} index={index} />
+          <Grid size={6}>
+            <DeviceControlSection uuid={uuid} index={index} plantId={zone.plant?.id} />
           </Grid>
         </Grid>
         <Dialog open={isEditMode} onClose={() => setEditMode(false)}>
@@ -87,7 +98,9 @@ export function ZoneFullDetail({ uuid, index }: { uuid: string; index: number })
       <Divider sx={{ my: 2 }} />
       <Stack gap={2}>
         <CustomContainer sx={{ py: 1 }}>
-          <Typography sx={{ textAlign: "center", fontWeight: 600, fontSize: 13 }}>
+          <Typography
+            sx={{ textAlign: "center", fontWeight: 600, fontSize: 13 }}
+          >
             Температура повітря
           </Typography>
           <ParameterChart
@@ -100,7 +113,9 @@ export function ZoneFullDetail({ uuid, index }: { uuid: string; index: number })
         </CustomContainer>
 
         <CustomContainer sx={{ py: 1 }}>
-          <Typography sx={{ textAlign: "center", fontWeight: 600, fontSize: 13 }}>
+          <Typography
+            sx={{ textAlign: "center", fontWeight: 600, fontSize: 13 }}
+          >
             Вологість повітря
           </Typography>
           <ParameterChart
@@ -113,7 +128,9 @@ export function ZoneFullDetail({ uuid, index }: { uuid: string; index: number })
         </CustomContainer>
 
         <CustomContainer sx={{ py: 1 }}>
-          <Typography sx={{ textAlign: "center", fontWeight: 600, fontSize: 13 }}>
+          <Typography
+            sx={{ textAlign: "center", fontWeight: 600, fontSize: 13 }}
+          >
             Вологість грунту
           </Typography>
           <ParameterChart

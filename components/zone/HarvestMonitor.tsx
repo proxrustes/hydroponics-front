@@ -16,6 +16,7 @@ import HourglassBottomIcon from "@mui/icons-material/HourglassBottom";
 import { useState } from "react";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import StopIcon from "@mui/icons-material/Stop";
+import WarningAmberOutlinedIcon from "@mui/icons-material/WarningAmberOutlined";
 
 export function HarvestMonitor() {
   const [status, setStatus] = useState<"idle" | "active" | "stopped">("idle");
@@ -123,11 +124,20 @@ export function HarvestMonitor() {
               <Typography variant="body2" sx={{ fontWeight: 500 }}>
                 Останні події:
               </Typography>
-              <Typography variant="body1" color="success.main">
-                ✔️ 13:24 – Зрізано рослину #12 (зона 3)
+              <Typography
+                variant="body1"
+                color="success.main"
+                sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
+              >
+                <CheckCircleIcon fontSize="small" /> 13:24 – Зрізано рослину #12 (зона 3)
               </Typography>
-              <Typography variant="body1" color="warning.main">
-                ⚠️ 13:21 – Помилка позиціонування (зона 2)
+              <Typography
+                variant="body1"
+                color="warning.main"
+                sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
+              >
+                <WarningAmberOutlinedIcon fontSize="small" /> 13:21 – Помилка позиціонування
+                (зона 2)
               </Typography>
             </Stack>
             <Typography variant="body2" sx={{ mt: 2 }}>

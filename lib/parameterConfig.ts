@@ -1,3 +1,12 @@
+import type { ComponentType } from "react";
+import type { SvgIconProps } from "@mui/material/SvgIcon";
+import ThermostatOutlinedIcon from "@mui/icons-material/ThermostatOutlined";
+import WaterDropOutlinedIcon from "@mui/icons-material/WaterDropOutlined";
+import GrassOutlinedIcon from "@mui/icons-material/GrassOutlined";
+import ScienceOutlinedIcon from "@mui/icons-material/ScienceOutlined";
+import WavesOutlinedIcon from "@mui/icons-material/WavesOutlined";
+import BiotechOutlinedIcon from "@mui/icons-material/BiotechOutlined";
+
 type ParameterConfig = {
   [key in
     | "temperature"
@@ -9,7 +18,7 @@ type ParameterConfig = {
     | "solutionTemperature"]: {
     name: string;
     valueFormatter?: string;
-    icon: string;
+    icon: ComponentType<SvgIconProps>;
   };
 };
 
@@ -17,37 +26,37 @@ export const parameterConfig: ParameterConfig = {
   temperature: {
     name: "Temperature",
     valueFormatter: "°C",
-    icon: "🌡️",
+    icon: ThermostatOutlinedIcon,
   },
   airHumidity: {
     name: "Air Humidity",
     valueFormatter: "%",
-    icon: "💧",
+    icon: WaterDropOutlinedIcon,
   },
   substrateHumidity: {
     name: "Substrate Humidity",
     valueFormatter: "%",
-    icon: "🪴",
+    icon: GrassOutlinedIcon,
   },
   phLevel: {
     name: "pH Level",
     valueFormatter: "",
-    icon: "🧪",
+    icon: ScienceOutlinedIcon,
   },
   solutionLvl: {
     name: "Solution Level",
     valueFormatter: "%",
-    icon: "〰️",
+    icon: WavesOutlinedIcon,
   },
   solutionTemperature: {
     name: "Solution Temperature",
     valueFormatter: "°C",
-    icon: "🌡️",
+    icon: ThermostatOutlinedIcon,
   },
   nutrientConcentration: {
     name: "Nutrient Concentration",
     valueFormatter: "%",
-    icon: "〰️",
+    icon: BiotechOutlinedIcon,
   },
 };
 

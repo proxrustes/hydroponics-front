@@ -52,6 +52,7 @@ export async function GET(req: NextRequest) {
       where.recordedAt = { ...(where.recordedAt ?? {}), lte: new Date(end) };
 
     const logs = await prisma.zoneParamsLog.findMany({
+      where,
       orderBy: { recordedAt: "asc" },
       take: limit,
     });

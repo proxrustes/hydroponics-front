@@ -1,4 +1,6 @@
+import type { ComponentType } from "react";
 import { Box, Stack, Typography } from "@mui/material";
+import type { SvgIconProps } from "@mui/material/SvgIcon";
 
 export type ParameterCardProps = {
   name: string;
@@ -6,7 +8,7 @@ export type ParameterCardProps = {
   target?: number;
   valueFormatter?: string;
   norm?: [number, number];
-  icon: string;
+  icon: ComponentType<SvgIconProps>;
 };
 
 function round(value: number): number {
@@ -15,7 +17,7 @@ function round(value: number): number {
 
 export function ParameterCard({
   name,
-  icon,
+  icon: Icon,
   value,
   valueFormatter = "",
   norm,
@@ -32,8 +34,12 @@ export function ParameterCard({
         gap: 0.25,
       }}
     >
-      <Typography variant="subtitle2" fontWeight={700}>
-        {icon} {name}
+      <Typography
+        variant="subtitle2"
+        fontWeight={700}
+        sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
+      >
+        <Icon fontSize="small" /> {name}
       </Typography>
 
       <Stack direction="row" gap={1} alignItems="baseline">
@@ -67,12 +73,12 @@ export type ParameterRowProps = {
   target?: number;
   valueFormatter?: string;
   norm?: [number, number];
-  icon: string;
+  icon: ComponentType<SvgIconProps>;
 };
 
 export function ParameterRow({
   name,
-  icon,
+  icon: Icon,
   value,
   valueFormatter = "",
   norm,
@@ -80,9 +86,12 @@ export function ParameterRow({
 }: ParameterRowProps) {
   return (
     <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" rowGap={0.25}>
-      <Typography width={140} variant="body2" noWrap>
-        {icon} {name}
-      </Typography>
+      <Stack direction="row" alignItems="center" gap={0.5} width={140}>
+        <Icon fontSize="small" sx={{ flexShrink: 0 }} />
+        <Typography variant="body2" noWrap>
+          {name}
+        </Typography>
+      </Stack>
 
       <Typography
         variant="body2"

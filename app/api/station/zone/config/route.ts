@@ -90,7 +90,8 @@ export async function POST(req: NextRequest) {
           zoneId: zone.id,
           device: interval.device,
           onTime: interval.onTime,
-          offTime: interval.offTime,
+          offTime: interval.offTime ?? null,
+          volumeMl: interval.volumeMl ?? null,
         })),
       });
     }

@@ -30,6 +30,8 @@ model Plant {
   norms        Norms?     @relation("PlantNorms")
   zones        Zone[]
 
+  schedulePresets SchedulePreset[]
+
   @@map("plant")
 }
 
@@ -128,11 +130,49 @@ model ZoneScheduleInterval {
   zoneId Int  @map("zone_id")
   zone   Zone @relation(fields: [zoneId], references: [id])
 
-  device  DeviceType
-  onTime  String     @map("on_time")
-  offTime String     @map("off_time")
+  device DeviceType
+  onTime String     @map("on_time")
+
+  // LIGHT/FAN run for a duration (onTime -> offTime); PUMP instead fires
+  // once at onTime for a set volume, so offTime is unused and volumeMl is
+  // unused for LIGHT/FAN.
+  offTime  String? @map("off_time")
+  volumeMl Int?    @map("volume_ml")
 
   @@map("zone_schedule_interval")
+}
+
+// A reusable, named set of device intervals a user can save and apply to
+// any zone later — the same interval shape as ZoneScheduleInterval.
+// Optionally tied to a Plant to act as that plant's recommended schedule.
+model SchedulePreset {
+  id     Int    @id @default(autoincrement())
+  name   String
+  userId Int    @map("user_id")
+  user   User   @relation(fields: [userId], references: [id])
+
+  plantId Int?   @map("plant_id")
+  plant   Plant? @relation(fields: [plantId], references: [id])
+
+  intervals SchedulePresetInterval[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("schedule_preset")
+}
+
+model SchedulePresetInterval {
+  id       Int            @id @default(autoincrement())
+  presetId Int            @map("preset_id")
+  preset   SchedulePreset @relation(fields: [presetId], references: [id], onDelete: Cascade)
+
+  device DeviceType
+  onTime String     @map("on_time")
+
+  offTime  String? @map("off_time")
+  volumeMl Int?    @map("volume_ml")
+
+  @@map("schedule_preset_interval")
 }
 
 enum DeviceType {
@@ -231,7 +271,8 @@ model User {
   password String
   role     Role   @default(USER)
 
-  stations Station[]
+  stations        Station[]
+  schedulePresets SchedulePreset[]
 
   @@map("user")
 }

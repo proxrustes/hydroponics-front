@@ -2,6 +2,39 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
+type ParamsBaseline = {
+  temperature: number;
+  airHumidity: number;
+  substrateHumidity: number;
+};
+
+// Hourly history for the last `hours` hours with a mild diurnal swing
+// (warmer/drier at midday) plus small random noise, so ParameterChart has
+// something to plot instead of "No logs found for this period."
+function generateZoneLogs(zoneId: number, baseline: ParamsBaseline, hours = 72) {
+  const logs = [];
+  const now = Date.now();
+
+  for (let h = hours; h >= 0; h--) {
+    const recordedAt = new Date(now - h * 60 * 60 * 1000);
+    const dayPhase = (recordedAt.getHours() / 24) * Math.PI * 2;
+
+    const temperature = baseline.temperature + Math.sin(dayPhase) * 1.8 + (Math.random() - 0.5) * 0.6;
+    const airHumidity = baseline.airHumidity - Math.sin(dayPhase) * 6 + (Math.random() - 0.5) * 2;
+    const substrateHumidity = baseline.substrateHumidity + (Math.random() - 0.5) * 2;
+
+    logs.push({
+      zoneId,
+      recordedAt,
+      temperature: Math.round(temperature * 10) / 10,
+      airHumidity: Math.round(Math.max(0, Math.min(100, airHumidity)) * 10) / 10,
+      substrateHumidity: Math.round(Math.max(0, Math.min(100, substrateHumidity)) * 10) / 10,
+    });
+  }
+
+  return logs;
+}
+
 async function seed() {
   console.log("🌱 Начинаем сидирование...");
 
@@ -152,6 +185,7 @@ async function seed() {
         })),
       },
     },
+    include: { zones: true },
   });
 
   console.log("✅ Станції та зони створені");
@@ -167,6 +201,28 @@ async function seed() {
   }
 
   console.log("✅ Поточні параметри зон для станції адміністратора додані");
+
+  const zoneBaselines: Record<string, ParamsBaseline> = {
+    "Зона A1": { temperature: 22, airHumidity: 63, substrateHumidity: 58 },
+    "Зона A2": { temperature: 24, airHumidity: 68, substrateHumidity: 61 },
+    "Зона A3": { temperature: 22, airHumidity: 66, substrateHumidity: 55 },
+    "Зона A4": { temperature: 21, airHumidity: 62, substrateHumidity: 63 },
+    "Зона B1": { temperature: 19, airHumidity: 70, substrateHumidity: 59 },
+    "Зона B2": { temperature: 21, airHumidity: 72, substrateHumidity: 63 },
+    "Зона B3": { temperature: 23, airHumidity: 60, substrateHumidity: 57 },
+    "Зона B4": { temperature: 20, airHumidity: 68, substrateHumidity: 64 },
+  };
+
+  const allZones = [...stationAdmin.zones, ...stationUser1.zones];
+  const zoneLogs = allZones.flatMap((zone) =>
+    generateZoneLogs(
+      zone.id,
+      zoneBaselines[zone.name] ?? { temperature: 22, airHumidity: 65, substrateHumidity: 60 }
+    )
+  );
+  await prisma.zoneParamsLog.createMany({ data: zoneLogs });
+
+  console.log(`✅ Історія параметрів для графіків додана (${zoneLogs.length} записів)`);
   console.log("🌱 Сидирование завершено успешно!");
 }
 

@@ -1,8 +1,11 @@
 import { SectionBlock } from "@/components/wiki/SectionBlock";
 import { Container, Stack, Typography, Button } from "@mui/material";
 import Link from "next/link";
+import SpaOutlinedIcon from "@mui/icons-material/SpaOutlined";
+import BuildOutlinedIcon from "@mui/icons-material/BuildOutlined";
+import InsightsOutlinedIcon from "@mui/icons-material/InsightsOutlined";
 
-// 📚 Данные
+// Data
 const plantsSections = [
   {
     title: "Бібліотека рослин",
@@ -61,21 +64,24 @@ export default function Wiki() {
         </Typography>
         <Stack gap={12} sx={{ mt: 12 }}>
           <SectionBlock
-            title="🌿 Рослини в системі"
+            title="Рослини в системі"
             subtitle="Вивчіть доступні культури та їхні особливості для оптимального вирощування"
             items={plantsSections}
+            icon={SpaOutlinedIcon}
           />
 
           <SectionBlock
-            title="🛠️ Гайди і поради"
+            title="Гайди і поради"
             subtitle="Практичні інструкції для покращення роботи вашої гідропонної системи"
             items={guides}
+            icon={BuildOutlinedIcon}
           />
 
           <SectionBlock
-            title="📈 Параметри системи"
+            title="Параметри системи"
             subtitle="Детальна інформація про основні параметри, які контролюються у гідропоніці"
             items={paramsSections}
+            icon={InsightsOutlinedIcon}
           />
         </Stack>
       </Stack>
